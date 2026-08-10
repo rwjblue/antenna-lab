@@ -1,0 +1,55 @@
+{
+  "schema_version": 2,
+  "model_version": "1.1-refactored",
+  "random_seed": 581728,
+  "measurement_path": "data/measured/58ft_doublet_2026-08-08.csv",
+  "baseline": {
+    "radiator_total_ft": 58.0,
+    "feedline_length_ft": 28.0
+  },
+  "wire": {
+    "description": "Nominal 26 AWG 7-strand copper-clad-steel Poly-STEALTH; installed spool unverified",
+    "conductor_radius_m": 0.0002415,
+    "rf_resistance_status": "unknown and represented through line-loss uncertainty"
+  },
+  "candidate_sweep": {
+    "radiator_total_ft": {"start": 48.0, "stop": 68.0, "step": 0.25},
+    "feedline_length_ft": {"start": 18.0, "stop": 38.0, "step": 0.25}
+  },
+  "band_weights": {
+    "40m": 3.0,
+    "30m": 3.0,
+    "20m": 3.0,
+    "17m": 1.5,
+    "15m": 1.0,
+    "12m": 1.0,
+    "10m": 1.0
+  },
+  "line_uncertainty": {
+    "velocity_factors": [0.93, 0.95, 0.97, 0.99],
+    "air_geometry_z0_ohm": [480.0, 495.0, 510.0],
+    "loss_db_per_100ft_at_10mhz": [0.01, 0.03, 0.05, 0.07, 0.09, 0.11],
+    "passivity_min_load_r_ohm": 0.05,
+    "z0_coupling": "effective Z0 = air-geometry Z0 * VF"
+  },
+  "surrogate_models": [
+    "mobius_0.35",
+    "mobius_0.5",
+    "mobius_0.75",
+    "mobius_1.0",
+    "pchip",
+    "linear_global"
+  ],
+  "ranking": {
+    "minimum_valid_fraction": 0.95,
+    "match_proxy_maximum_raw_swr_p90": 50.0,
+    "recommended_maximum_raw_swr_p90": 45.0,
+    "match_proxy_status": "heuristic; not a KXAT2 specification"
+  },
+  "confidence_labels": {
+    "absolute_line_efficiency": "low",
+    "nearby_paired_comparison": "provisional",
+    "broad_favorable_region": "provisional",
+    "exact_quarter_foot_winner": "low"
+  }
+}

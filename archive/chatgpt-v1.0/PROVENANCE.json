@@ -1,0 +1,13 @@
+{
+  "bundle_version": "1.0",
+  "model_version": "1.0",
+  "frozen_run_timestamp_utc": "2026-08-08T22:53:00Z",
+  "candidate_count": 6561,
+  "line_scenario_count": 65,
+  "surrogate_model_count": 6,
+  "ensemble_count": 390,
+  "python_tested": "3.13",
+  "determinism_verified": true,
+  "determinism_note": "A fresh run matched every output hash bit-for-bit before packaging.",
+  "method": "measurement-anchored passive surrogate ensemble; not NEC/full-wave"
+}

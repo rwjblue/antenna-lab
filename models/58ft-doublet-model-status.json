@@ -1,0 +1,18 @@
+{
+  "model_id": "58ft-doublet-surrogate-v1",
+  "measurement_anchor": "58ft-doublet-58r-28f",
+  "optimization_model": {
+    "type": "measurement-anchored passive transmission-line and radiator-surrogate ensemble",
+    "is_nec": false,
+    "is_mininec": false,
+    "is_full_wave": false,
+    "confidence": "relative nearby comparisons only; absolute efficiency low confidence"
+  },
+  "radiation_pattern_model": {
+    "type": "analytical thin-wire sinusoidal-current far-field approximation with Fresnel ground reflection",
+    "is_nec": false,
+    "is_mininec": false,
+    "predicts_realized_gain": false,
+    "predicts_impedance": false
+  }
+}

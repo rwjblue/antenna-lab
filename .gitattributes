@@ -1,0 +1,10 @@
+# Preserve byte-for-byte provenance and published artifacts.
+archive/source-bundles/*.zip binary
+data/measured/raw/** -text
+data/measured/58ft_doublet_kxat2_2026-08-08.csv -text
+reports/figures/optimization-v1.0/** -text
+reports/radiation-pattern-v0.1/** -text
+results/published-v1.0/** -text
+results/reference-small/** -text
+reports/**/*.png binary
+reports/**/*.pdf binary

@@ -1,0 +1,54 @@
+{
+  "baseline": {
+    "feedline_ft": 28.0,
+    "match_proxy_feasible": true,
+    "maximum_raw_swr_median": 32.46746080157973,
+    "maximum_raw_swr_p90": 32.46746080158017,
+    "radiator_total_ft": 58.0,
+    "valid_fraction": 1.0,
+    "weighted_line_efficiency_median": 0.9100532504907347,
+    "weighted_line_efficiency_p10": 0.8366828965530144,
+    "worst_band_line_efficiency_median": 0.7360762317296139,
+    "worst_band_line_efficiency_p10": 0.5314987242807133
+  },
+  "candidate_count": 9,
+  "confidence_labels": {
+    "absolute_line_efficiency": "low",
+    "broad_favorable_region": "provisional",
+    "exact_grid_winner": "low",
+    "nearby_paired_comparison": "provisional"
+  },
+  "ensemble_count_per_candidate": 16,
+  "model_best_under_match_proxy": {
+    "feedline_ft": 28.0,
+    "match_proxy_feasible": true,
+    "maximum_raw_swr_median": 31.421158828589146,
+    "maximum_raw_swr_p90": 33.281856554685234,
+    "radiator_total_ft": 57.5,
+    "valid_fraction": 1.0,
+    "weighted_line_efficiency_median": 0.9104937330479115,
+    "weighted_line_efficiency_p10": 0.8373753614863197,
+    "worst_band_line_efficiency_median": 0.7744516112834285,
+    "worst_band_line_efficiency_p10": 0.576408416101806
+  },
+  "model_version": "1.1-reference-small",
+  "passive_line_scenario_count": 8,
+  "recommended_reversible_test": {
+    "feedline_ft": 28.0,
+    "match_proxy_feasible": true,
+    "maximum_raw_swr_median": 31.421158828589146,
+    "maximum_raw_swr_p90": 33.281856554685234,
+    "radiator_total_ft": 57.5,
+    "valid_fraction": 1.0,
+    "weighted_line_efficiency_median": 0.9104937330479115,
+    "weighted_line_efficiency_p10": 0.8373753614863197,
+    "worst_band_line_efficiency_median": 0.7744516112834285,
+    "worst_band_line_efficiency_p10": 0.576408416101806
+  },
+  "warnings": [
+    "Line efficiency is modeled, not measured total antenna efficiency.",
+    "The radiator change is a surrogate ensemble, not NEC or full-wave modeling.",
+    "The raw-SWR screen is a heuristic and not a KXAT2 specification.",
+    "Nearby paired changes are more informative than absolute percentages."
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "bundle_version": "0.1",
+  "created_utc": "2026-08-08T22:15:06.493607+00:00",
+  "python_version": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+  "packages": {
+    "numpy": "2.3.5",
+    "matplotlib": "3.10.8",
+    "Pillow": "12.3.0",
+    "reportlab": "4.4.9"
+  },
+  "random_seed_reserved_for_optimizer": 581728,
+  "status": "frozen inputs + prior pattern model; joint optimizer pending"
+}

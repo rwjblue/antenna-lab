@@ -1,0 +1,41 @@
+{
+  "model_version": "1.0",
+  "ensemble_size": 390,
+  "candidate_count": 6561,
+  "baseline": {
+    "radiator_total_ft": 58.0,
+    "feedline_ft": 28.0,
+    "worst_band_line_efficiency_p10": 0.15670712292194366,
+    "worst_band_line_efficiency_median": 0.541061520576477,
+    "maximum_raw_swr_p90": 32.46746063232422
+  },
+  "recommended_reversible_test": {
+    "radiator_total_ft": 57.0,
+    "feedline_ft": 28.0,
+    "trim_per_radiator_end_in": 6.0,
+    "feedline_split_shift_in": 0.0,
+    "worst_band_line_efficiency_p10": 0.23351271450519562,
+    "worst_band_line_efficiency_median": 0.6968209743499756,
+    "maximum_raw_swr_p90": 43.23295211791992
+  },
+  "model_best_under_match_proxy": {
+    "radiator_total_ft": 56.75,
+    "feedline_ft": 28.25,
+    "trim_per_radiator_end_in": 4.5,
+    "feedline_split_shift_in": 3.0,
+    "worst_band_line_efficiency_p10": 0.24360762536525726,
+    "maximum_raw_swr_p90": 48.10553741455078
+  },
+  "unconstrained_efficiency_best": {
+    "radiator_total_ft": 56.75,
+    "feedline_ft": 18.0,
+    "worst_band_line_efficiency_p10": 0.3357548415660858,
+    "maximum_raw_swr_p90": 2476.0888671875
+  },
+  "warnings": [
+    "This is a measurement-anchored surrogate ensemble, not NEC or a full-wave solve.",
+    "Absolute efficiency intervals are broad; relative ranking near the measured baseline is more useful.",
+    "Line efficiency excludes KXAT2, choke, common-mode, radiator, and environmental losses.",
+    "The raw-SWR matchability limit is a heuristic proxy, not a published KXAT2 boundary."
+  ]
+}
