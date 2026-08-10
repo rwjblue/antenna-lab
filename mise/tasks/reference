@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Regenerate and verify the small deterministic reference optimization"
+set -euo pipefail
+uv run antenna-lab optimize-doublet --config configs/reference-small.json --output results/reference-small
+uv run antenna-lab verify-results results/reference-small

@@ -1,0 +1,23 @@
+{
+  "config_file": "reference-small.json",
+  "config_sha256": "d5511689fe5e6a36505160a842faf20e739a477718efe314bb86cd50ac9071aa",
+  "dependency_lock_sha256": "a83f72dc3b091806a9c3930e1bf68c40e42ba70e073b257481d7c7a5651e0965",
+  "determinism": "No random sampling; seed reserved and fixed.",
+  "environment": {
+    "numpy": "2.5.2",
+    "python": "3.13.14",
+    "scipy": "1.18.0"
+  },
+  "measurement_path": "data/measured/58ft_doublet_2026-08-08.csv",
+  "measurement_sha256": "796cd507994819774c0d86be819e4e53b26c90803601a016747a9845a66c3e10",
+  "random_seed": 581728,
+  "source_sha256": {
+    "__init__.py": "b8cc92256dd726d6d68d6f208c5a555f0a3c5383a39e16305e8c1d45d76a1a01",
+    "cli.py": "87ebbf3724806721d3741c07b746eaf1a314d6340e95e4df565b1899c752cec5",
+    "measurements.py": "5f121805d49797978382004a357a54c15bc40f87417099f86d2d7b80074c252b",
+    "optimization.py": "668ad8d3f7b54682fd113c2f1f2cf5fc753b8a740722fd3406b36736a0221c65",
+    "plotting.py": "e70c727dc5c98f5c02407e0e238a9ea86df9a3eefb7cca8831bfc35d2bb7cfd7",
+    "radiator_model.py": "17cf9aeca4666ef541672af0de37a8b0acf38769915d9906aeb64a20a8317fed",
+    "transmission_line.py": "3a52d638fe86017fc8bb61ef8794a19e9fd1694408c3a33d5a1998043e9ffe9d"
+  }
+}

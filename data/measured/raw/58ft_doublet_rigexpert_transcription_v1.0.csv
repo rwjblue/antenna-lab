@@ -1,0 +1,8 @@
+band,frequency_mhz,r_ohm,x_ohm,source
+40m,7.05,35.5,-211.0,RigExpert MATCH at radio end
+30m,10.12,31.0,-25.5,RigExpert MATCH at radio end
+20m,14.05,5.8,-71.8,RigExpert MATCH at radio end
+17m,18.08,2.3,-35.1,RigExpert MATCH at radio end
+15m,21.05,49.1,2.3,RigExpert MATCH at radio end
+12m,24.91,4.3,-16.0,RigExpert MATCH at radio end
+10m,28.05,4.1,-21.4,RigExpert MATCH at radio end

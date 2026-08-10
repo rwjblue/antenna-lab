@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "model_version": "1.1-reference-small",
+  "random_seed": 581728,
+  "measurement_path": "data/measured/58ft_doublet_2026-08-08.csv",
+  "baseline": {
+    "radiator_total_ft": 58.0,
+    "feedline_length_ft": 28.0
+  },
+  "wire": {
+    "description": "Nominal 26 AWG copper-clad-steel; exact installed spool unverified",
+    "conductor_radius_m": 0.0002415,
+    "rf_resistance_status": "unknown"
+  },
+  "candidate_sweep": {
+    "radiator_total_ft": {"start": 57.0, "stop": 58.0, "step": 0.5},
+    "feedline_length_ft": {"start": 27.5, "stop": 28.5, "step": 0.5}
+  },
+  "band_weights": {
+    "40m": 3.0,
+    "30m": 3.0,
+    "20m": 3.0,
+    "17m": 1.5,
+    "15m": 1.0,
+    "12m": 1.0,
+    "10m": 1.0
+  },
+  "line_uncertainty": {
+    "velocity_factors": [0.95, 0.99],
+    "air_geometry_z0_ohm": [480.0, 510.0],
+    "loss_db_per_100ft_at_10mhz": [0.01, 0.05],
+    "passivity_min_load_r_ohm": 0.05,
+    "z0_coupling": "effective Z0 = air-geometry Z0 * VF"
+  },
+  "surrogate_models": ["mobius_0.5", "mobius_1.0"],
+  "ranking": {
+    "minimum_valid_fraction": 0.95,
+    "match_proxy_maximum_raw_swr_p90": 50.0,
+    "recommended_maximum_raw_swr_p90": 45.0,
+    "match_proxy_status": "heuristic; not a KXAT2 specification"
+  },
+  "confidence_labels": {
+    "absolute_line_efficiency": "low",
+    "nearby_paired_comparison": "provisional",
+    "broad_favorable_region": "provisional",
+    "exact_grid_winner": "low"
+  }
+}

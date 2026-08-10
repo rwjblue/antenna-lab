@@ -1,0 +1,17 @@
+{
+  "generated_utc": "2026-08-08T22:53:00Z",
+  "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+  "platform": "Linux-6.18.35-x86_64-with-glibc2.41",
+  "packages": {
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scipy": "1.17.0",
+    "matplotlib": "3.10.8"
+  },
+  "command_line_template": "python src/optimize_doublet.py --config config/optimization_config.json --measurements data/rigexpert_measurements.csv --output .",
+  "input_hashes": {
+    "config": "71ae1ba1a348a7ffef35f1f81b248c2e3df8faab40c210d2bf1035b1d42ffc8b",
+    "measurements": "48a5f436e19cb79a16cd98e6ece1324431a7e23fd757f53458160c8d1c9fba60",
+    "source": "e94c24c9b675c9e947f70f01341b6bfb396399d9dd4119d20fa6d590b57d0a79"
+  }
+}

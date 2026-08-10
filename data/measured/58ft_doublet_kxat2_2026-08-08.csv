@@ -1,0 +1,10 @@
+band,best_tuned_swr,status,notes
+80m,,no_match,Outside original design target
+60m,1.6,matched,Second-pass ATU tune not yet documented
+40m,1.8,matched,Second-pass ATU tune not yet documented
+30m,1.0,matched,
+20m,1.0,matched,Initial tune stopped near 2.7–3.0:1; second ATU tap within about 5 seconds found 1.0:1
+17m,1.0,matched,
+15m,1.0,matched,
+12m,1.0,matched,
+10m,1.3,matched,

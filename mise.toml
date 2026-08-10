@@ -1,0 +1,10 @@
+[tools]
+python = "3.13.14"
+uv = "latest"
+
+[settings]
+experimental = true
+
+[env]
+UV_CACHE_DIR = "{{config_root}}/.uv-cache"
+UV_NO_EDITABLE = "1"
