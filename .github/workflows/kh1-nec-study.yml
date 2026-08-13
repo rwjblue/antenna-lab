@@ -20,6 +20,8 @@ jobs:
       - name: Assemble study source
         run: |
           cat .bootstrap/kh1_nec.py.part* > src/antenna_lab/kh1_nec.py
+          sed -i 's/"reference_20_120": InvertedV(20.0, apex_angle_deg=120.0)/"reference_30_120": InvertedV(30.0, apex_angle_deg=120.0)/' src/antenna_lab/kh1_nec.py
+          sed -i 's/GEOMETRIES\["reference_20_120"\]/GEOMETRIES["reference_30_120"]/g' src/antenna_lab/kh1_nec.py
           rm -rf .bootstrap
 
       - name: Install NEC-2 solver
