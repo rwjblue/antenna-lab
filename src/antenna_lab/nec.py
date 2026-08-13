@@ -132,11 +132,17 @@ def direct_wire_deck(
     run = math.sqrt(radiator_ft * radiator_ft - rise * rise)
     gap = 0.02
     feed_z = feed_height_ft * FT
+    counterpoise_rise = counterpoise_height_ft - feed_height_ft
+    if abs(counterpoise_rise) >= counterpoise_ft:
+        raise ValueError("Counterpoise cannot reach requested endpoint height")
+    counterpoise_run = math.sqrt(
+        counterpoise_ft * counterpoise_ft - counterpoise_rise * counterpoise_rise
+    )
     counterpoise_angle = math.radians(counterpoise_azimuth_deg)
-    counterpoise_x = -gap / 2 + counterpoise_ft * FT * math.cos(
+    counterpoise_x = -gap / 2 + counterpoise_run * FT * math.cos(
         counterpoise_angle
     )
-    counterpoise_y = counterpoise_ft * FT * math.sin(counterpoise_angle)
+    counterpoise_y = counterpoise_run * FT * math.sin(counterpoise_angle)
     cards = _header(title)
     cards += [
         _gw(

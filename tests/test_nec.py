@@ -45,16 +45,55 @@ RADIATION PATTERNS
     assert result.pattern == ((90.0, 0.0, 2.0), (0.0, 5.0, 3.0))
 
 
-def test_direct_wire_counterpoise_azimuth_changes_geometry() -> None:
+def _wire_length_m(deck: str, tag: int) -> float:
+    card = next(line for line in deck.splitlines() if line.startswith(f"GW {tag} "))
+    fields = card.split()
+    start = tuple(float(value) for value in fields[3:6])
+    end = tuple(float(value) for value in fields[6:9])
+    return math.dist(start, end)
+
+
+def test_direct_wire_counterpoise_azimuth_preserves_wire_length() -> None:
     common = dict(
-        title="direct", radiator_ft=35.0, counterpoise_ft=17.0,
-        feed_height_ft=0.5, support_height_ft=20.0,
-        counterpoise_height_ft=0.1, frequency_mhz=14.05,
-        radius_m=0.0002415, conductivity_s_m=15_000_000.0,
-        epsilon_r=13.0, ground_conductivity_s_m=0.005,
+        title="direct",
+        radiator_ft=35.0,
+        counterpoise_ft=17.0,
+        feed_height_ft=0.5,
+        support_height_ft=20.0,
+        counterpoise_height_ft=0.1,
+        frequency_mhz=14.05,
+        radius_m=0.0002415,
+        conductivity_s_m=15_000_000.0,
+        epsilon_r=13.0,
+        ground_conductivity_s_m=0.005,
     )
     side = direct_wire_deck(counterpoise_azimuth_deg=90.0, **common)
     collinear = direct_wire_deck(counterpoise_azimuth_deg=180.0, **common)
     assert side != collinear
-    assert "5.181600000" in side
-    assert "-5.191600000" in collinear
+    assert math.isclose(_wire_length_m(side, 1), 17.0 * 0.3048, abs_tol=1e-9)
+    assert math.isclose(
+        _wire_length_m(collinear, 1), 17.0 * 0.3048, abs_tol=1e-9
+    )
+
+
+def test_direct_wire_rejects_impossible_counterpoise_height() -> None:
+    common = dict(
+        title="direct",
+        radiator_ft=35.0,
+        counterpoise_ft=2.0,
+        feed_height_ft=0.5,
+        support_height_ft=20.0,
+        counterpoise_height_ft=2.5,
+        counterpoise_azimuth_deg=90.0,
+        frequency_mhz=14.05,
+        radius_m=0.0002415,
+        conductivity_s_m=15_000_000.0,
+        epsilon_r=13.0,
+        ground_conductivity_s_m=0.005,
+    )
+    try:
+        direct_wire_deck(**common)
+    except ValueError as error:
+        assert str(error) == "Counterpoise cannot reach requested endpoint height"
+    else:
+        raise AssertionError("Expected invalid counterpoise geometry to fail")

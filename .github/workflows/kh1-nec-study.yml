@@ -9,6 +9,7 @@ on:
     paths:
       - ".github/workflows/kh1-nec-study.yml"
       - "data/measured/**"
+      - "src/antenna_lab/cli.py"
       - "src/antenna_lab/kh1_nec.py"
       - "src/antenna_lab/kh1_pipeline.py"
       - "src/antenna_lab/nec.py"
