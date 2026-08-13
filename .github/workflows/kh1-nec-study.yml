@@ -1,14 +1,47 @@
-name: KH1 NEC-2 study
+name: Recover KH1 NEC study source
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - research/kh1-portable-nec
 
 permissions:
   contents: read
 
 jobs:
-  study:
+  recover-source:
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
     steps:
       - uses: actions/checkout@v4
-      - run: echo 'Workflow temporarily staged for source transfer.'
+
+      - name: Restore staged source archive
+        run: |
+          cat .bootstrap-v2/source.tgz.b64.part* | base64 --decode > /tmp/kh1-nec-source.tgz
+          tar --extract --gzip --file /tmp/kh1-nec-source.tgz --directory .
+          test -f src/antenna_lab/kh1_nec.py
+          test -f src/antenna_lab/cli.py
+
+      - name: Upload restored source
+        uses: actions/upload-artifact@v4
+        with:
+          name: kh1-nec-source-v2
+          path: |
+            src
+            tests
+            README.md
+            MODEL_LIMITATIONS.md
+            NEXT_EXPERIMENT.md
+            .github/workflows/kh1-nec-study.yml
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload exact staged archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: kh1-nec-source-v2-tarball
+          path: /tmp/kh1-nec-source.tgz
+          if-no-files-found: error
+          retention-days: 30
