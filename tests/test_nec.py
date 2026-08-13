@@ -1,6 +1,6 @@
 import math
 
-from antenna_lab.nec import InvertedV, doublet_deck, parse
+from antenna_lab.nec import InvertedV, direct_wire_deck, doublet_deck, parse
 
 
 def test_pulaski_geometry() -> None:
@@ -43,3 +43,18 @@ RADIATION PATTERNS
     assert result.impedance_ohm == 20 + 40j
     assert result.efficiency == 0.9325
     assert result.pattern == ((90.0, 0.0, 2.0), (0.0, 5.0, 3.0))
+
+
+def test_direct_wire_counterpoise_azimuth_changes_geometry() -> None:
+    common = dict(
+        title="direct", radiator_ft=35.0, counterpoise_ft=17.0,
+        feed_height_ft=0.5, support_height_ft=20.0,
+        counterpoise_height_ft=0.1, frequency_mhz=14.05,
+        radius_m=0.0002415, conductivity_s_m=15_000_000.0,
+        epsilon_r=13.0, ground_conductivity_s_m=0.005,
+    )
+    side = direct_wire_deck(counterpoise_azimuth_deg=90.0, **common)
+    collinear = direct_wire_deck(counterpoise_azimuth_deg=180.0, **common)
+    assert side != collinear
+    assert "5.181600000" in side
+    assert "-5.191600000" in collinear

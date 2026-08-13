@@ -8,6 +8,12 @@ from collections.abc import Sequence
 from pathlib import Path
 
 from antenna_lab.kh1_nec import run_study
+from antenna_lab.kh1_pipeline import (
+    assemble_study,
+    run_direct_nec_shard,
+    run_doublet_grid_shard,
+    run_doublet_nec_shard,
+)
 from antenna_lab.measurements import load_impedance_measurements
 from antenna_lab.optimization import (
     compare_candidate,
@@ -61,6 +67,47 @@ def build_parser() -> argparse.ArgumentParser:
     nec_study.add_argument("--nec2c", type=Path)
     nec_study.add_argument("--jobs", type=int)
 
+    doublet_nec_shard = subparsers.add_parser(
+        "run-kh1-doublet-nec-shard",
+        help="Run one shard of the KH1 doublet NEC feedpoint cases",
+    )
+    doublet_nec_shard.add_argument("--output", type=Path, required=True)
+    doublet_nec_shard.add_argument("--shard-index", type=int, required=True)
+    doublet_nec_shard.add_argument("--shard-count", type=int, required=True)
+    doublet_nec_shard.add_argument("--nec2c", type=Path)
+    doublet_nec_shard.add_argument("--jobs", type=int)
+
+    direct_nec_shard = subparsers.add_parser(
+        "run-kh1-direct-nec-shard",
+        help="Run one shard of the KH1 direct-fed NEC cases",
+    )
+    direct_nec_shard.add_argument("--output", type=Path, required=True)
+    direct_nec_shard.add_argument("--shard-index", type=int, required=True)
+    direct_nec_shard.add_argument("--shard-count", type=int, required=True)
+    direct_nec_shard.add_argument("--nec2c", type=Path)
+    direct_nec_shard.add_argument("--jobs", type=int)
+
+    doublet_grid_shard = subparsers.add_parser(
+        "run-kh1-doublet-grid-shard",
+        help="Evaluate one shard of the KH1 doublet uncertainty grid",
+    )
+    doublet_grid_shard.add_argument("--input", type=Path, required=True)
+    doublet_grid_shard.add_argument("--output", type=Path, required=True)
+    doublet_grid_shard.add_argument(
+        "--measurements", type=Path, default=DEFAULT_MEASUREMENTS
+    )
+    doublet_grid_shard.add_argument("--shard-index", type=int, required=True)
+    doublet_grid_shard.add_argument("--shard-count", type=int, required=True)
+
+    assemble_nec = subparsers.add_parser(
+        "assemble-kh1-nec-study",
+        help="Merge KH1 shard artifacts and produce the canonical result package",
+    )
+    assemble_nec.add_argument("--input", type=Path, required=True)
+    assemble_nec.add_argument("--output", type=Path, required=True)
+    assemble_nec.add_argument("--measurements", type=Path, default=DEFAULT_MEASUREMENTS)
+    assemble_nec.add_argument("--nec2c", type=Path)
+
     verify = subparsers.add_parser(
         "verify-results", help="Verify a generated SHA256SUMS manifest"
     )
@@ -106,6 +153,45 @@ def main(argv: Sequence[str] | None = None) -> int:
             measurement_path=args.measurements,
             nec2c=args.nec2c,
             jobs=args.jobs,
+        )
+        print(json.dumps(summary, indent=2, sort_keys=True))
+        return 0
+    if args.command == "run-kh1-doublet-nec-shard":
+        summary = run_doublet_nec_shard(
+            args.output,
+            shard_index=args.shard_index,
+            shard_count=args.shard_count,
+            nec2c=args.nec2c,
+            jobs=args.jobs,
+        )
+        print(json.dumps(summary, indent=2, sort_keys=True))
+        return 0
+    if args.command == "run-kh1-direct-nec-shard":
+        summary = run_direct_nec_shard(
+            args.output,
+            shard_index=args.shard_index,
+            shard_count=args.shard_count,
+            nec2c=args.nec2c,
+            jobs=args.jobs,
+        )
+        print(json.dumps(summary, indent=2, sort_keys=True))
+        return 0
+    if args.command == "run-kh1-doublet-grid-shard":
+        summary = run_doublet_grid_shard(
+            args.output,
+            input_dir=args.input,
+            shard_index=args.shard_index,
+            shard_count=args.shard_count,
+            measurement_path=args.measurements,
+        )
+        print(json.dumps(summary, indent=2, sort_keys=True))
+        return 0
+    if args.command == "assemble-kh1-nec-study":
+        summary = assemble_study(
+            args.output,
+            input_dir=args.input,
+            measurement_path=args.measurements,
+            nec2c=args.nec2c,
         )
         print(json.dumps(summary, indent=2, sort_keys=True))
         return 0

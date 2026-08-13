@@ -58,9 +58,25 @@ DIRECT_CANDIDATES = {
     "41r-17c": (41.0, 17.0),
     "53r-17c": (53.0, 17.0),
 }
+TUNER_ENVELOPES = {
+    "conservative": {"lmax_uH": 8.0, "cmax_pF": 325.0},
+    "central": {"lmax_uH": 12.0, "cmax_pF": 400.0},
+    "permissive": {"lmax_uH": 15.0, "cmax_pF": 500.0},
+}
+TUNER_BYPASS_SWR = 2.5
+TUNER_TOPOLOGY_NAMES = {
+    0: "series_l_then_source_shunt_c",
+    1: "load_shunt_c_then_series_l",
+    2: "bypass",
+    -1: "none",
+}
 DIRECT_DEPLOYMENTS = {
-    "30ft": (3.0, 30.0, 0.5),
-    "20ft": (3.0, 20.0, 0.5),
+    "ground_side_20": (0.5, 20.0, 0.10, 90.0),
+    "ground_bent_20": (0.5, 20.0, 0.10, 135.0),
+    "ground_collinear_20": (0.5, 20.0, 0.10, 180.0),
+    "table_side_30": (3.0, 30.0, 0.50, 90.0),
+    "table_bent_30": (3.0, 30.0, 0.50, 135.0),
+    "table_collinear_30": (3.0, 30.0, 0.50, 180.0),
 }
 
 
@@ -77,7 +93,7 @@ def run_study(
     measured = np.asarray([row.impedance_ohm for row in measurements])
     if [row.band for row in measurements] != [band for band, _, _ in BANDS]:
         raise ValueError("Measurement band order does not match study bands")
-    q_threshold, q_success, q_failure = _q_separator(measured)
+    baseline_tuner = _baseline_tuner_rows(measured)
 
     if output_dir.exists():
         shutil.rmtree(output_dir)
@@ -100,15 +116,13 @@ def run_study(
         )
 
         grid, named, band_detail = _evaluate_doublets(
-            lengths, feedpoints, measured, line_scenarios, q_threshold
+            lengths, feedpoints, measured, line_scenarios
         )
         _write_csv(data_dir / "doublet_candidates.csv", grid)
         _write_csv(data_dir / "doublet_named.csv", named)
         _write_csv(data_dir / "doublet_named_by_band.csv", band_detail)
 
-        direct_rows = _run_direct_nec(
-            executable, work / "direct", job_count, q_threshold
-        )
+        direct_rows = _run_direct_nec(executable, work / "direct", job_count)
         _write_csv(data_dir / "direct_nec.csv", direct_rows)
         direct_summary = _summarize_direct(direct_rows)
         _write_csv(data_dir / "direct_candidates.csv", direct_summary)
@@ -127,13 +141,14 @@ def run_study(
             selections, direct_summary, linked, executable, work / "patterns", raw_dir
         )
         _write_csv(data_dir / "selected_pattern_metrics.csv", pattern_rows)
+        _write_csv(data_dir / "baseline_tuner_envelope.csv", baseline_tuner)
 
+    extension_window = _extension_window(grid)
     solver_version = _version(executable)
     summary = _summary(
         solver_version,
-        q_threshold,
-        q_success,
-        q_failure,
+        baseline_tuner,
+        extension_window,
         len(feedpoints),
         len(line_scenarios),
         selections,
@@ -281,7 +296,6 @@ def _evaluate_doublets(
     scenarios: list[
         tuple[dict[str, Any], LineParameters, LineParameters, float, np.ndarray]
     ],
-    threshold: float,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
     geometry_ids = list(GEOMETRIES)
     lookup = {
@@ -290,19 +304,31 @@ def _evaluate_doublets(
         )
         for row in feedpoint_rows
     }
-    feedlines = np.arange(10.0, 40.0 + 0.25, 0.5)
-    sample_count = len(geometry_ids) * 2 * len(scenarios)
+    feedlines = np.unique(
+        np.concatenate(
+            (
+                np.arange(10.0, 40.0 + 0.25, 0.5),
+                np.arange(27.5, 32.5 + 0.125, 0.25),
+            )
+        )
+    )
+    physical_sample_count = len(geometry_ids) * 2 * len(scenarios)
+    sample_count = physical_sample_count * len(TUNER_ENVELOPES)
     grid: list[dict[str, Any]] = []
     sample_cache: dict[
-        tuple[float, float], list[tuple[np.ndarray, np.ndarray, np.ndarray]]
+        tuple[float, float],
+        list[tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]],
     ] = {}
+    frequencies = np.asarray([frequency for _, frequency, _ in BANDS], dtype=float)
 
     for length in lengths:
         for feedline in feedlines:
             compat_count = np.zeros(len(BANDS), dtype=int)
+            tuner_stress_max = []
             qmax = []
             worst_eff = []
             max_swrs = []
+            all_required = []
             samples = []
             for geometry_id in geometry_ids:
                 nec_base = np.asarray(
@@ -311,7 +337,7 @@ def _evaluate_doublets(
                 nec_candidate = np.asarray(
                     [lookup[(geometry_id, float(length), band)] for band, _, _ in BANDS]
                 )
-                for metadata, line, coax, coax_ft, baseline_load in scenarios:
+                for _metadata, line, coax, coax_ft, baseline_load in scenarios:
                     for method in ("impedance_delta", "smith_displacement"):
                         load = _anchor(
                             baseline_load,
@@ -345,31 +371,37 @@ def _evaluate_doublets(
                             radio[index] = at_line
                             efficiency[index] = eff
                         q = _minimum_q(radio)
-                        compatible = valid & np.isfinite(q) & (q <= threshold)
-                        compat_count += compatible
+                        tuner_stresses = _tuner_stress_matrix(radio, frequencies)
+                        compatible = (
+                            valid[np.newaxis, :]
+                            & np.isfinite(tuner_stresses)
+                            & (tuner_stresses <= 1.0)
+                        )
+                        compat_count += np.sum(compatible, axis=0)
+                        all_required.extend(
+                            np.all(compatible[:, REQUIRED], axis=1).tolist()
+                        )
                         if np.all(valid[REQUIRED]):
+                            tuner_stress_max.extend(
+                                np.max(tuner_stresses[:, REQUIRED], axis=1).tolist()
+                            )
                             qmax.append(float(np.max(q[REQUIRED])))
                             worst_eff.append(float(np.min(efficiency[REQUIRED])))
                             max_swrs.append(float(np.max(swr(radio[REQUIRED]))))
-                        samples.append((radio, q, efficiency))
+                        samples.append((radio, q, efficiency, tuner_stresses))
             row = {
                 "radiator_ft": float(length),
                 "feedline_ft": float(feedline),
                 "total_wire_ft": float(length + 2 * feedline),
+                "physical_sample_count": physical_sample_count,
+                "tuner_envelope_count": len(TUNER_ENVELOPES),
                 "sample_count": sample_count,
-                "all_required_compatibility_fraction": float(
-                    np.mean(
-                        [
-                            bool(
-                                np.all(q[REQUIRED] <= threshold)
-                                and np.all(np.isfinite(q[REQUIRED]))
-                            )
-                            for _, q, _ in samples
-                        ]
-                    )
-                ),
+                "all_required_compatibility_fraction": float(np.mean(all_required)),
                 "minimum_required_band_compatibility_fraction": float(
                     np.min(compat_count[REQUIRED] / sample_count)
+                ),
+                "required_max_tuner_stress_p90": _quantile(
+                    tuner_stress_max, 0.90
                 ),
                 "required_max_q_p90": _quantile(qmax, 0.90),
                 "required_max_raw_swr_p90": _quantile(max_swrs, 0.90),
@@ -380,12 +412,12 @@ def _evaluate_doublets(
                     compat_count[index] / sample_count
                 )
             grid.append(row)
-            if (length, feedline) in (
+            if (float(length), float(feedline)) in {
                 (58.0, 28.0),
                 (44.0, 28.0),
                 (58.0, 31.0),
                 (57.0, 28.0),
-            ):
+            }:
                 sample_cache[(float(length), float(feedline))] = samples
 
     ranked = sorted(grid, key=_rank_doublet)
@@ -402,6 +434,7 @@ def _evaluate_doublets(
     )[0]
     named = [{"selection": name, **row} for name, row in selections.items()]
     details = []
+    central_index = list(TUNER_ENVELOPES).index("central")
     for name, row in selections.items():
         key = (row["radiator_ft"], row["feedline_ft"])
         samples = sample_cache.get(key)
@@ -411,19 +444,33 @@ def _evaluate_doublets(
             z = np.asarray([sample[0][band_index] for sample in samples])
             q = np.asarray([sample[1][band_index] for sample in samples])
             eff = np.asarray([sample[2][band_index] for sample in samples])
+            stresses = np.asarray(
+                [sample[3][:, band_index] for sample in samples]
+            ).reshape(-1)
+            central_stress = np.asarray(
+                [sample[3][central_index, band_index] for sample in samples]
+            )
             valid = np.isfinite(z.real) & (z.real > 0) & np.isfinite(q)
             details.append(
                 {
                     "selection": name,
                     "band": band,
                     "frequency_hz": frequency,
-                    "compatibility_fraction": float(np.mean(valid & (q <= threshold))),
+                    "compatibility_fraction": float(
+                        np.mean(np.isfinite(stresses) & (stresses <= 1.0))
+                    ),
                     "resistance_p50": _nanquantile(z.real, 0.5),
                     "reactance_p50": _nanquantile(z.imag, 0.5),
-                    "minimum_q_p50": _nanquantile(q, 0.5),
-                    "minimum_q_p90": _nanquantile(q, 0.9),
-                    "raw_swr_p50": _nanquantile(swr(z), 0.5),
-                    "line_efficiency_p10": _nanquantile(eff, 0.1),
+                    "central_tuner_stress_p50": _nanquantile(
+                        central_stress, 0.5
+                    ),
+                    "central_tuner_stress_p90": _nanquantile(
+                        central_stress, 0.9
+                    ),
+                    "minimum_q_p50": _nanquantile(q[valid], 0.5),
+                    "minimum_q_p90": _nanquantile(q[valid], 0.9),
+                    "raw_swr_p50": _nanquantile(swr(z[valid]), 0.5),
+                    "line_efficiency_p10": _nanquantile(eff[valid], 0.1),
                 }
             )
     return (
@@ -437,6 +484,7 @@ def _samples_for_candidate(
     length: float, feedline: float, lookup: dict, scenarios: list
 ) -> list:
     samples = []
+    frequencies = np.asarray([frequency for _, frequency, _ in BANDS], dtype=float)
     for geometry_id in GEOMETRIES:
         nec_base = np.asarray(
             [lookup[(geometry_id, 58.0, band)] for band, _, _ in BANDS]
@@ -469,13 +517,18 @@ def _samples_for_candidate(
                     efficiency.append(eff)
                 radio_array = np.asarray(radio)
                 samples.append(
-                    (radio_array, _minimum_q(radio_array), np.asarray(efficiency))
+                    (
+                        radio_array,
+                        _minimum_q(radio_array),
+                        np.asarray(efficiency),
+                        _tuner_stress_matrix(radio_array, frequencies),
+                    )
                 )
     return samples
 
 
 def _run_direct_nec(
-    executable: Path, work: Path, jobs: int, threshold: float
+    executable: Path, work: Path, jobs: int
 ) -> list[dict[str, Any]]:
     cases = [
         (
@@ -504,7 +557,7 @@ def _run_direct_nec(
     rows = []
     with ThreadPoolExecutor(max_workers=jobs) as pool:
         futures = {
-            pool.submit(_direct_case, *case, executable, work, threshold): case[:2]
+            pool.submit(_direct_case, *case, executable, work): case[:2]
             + (case[3], case[5], case[7], case[9])
             for case in cases
         }
@@ -539,10 +592,12 @@ def _direct_case(
     frequency,
     executable,
     work,
-    threshold,
 ):
-    feed, support, counterpoise_height = deployment
-    stem = f"direct-{candidate_id}-{deployment_id}-{ground_id}-{conductivity_id}-{band}"
+    feed, support, counterpoise_height, counterpoise_azimuth = deployment
+    stem = (
+        f"direct-{candidate_id}-{deployment_id}-{ground_id}-"
+        f"{conductivity_id}-{band}"
+    )
     result, deck_path, output_path = run(
         direct_wire_deck(
             title=stem,
@@ -551,6 +606,7 @@ def _direct_case(
             feed_height_ft=feed,
             support_height_ft=support,
             counterpoise_height_ft=counterpoise_height,
+            counterpoise_azimuth_deg=counterpoise_azimuth,
             frequency_mhz=frequency / 1e6,
             radius_m=RADIUS_M,
             conductivity_s_m=conductivity,
@@ -563,12 +619,15 @@ def _direct_case(
     )
     deck_path.unlink()
     output_path.unlink()
-    q = float(_minimum_q(result.impedance_ohm))
-    return {
+    row = {
         "candidate": candidate_id,
         "radiator_ft": radiator,
         "counterpoise_ft": counterpoise,
         "deployment": deployment_id,
+        "feed_height_ft": feed,
+        "support_height_ft": support,
+        "counterpoise_height_ft": counterpoise_height,
+        "counterpoise_azimuth_deg": counterpoise_azimuth,
         "ground": ground_id,
         "conductivity": conductivity_id,
         "band": band,
@@ -576,10 +635,23 @@ def _direct_case(
         "resistance_ohm": result.impedance_ohm.real,
         "reactance_ohm": result.impedance_ohm.imag,
         "raw_swr": float(swr(result.impedance_ohm)),
-        "minimum_q": q,
-        "inside_empirical_kh1_separator": q <= threshold,
+        "minimum_q": float(_minimum_q(result.impedance_ohm)),
         "nec_efficiency": result.efficiency,
     }
+    for envelope_id, limits in TUNER_ENVELOPES.items():
+        stress, l_uh, c_pf, topology = _kh1_tuner_proxy(
+            result.impedance_ohm,
+            frequency,
+            lmax_uH=limits["lmax_uH"],
+            cmax_pF=limits["cmax_pF"],
+        )
+        row[f"{envelope_id}_tuner_stress"] = float(stress)
+        row[f"{envelope_id}_compatible"] = bool(stress <= 1.0)
+        if envelope_id == "central":
+            row["central_l_uH"] = float(l_uh)
+            row["central_c_pF"] = float(c_pf)
+            row["central_topology"] = TUNER_TOPOLOGY_NAMES[int(topology)]
+    return row
 
 
 def _summarize_direct(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -594,19 +666,32 @@ def _summarize_direct(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
         all_compatible = []
         worst_eff = []
         max_q = []
-        band_compat = {}
+        max_stress = []
+        band_compat: dict[str, float] = {}
         for band, _, required in BANDS:
-            if required:
-                band_rows = [row for row in subset if row["band"] == band]
-                band_compat[band] = float(
-                    np.mean(
-                        [row["inside_empirical_kh1_separator"] for row in band_rows]
+            if not required:
+                continue
+            band_rows = [row for row in subset if row["band"] == band]
+            compatibility = [
+                bool(row[f"{envelope_id}_compatible"])
+                for row in band_rows
+                for envelope_id in TUNER_ENVELOPES
+            ]
+            band_compat[band] = float(np.mean(compatibility))
+        for scenario_rows in scenarios.values():
+            for envelope_id in TUNER_ENVELOPES:
+                all_compatible.append(
+                    all(
+                        row[f"{envelope_id}_compatible"]
+                        for row in scenario_rows
                     )
                 )
-        for scenario_rows in scenarios.values():
-            all_compatible.append(
-                all(row["inside_empirical_kh1_separator"] for row in scenario_rows)
-            )
+                max_stress.append(
+                    max(
+                        row[f"{envelope_id}_tuner_stress"]
+                        for row in scenario_rows
+                    )
+                )
             worst_eff.append(
                 min(
                     row["nec_efficiency"]
@@ -622,13 +707,20 @@ def _summarize_direct(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "radiator_ft": radiator,
                 "counterpoise_ft": counterpoise,
                 "total_wire_ft": radiator + counterpoise,
-                "scenario_count": len(scenarios),
-                "all_required_compatibility_fraction": float(np.mean(all_compatible)),
+                "physical_scenario_count": len(scenarios),
+                "tuner_envelope_count": len(TUNER_ENVELOPES),
+                "sample_count": len(scenarios) * len(TUNER_ENVELOPES),
+                "all_required_compatibility_fraction": float(
+                    np.mean(all_compatible)
+                ),
                 "minimum_required_band_compatibility_fraction": min(
                     band_compat.values()
                 ),
+                "required_max_tuner_stress_p90": _quantile(max_stress, 0.9),
                 "required_max_q_p90": _quantile(max_q, 0.9),
-                "required_worst_nec_efficiency_p10": _quantile(worst_eff, 0.1),
+                "required_worst_nec_efficiency_p10": _quantile(
+                    worst_eff, 0.1
+                ),
                 **{
                     f"{band}_compatibility_fraction": value
                     for band, value in band_compat.items()
@@ -640,6 +732,7 @@ def _summarize_direct(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
         key=lambda row: (
             -row["all_required_compatibility_fraction"],
             -row["minimum_required_band_compatibility_fraction"],
+            row["required_max_tuner_stress_p90"],
             row["required_max_q_p90"],
             -row["required_worst_nec_efficiency_p10"],
             row["total_wire_ft"],
@@ -656,7 +749,7 @@ def _linked_reference(executable: Path, work: Path) -> list[dict[str, Any]]:
         estimate = 468.0 / (frequency / 1e6)
         cache = {}
 
-        def evaluate(length):
+        def evaluate(length, *, band=band, frequency=frequency, cache=cache):
             key = round(float(length), 6)
             if key not in cache:
                 stem = f"linked-{band}-{key:.6f}".replace(".", "p")
@@ -684,7 +777,7 @@ def _linked_reference(executable: Path, work: Path) -> list[dict[str, Any]]:
         values = [(float(length), evaluate(float(length))) for length in scan]
         brackets = [
             (a[0], b[0])
-            for a, b in zip(values, values[1:])
+            for a, b in zip(values, values[1:], strict=False)
             if a[1].impedance_ohm.imag * b[1].impedance_ohm.imag <= 0
         ]
         if brackets:
@@ -754,7 +847,9 @@ def _selected_patterns(selections, direct_summary, linked, executable, work, raw
                     pattern=True,
                 )
             else:
-                feed, support, cp_height = DIRECT_DEPLOYMENTS["30ft"]
+                feed, support, cp_height, cp_azimuth = DIRECT_DEPLOYMENTS[
+                    "table_collinear_30"
+                ]
                 deck = direct_wire_deck(
                     title=stem,
                     radiator_ft=radiator,
@@ -762,6 +857,7 @@ def _selected_patterns(selections, direct_summary, linked, executable, work, raw
                     feed_height_ft=feed,
                     support_height_ft=support,
                     counterpoise_height_ft=cp_height,
+                    counterpoise_azimuth_deg=cp_azimuth,
                     frequency_mhz=frequency / 1e6,
                     radius_m=RADIUS_M,
                     conductivity_s_m=WIRE_CONDUCTIVITY,
@@ -849,6 +945,177 @@ def _anchor(measured, nec_base, nec_candidate, z0, method):
     return z0 * (1 + translated) / (1 - translated)
 
 
+def _kh1_tuner_proxy(
+    impedance_ohm,
+    frequency_hz,
+    *,
+    lmax_uH: float,
+    cmax_pF: float,
+    bypass_swr: float = TUNER_BYPASS_SWR,
+):
+    """Ideal series-L/shunt-C proxy with the capacitor on either side.
+
+    The limits are explicit sensitivity assumptions. They are not published KH1
+    component values. Stress <= 1 means an ideal continuous solution lies inside
+    the selected effective L/C envelope.
+    """
+    if lmax_uH <= 0 or cmax_pF <= 0:
+        raise ValueError("Tuner limits must be positive")
+    z, frequency = np.broadcast_arrays(
+        np.asarray(impedance_ohm, dtype=complex),
+        np.asarray(frequency_hz, dtype=float),
+    )
+    omega = 2.0 * math.pi * frequency
+    r = z.real
+    x = z.imag
+    rs = 50.0
+    best = np.full(z.shape, np.inf, dtype=float)
+    best_l = np.full(z.shape, np.nan, dtype=float)
+    best_c = np.full(z.shape, np.nan, dtype=float)
+    best_topology = np.full(z.shape, -1, dtype=int)
+    passive = (r > 0) & np.isfinite(r) & np.isfinite(x) & (frequency > 0)
+
+    # Load -> series L -> source-side shunt C.
+    discriminant = rs * r - r * r
+    valid = passive & (discriminant >= -1e-10)
+    total_x = np.sqrt(np.maximum(discriminant, 0.0))
+    series_x = total_x - x
+    shunt_b = np.divide(
+        total_x,
+        rs * r,
+        out=np.zeros_like(total_x),
+        where=r != 0,
+    )
+    l_uh = series_x / omega * 1e6
+    c_pf = shunt_b / omega * 1e12
+    stress = np.maximum(l_uh / lmax_uH, c_pf / cmax_pF)
+    update = valid & (l_uh >= 0) & (c_pf >= 0) & (stress < best)
+    best[update] = stress[update]
+    best_l[update] = l_uh[update]
+    best_c[update] = c_pf[update]
+    best_topology[update] = 0
+
+    # Load-side shunt C -> series L -> source.
+    admittance = np.divide(
+        1.0,
+        z,
+        out=np.full_like(z, np.nan + 1j * np.nan),
+        where=z != 0,
+    )
+    g = admittance.real
+    b_load = admittance.imag
+    discriminant = g / rs - g * g
+    valid = passive & (g > 0) & (discriminant >= -1e-10)
+    total_b = np.sqrt(np.maximum(discriminant, 0.0))
+    denominator = g + 1j * total_b
+    after_shunt = np.divide(
+        1.0,
+        denominator,
+        out=np.full_like(z, np.nan + 1j * np.nan),
+        where=denominator != 0,
+    )
+    series_x = -after_shunt.imag
+    shunt_b = total_b - b_load
+    l_uh = series_x / omega * 1e6
+    c_pf = shunt_b / omega * 1e12
+    stress = np.maximum(l_uh / lmax_uH, c_pf / cmax_pF)
+    update = valid & (l_uh >= 0) & (c_pf >= 0) & (stress < best)
+    best[update] = stress[update]
+    best_l[update] = l_uh[update]
+    best_c[update] = c_pf[update]
+    best_topology[update] = 1
+
+    raw_swr = swr(z)
+    bypass_stress = raw_swr / bypass_swr
+    update = passive & (raw_swr <= bypass_swr) & (bypass_stress < best)
+    best[update] = bypass_stress[update]
+    best_l[update] = 0.0
+    best_c[update] = 0.0
+    best_topology[update] = 2
+
+    if best.shape == ():
+        return (
+            float(best),
+            float(best_l),
+            float(best_c),
+            int(best_topology),
+        )
+    return best, best_l, best_c, best_topology
+
+
+def _tuner_stress_matrix(impedance_ohm, frequencies_hz) -> np.ndarray:
+    return np.asarray(
+        [
+            _kh1_tuner_proxy(
+                impedance_ohm,
+                frequencies_hz,
+                lmax_uH=limits["lmax_uH"],
+                cmax_pF=limits["cmax_pF"],
+            )[0]
+            for limits in TUNER_ENVELOPES.values()
+        ]
+    )
+
+
+def _baseline_tuner_rows(measured: np.ndarray) -> list[dict[str, Any]]:
+    rows = []
+    for impedance, (band, frequency, _) in zip(measured, BANDS, strict=True):
+        row = {
+            "band": band,
+            "frequency_hz": frequency,
+            "resistance_ohm": float(impedance.real),
+            "reactance_ohm": float(impedance.imag),
+            "raw_swr": float(swr(impedance)),
+            "observed_kh1_outcome": (
+                "success" if band in {"40m", "30m", "15m"} else
+                "failure" if band in {"20m", "17m"} else "not_scored"
+            ),
+        }
+        for envelope_id, limits in TUNER_ENVELOPES.items():
+            stress, l_uh, c_pf, topology = _kh1_tuner_proxy(
+                impedance,
+                frequency,
+                lmax_uH=limits["lmax_uH"],
+                cmax_pF=limits["cmax_pF"],
+            )
+            row[f"{envelope_id}_tuner_stress"] = float(stress)
+            row[f"{envelope_id}_compatible"] = bool(stress <= 1.0)
+            if envelope_id == "central":
+                row["central_l_uH"] = float(l_uh)
+                row["central_c_pF"] = float(c_pf)
+                row["central_topology"] = TUNER_TOPOLOGY_NAMES[int(topology)]
+        rows.append(row)
+    scored = [row for row in rows if row["observed_kh1_outcome"] != "not_scored"]
+    for row in scored:
+        predicted = row["central_compatible"]
+        observed = row["observed_kh1_outcome"] == "success"
+        if predicted != observed:
+            raise RuntimeError("Central empirical tuner envelope does not reproduce baseline")
+    return rows
+
+
+def _extension_window(grid: list[dict[str, Any]]) -> dict[str, float] | None:
+    compatible = sorted(
+        [
+            row
+            for row in grid
+            if row["radiator_ft"] == 58.0
+            and row["all_required_compatibility_fraction"] >= 0.95
+            and row["minimum_required_band_compatibility_fraction"] >= 0.95
+        ],
+        key=lambda row: row["feedline_ft"],
+    )
+    if not compatible:
+        return None
+    return {
+        "minimum_feedline_ft": compatible[0]["feedline_ft"],
+        "maximum_feedline_ft": compatible[-1]["feedline_ft"],
+        "minimum_extension_ft": compatible[0]["feedline_ft"] - 28.0,
+        "maximum_extension_ft": compatible[-1]["feedline_ft"] - 28.0,
+        "candidate_count": len(compatible),
+    }
+
+
 def _minimum_q(z):
     z = np.asarray(z, dtype=complex)
     r = z.real
@@ -877,23 +1144,12 @@ def _minimum_q(z):
     return best
 
 
-def _q_separator(measured):
-    q = _minimum_q(measured)
-    success = q[[0, 1, 4]]
-    failure = q[[2, 3]]
-    maximum_success = float(np.max(success))
-    minimum_failure = float(np.min(failure))
-    return (
-        math.sqrt(maximum_success * minimum_failure),
-        maximum_success,
-        minimum_failure,
-    )
-
 
 def _rank_doublet(row):
     return (
         -row["all_required_compatibility_fraction"],
         -row["minimum_required_band_compatibility_fraction"],
+        row["required_max_tuner_stress_p90"],
         row["required_max_q_p90"],
         -row["required_worst_line_efficiency_p10"],
         row["total_wire_ft"],
@@ -906,9 +1162,8 @@ def _named(rows, name):
 
 def _summary(
     solver,
-    threshold,
-    q_success,
-    q_failure,
+    baseline_tuner,
+    extension_window,
     nec_runs,
     line_count,
     selections,
@@ -922,47 +1177,51 @@ def _summary(
     plus3 = selections["current_plus_3ft_line"]
     preferred = next(row for row in direct if row["candidate"] == "35r-17c")
     direct_best = direct[0]
-    if (
-        preferred["all_required_compatibility_fraction"] >= 0.75
-        and preferred["all_required_compatibility_fraction"]
-        >= best["all_required_compatibility_fraction"] - 0.10
-    ):
-        first_test = "35 ft radiator / 17 ft explicit counterpoise, direct-fed"
-    elif (
-        best["all_required_compatibility_fraction"]
-        > current["all_required_compatibility_fraction"] + 0.10
-    ):
-        first_test = f"reversible {best['radiator_ft']:.1f} ft radiator / {best['feedline_ft']:.1f} ft line trial"
+    if extension_window is None:
+        existing_test = (
+            f"reversibly test the model-best {best['feedline_ft']:.2f} ft line "
+            "without cutting the 58 ft radiator"
+        )
     else:
-        first_test = f"keep the 58 ft radiator and reversibly test {best['feedline_ft']:.1f} ft of line"
+        existing_test = (
+            "test detachable balanced-line extensions from "
+            f"{extension_window['minimum_extension_ft']:.2f} to "
+            f"{extension_window['maximum_extension_ft']:.2f} ft"
+        )
     return {
         "solver": solver,
-        "method": "actual NEC-2 radiator/direct-wire runs with measured 58/28 radio-end anchoring",
+        "method": (
+            "actual NEC-2 radiator/direct-wire runs with measured 58/28 "
+            "radio-end anchoring and an explicit series-L/shunt-C tuner envelope"
+        ),
         "nec_feedpoint_run_count": nec_runs,
         "line_scenario_count": line_count,
-        "empirical_kh1_q_separator": {
-            "threshold": threshold,
-            "hardest_observed_success": q_success,
-            "easiest_observed_failure": q_failure,
-            "status": "empirical, not an Elecraft specification",
-        },
+        "tuner_envelopes": TUNER_ENVELOPES,
+        "tuner_bypass_swr": TUNER_BYPASS_SWR,
+        "baseline_tuner_diagnostics": baseline_tuner,
         "doublet": {
             "current_58_28": current,
             "classic_44_28": classic,
             "classic_44_optimized_line": classic_opt,
             "current_plus_3ft_line": plus3,
             "robust_model_best": best,
+            "58ft_extension_window": extension_window,
         },
         "direct_wire": {"preferred_35_17": preferred, "model_best": direct_best},
         "linked_dipole_reference": linked,
         "practical_recommendation": {
-            "first_test": first_test,
+            "existing_antenna_test": existing_test,
+            "new_antenna_test": (
+                "build a separate 35 ft radiator / 17 ft explicit "
+                "counterpoise direct-fed trial"
+            ),
+            "efficiency_reference": "five-band resonant linked dipole",
             "field_validation_required": True,
         },
         "warnings": [
             "NEC geometry omits trees, operator, choke, connectors, insulation and sparse spacers.",
             "Doublet station impedances are measured-reference-plane anchored; NEC supplies radiator changes.",
-            "The KH1 Q separator is fitted to only three observed successes and two failures.",
+            "The tuner envelopes are empirical sensitivity cases, not published KH1 component values.",
             "Line efficiency excludes tuner/choke/common-mode/radiator loss; direct-wire NEC efficiency includes modeled wire and ground loss only.",
         ],
     }
@@ -971,7 +1230,6 @@ def _summary(
 def _report(summary):
     d = summary["doublet"]
     direct = summary["direct_wire"]
-    q = summary["empirical_kh1_q_separator"]
     candidates = [
         ("current 58/28", d["current_58_28"]),
         ("classic 44/28", d["classic_44_28"]),
@@ -988,31 +1246,55 @@ def _report(summary):
         "",
         "The radiator and direct-wire impedance, loss, and pattern calculations in this result set were executed by NEC-2. The measured 58 ft / 28 ft radio-end impedances remain exact anchors because a bare-wire NEC deck cannot reproduce the installed insulation, trees, choke, connectors, and operator. NEC supplies the physical impedance change as radiator length/deployment changes; a lossy balanced-line ensemble carries that result to the radio.",
         "",
-        f"An ideal L-match reactive-power metric separates the observed KH1 cases: hardest success **{q['hardest_observed_success']:.2f}**, easiest failure **{q['easiest_observed_failure']:.2f}**, separator **{q['threshold']:.2f}**. This is an empirical classifier, not a KH1 specification.",
+        "Matchability uses the actual Elecraft-style topology class—series inductance and shunt capacitance, with the capacitor allowed on either side—not an unrestricted ideal L-network. Because the KH1 component range is unpublished, three explicit effective envelopes are evaluated: 8 uH/325 pF, 12 uH/400 pF, and 15 uH/500 pF. All reproduce the observed 58/28 success/failure split. These are sensitivity cases, not KH1 specifications.",
+        "",
+        "## Measured-baseline tuner diagnostics",
+        "",
+        "| band | measured R+jX | observed | central ideal elements | topology |",
+        "|---|---:|---:|---:|---|",
+    ]
+    for row in summary["baseline_tuner_diagnostics"]:
+        lines.append(
+            f"| {row['band']} | {row['resistance_ohm']:.1f} {row['reactance_ohm']:+.1f}j | {row['observed_kh1_outcome']} | {row['central_l_uH']:.2f} uH / {row['central_c_pF']:.1f} pF | {row['central_topology']} |"
+        )
+    lines += [
         "",
         "## Doublets",
         "",
-        "| case | radiator | line | all 40/30/20/17/15 | weakest band | Q p90 | worst line eff p10 |",
-        "|---|---:|---:|---:|---:|---:|---:|",
+        "| case | radiator | line | all 40/30/20/17/15 | weakest band | tuner stress p90 | Q p90 | worst line eff p10 |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for name, row in candidates:
         lines.append(
-            f"| {name} | {row['radiator_ft']:.1f} ft | {row['feedline_ft']:.1f} ft | {row['all_required_compatibility_fraction'] * 100:.1f}% | {row['minimum_required_band_compatibility_fraction'] * 100:.1f}% | {row['required_max_q_p90']:.2f} | {row['required_worst_line_efficiency_p10'] * 100:.1f}% |"
+            f"| {name} | {row['radiator_ft']:.1f} ft | {row['feedline_ft']:.2f} ft | {row['all_required_compatibility_fraction'] * 100:.1f}% | {row['minimum_required_band_compatibility_fraction'] * 100:.1f}% | {row['required_max_tuner_stress_p90']:.2f} | {row['required_max_q_p90']:.2f} | {row['required_worst_line_efficiency_p10'] * 100:.1f}% |"
         )
+    window = d["58ft_extension_window"]
+    if window is not None:
+        lines += [
+            "",
+            "For the unchanged 58 ft radiator, the >=95% all-band ensemble window is "
+            f"{window['minimum_feedline_ft']:.2f}-{window['maximum_feedline_ft']:.2f} ft of line, or detachable additions of {window['minimum_extension_ft']:.2f}-{window['maximum_extension_ft']:.2f} ft to the present 28 ft line.",
+        ]
     lines += [
         "",
-        "The percentages are fractions of the explicit NEC-geometry, line-parameter, reference-plane, and anchoring ensemble. They are not tune probabilities.",
+        "The percentages are fractions of the explicit NEC geometry, line, anchoring, reference-plane, and tuner-envelope ensemble. They are not tune probabilities.",
         "",
         "## Direct-fed wires",
         "",
-        "| case | wire | all five bands | weakest band | Q p90 | worst NEC efficiency p10 |",
-        "|---|---:|---:|---:|---:|---:|",
+        "| case | wire | all five bands | weakest band | tuner stress p90 | Q p90 | worst NEC efficiency p10 |",
+        "|---|---:|---:|---:|---:|---:|---:|",
     ]
+    shown = []
     for row in (direct["preferred_35_17"], direct["model_best"]):
+        if row["candidate"] in shown:
+            continue
+        shown.append(row["candidate"])
         lines.append(
-            f"| {row['candidate']} | {row['radiator_ft']:.0f}/{row['counterpoise_ft']:.0f} ft | {row['all_required_compatibility_fraction'] * 100:.1f}% | {row['minimum_required_band_compatibility_fraction'] * 100:.1f}% | {row['required_max_q_p90']:.2f} | {row['required_worst_nec_efficiency_p10'] * 100:.1f}% |"
+            f"| {row['candidate']} | {row['radiator_ft']:.0f}/{row['counterpoise_ft']:.0f} ft | {row['all_required_compatibility_fraction'] * 100:.1f}% | {row['minimum_required_band_compatibility_fraction'] * 100:.1f}% | {row['required_max_tuner_stress_p90']:.2f} | {row['required_max_q_p90']:.2f} | {row['required_worst_nec_efficiency_p10'] * 100:.1f}% |"
         )
     lines += [
+        "",
+        "Direct-wire results span six counterpoise orientations/heights, two grounds, two conductor cases, and three tuner envelopes. They remain more deployment-sensitive than a balanced antenna.",
         "",
         "## Resonant linked-dipole reference",
         "",
@@ -1023,11 +1305,16 @@ def _report(summary):
         lines.append(
             f"| {row['band']} | {row['resonant_total_length_ft']:.2f} ft | {row['resistance_ohm']:.1f} {row['reactance_ohm']:+.1f}j | {row['raw_swr']:.2f} | {row['nec_efficiency'] * 100:.1f}% |"
         )
+    recommendation = summary["practical_recommendation"]
     lines += [
         "",
         "## Practical conclusion",
         "",
-        f"**First reversible field test:** {summary['practical_recommendation']['first_test']}.",
+        f"1. Existing antenna: **{recommendation['existing_antenna_test']}**.",
+        f"2. Separate compact KH1 antenna: **{recommendation['new_antenna_test']}**.",
+        f"3. Efficiency/matching reference: **{recommendation['efficiency_reference']}**.",
+        "",
+        "The classic 44/28 doublet is not the preferred build from this study: the 20 and 17 m station-end loads remain hostile across the uncertainty ensemble, and its modeled mismatched-line efficiency tails are poor.",
         "",
         "Measure radio-end R+jX and final KH1 SWR on all five bands before cutting the existing antenna.",
         "",

@@ -56,6 +56,38 @@ mise run check
 mise run reference
 ```
 
+## Sharded NEC-2 study
+
+The full KH1 study can still be run locally as one command:
+
+```bash
+sudo apt-get install nec2c
+uv run antenna-lab run-kh1-nec-study \
+  --output results/kh1-portable-nec-v2
+```
+
+GitHub Actions uses a shard-and-assemble pipeline instead. Two jobs calculate
+doublet feedpoints, two jobs calculate the direct-fed cases, and eight jobs split
+the expensive doublet uncertainty grid by radiator length. A final job merges
+and validates every expected row, runs the smaller resonant-reference and
+pattern calculations, creates `SHA256SUMS`, and uploads the canonical result
+package.
+
+Every compute job uploads its CSV, metadata, manifest, and runner log as a
+separate workflow artifact. The final job uploads the complete result tree as
+`kh1-portable-nec-v2-<run-id>`. Consequently, successful intermediate work is
+still retrievable when a later shard or assembly job fails. Artifacts are kept
+for 90 days, subject to the repository's Actions retention limit.
+
+The stage commands are also available for local or alternate CI orchestration:
+
+```bash
+antenna-lab run-kh1-doublet-nec-shard --help
+antenna-lab run-kh1-direct-nec-shard --help
+antenna-lab run-kh1-doublet-grid-shard --help
+antenna-lab assemble-kh1-nec-study --help
+```
+
 ## Project map
 
 - `src/antenna_lab/`: reusable, typed Python package and CLI.

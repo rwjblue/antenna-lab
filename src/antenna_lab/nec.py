@@ -118,6 +118,7 @@ def direct_wire_deck(
     feed_height_ft: float,
     support_height_ft: float,
     counterpoise_height_ft: float,
+    counterpoise_azimuth_deg: float,
     frequency_mhz: float,
     radius_m: float,
     conductivity_s_m: float,
@@ -131,13 +132,18 @@ def direct_wire_deck(
     run = math.sqrt(radiator_ft * radiator_ft - rise * rise)
     gap = 0.02
     feed_z = feed_height_ft * FT
+    counterpoise_angle = math.radians(counterpoise_azimuth_deg)
+    counterpoise_x = -gap / 2 + counterpoise_ft * FT * math.cos(
+        counterpoise_angle
+    )
+    counterpoise_y = counterpoise_ft * FT * math.sin(counterpoise_angle)
     cards = _header(title)
     cards += [
         _gw(
             1,
             41,
-            -counterpoise_ft * FT,
-            0,
+            counterpoise_x,
+            counterpoise_y,
             counterpoise_height_ft * FT,
             -gap / 2,
             0,
