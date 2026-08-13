@@ -1,0 +1,42 @@
+name: NEC2C smoke
+
+on:
+  push:
+    branches:
+      - agent/kh1-nec-study
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install NEC2C
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes nec2c
+          nec2c -v
+      - name: Run reference dipole
+        run: |
+          cat > /tmp/dipole.nec <<'EOF'
+          CM NEC2C smoke-test half-wave dipole
+          CE
+          GW 1 21 0 -10.64 20 0 10.64 20 0.001
+          GE 0
+          GN 1
+          FR 0 1 0 0 7.05 0
+          EX 0 1 11 0 1.0 0.0
+          PT -1
+          XQ 0
+          EN
+          EOF
+          nec2c -i /tmp/dipole.nec -o /tmp/dipole
+          ls -la /tmp/dipole*
+          cat /tmp/dipole.out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nec2c-smoke-output
+          path: /tmp/dipole.out
