@@ -161,6 +161,8 @@
     "supported_max_mhz": 30.0,
     "supported_min_mhz": 3.5,
     "product": "ZM-2 - BNC Connectors - Prebuilt",
+    "product_url": "https://emtech-qrp.com/product/zm-2-bnc-connectors-prebuilt/",
+    "construction_guide_url": "https://manuals.plus/m/77d9a99e14f1a25e02aa2c2a9489da5db5e04c52c27d9c256ca3dbc769cac1fa",
     "power_limit_w": 15.0,
     "swr_bridge_operating_state": "bypassed after tuning",
     "component_status": "documented topology; uncalibrated loss parameters",
