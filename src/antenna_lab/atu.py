@@ -13,8 +13,9 @@ import math
 import os
 import shutil
 import tempfile
-from functools import lru_cache
+from collections import Counter
 from dataclasses import asdict, dataclass
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Literal
 
@@ -38,6 +39,11 @@ from antenna_lab.nec import find_nec2c
 
 Topology = Literal["load_shunt", "source_shunt", "bypass"]
 Objective = Literal["best_swr", "lowest_loss_under_target"]
+
+ATU_DIRECT_CONDUCTIVITIES = (
+    ("ccs_mid", 15_000_000.0),
+    ("copper", 58_000_000.0),
+)
 
 
 @dataclass(frozen=True)
@@ -695,10 +701,7 @@ def _direct_41_17_rows(nec2c: Path, jobs: int) -> list[dict[str, Any]]:
         )
         for deployment_id, deployment in DIRECT_DEPLOYMENTS.items()
         for ground_id, ground in GROUNDS.items()
-        for conductivity_id, conductivity in (
-            ("ccs_mid", 15_000_000.0),
-            ("copper", 58_000_000.0),
-        )
+        for conductivity_id, conductivity in ATU_DIRECT_CONDUCTIVITIES
         for band, frequency, _ in EXTENDED_BANDS
     ]
     rows: list[dict[str, Any]] = []
@@ -845,6 +848,100 @@ def _load_direct_csv(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def _expected_direct_41_17_keys() -> dict[tuple[str, str, str, str], float]:
+    return {
+        (deployment_id, ground_id, conductivity_id, band): float(frequency)
+        for deployment_id in DIRECT_DEPLOYMENTS
+        for ground_id in GROUNDS
+        for conductivity_id, _ in ATU_DIRECT_CONDUCTIVITIES
+        for band, frequency, _ in EXTENDED_BANDS
+    }
+
+
+def _format_key_sample(
+    keys: list[tuple[str, str, str, str]], limit: int = 8
+) -> str:
+    rendered = ["/".join(key) for key in keys[:limit]]
+    if len(keys) > limit:
+        rendered.append(f"...+{len(keys) - limit}")
+    return "[" + ", ".join(rendered) + "]"
+
+
+def _validate_direct_41_17_ensemble(
+    rows: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Require one exact 41/17 NEC row for every modeled scenario and band."""
+    selected = [row for row in rows if row.get("candidate") == "41r-17c"]
+    expected = _expected_direct_41_17_keys()
+    counts: Counter[tuple[str, str, str, str]] = Counter()
+    frequency_mismatches: list[tuple[str, str, str, str]] = []
+    dimension_mismatches: list[tuple[str, str, str, str]] = []
+
+    for row in selected:
+        try:
+            key = (
+                str(row["deployment"]),
+                str(row["ground"]),
+                str(row["conductivity"]),
+                str(row["band"]),
+            )
+            frequency_hz = float(row["frequency_hz"])
+            radiator_ft = float(row["radiator_ft"])
+            counterpoise_ft = float(row["counterpoise_ft"])
+        except (KeyError, TypeError, ValueError) as error:
+            raise ValueError(
+                "Malformed 41r-17c direct NEC row; required identity, frequency, "
+                "and dimension fields are missing or invalid"
+            ) from error
+        counts[key] += 1
+        if key in expected and not math.isclose(
+            frequency_hz, expected[key], rel_tol=0.0, abs_tol=0.5
+        ):
+            frequency_mismatches.append(key)
+        if not (
+            math.isclose(radiator_ft, 41.0, rel_tol=0.0, abs_tol=1e-6)
+            and math.isclose(
+                counterpoise_ft, 17.0, rel_tol=0.0, abs_tol=1e-6
+            )
+        ):
+            dimension_mismatches.append(key)
+
+    actual = set(counts)
+    missing = sorted(set(expected) - actual)
+    unexpected = sorted(actual - set(expected))
+    duplicates = sorted(key for key, count in counts.items() if count > 1)
+    frequency_mismatches = sorted(set(frequency_mismatches))
+    dimension_mismatches = sorted(set(dimension_mismatches))
+    if (
+        missing
+        or unexpected
+        or duplicates
+        or frequency_mismatches
+        or dimension_mismatches
+    ):
+        raise ValueError(
+            "Incomplete or inconsistent 41r-17c direct NEC ensemble: "
+            f"expected {len(expected)} unique rows; found {len(selected)} rows / "
+            f"{len(actual)} unique keys; "
+            f"missing={_format_key_sample(missing)}; "
+            f"unexpected={_format_key_sample(unexpected)}; "
+            f"duplicates={_format_key_sample(duplicates)}; "
+            "frequency_mismatches="
+            f"{_format_key_sample(frequency_mismatches)}; "
+            "dimension_mismatches="
+            f"{_format_key_sample(dimension_mismatches)}"
+        )
+    return sorted(
+        selected,
+        key=lambda row: (
+            str(row["deployment"]),
+            str(row["ground"]),
+            str(row["conductivity"]),
+            str(row["band"]),
+        ),
+    )
+
+
 ATU_PROFILE_IDS = tuple(PROFILES) + ("zm2",)
 
 
@@ -892,11 +989,9 @@ def run_atu_profile_stage(
             f"Unknown ATU profile {profile_id!r}; choose from {ATU_PROFILE_IDS}"
         )
     _reset_output_directory(output_dir)
-    direct_rows = [
-        row
-        for row in _load_direct_csv(direct_nec_csv)
-        if row["candidate"] == "41r-17c"
-    ]
+    direct_rows = _validate_direct_41_17_ensemble(
+        _load_direct_csv(direct_nec_csv)
+    )
     if profile_id == "zm2":
         rows = evaluate_zm2_rows(direct_rows)
     else:
@@ -952,11 +1047,9 @@ def assemble_atu_loss_study(
 ) -> dict[str, Any]:
     """Assemble independently computed tuner-profile artifacts."""
     direct_path = _find_unique_file(input_dir, "atu-direct-nec.csv")
-    direct_rows = [
-        row
-        for row in _load_direct_csv(direct_path)
-        if row["candidate"] == "41r-17c"
-    ]
+    direct_rows = _validate_direct_41_17_ensemble(
+        _load_direct_csv(direct_path)
+    )
     all_rows = _load_solution_files(input_dir)
     _reset_output_directory(output_dir)
     data_dir = output_dir / "data"

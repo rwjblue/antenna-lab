@@ -1,5 +1,7 @@
 import math
 
+import pytest
+
 from antenna_lab.atu import (
     LOSS_ENVELOPES,
     PROFILES,
@@ -69,15 +71,29 @@ def test_zm2_equivalent_model_can_find_a_reasonable_midband_match() -> None:
     assert 0 < solution["tuner_efficiency"] <= 1
 
 
-def test_sharded_profile_pipeline_assembles_manifest(tmp_path) -> None:
+def test_sharded_profile_pipeline_assembles_manifest(
+    tmp_path, monkeypatch
+) -> None:
     import csv
 
+    import antenna_lab.atu as atu
     from antenna_lab.atu import (
         ATU_PROFILE_IDS,
         assemble_atu_loss_study,
         run_atu_profile_stage,
     )
     from antenna_lab.optimization import verify_manifest
+
+    monkeypatch.setattr(
+        atu, "DIRECT_DEPLOYMENTS", {"test": (0.5, 20.0, 0.1, 90.0)}
+    )
+    monkeypatch.setattr(atu, "GROUNDS", {"average": (13.0, 0.005)})
+    monkeypatch.setattr(
+        atu, "ATU_DIRECT_CONDUCTIVITIES", (("copper", 58_000_000.0),)
+    )
+    monkeypatch.setattr(
+        atu, "EXTENDED_BANDS", (("20m", 14_050_000, True),)
+    )
 
     input_dir = tmp_path / "inputs"
     direct_dir = input_dir / "direct"
@@ -116,7 +132,75 @@ def test_sharded_profile_pipeline_assembles_manifest(tmp_path) -> None:
     assert valid, failures
 
 
-def test_zm2_profile_matches_owned_prebuilt_range():
+def test_direct_nec_validation_rejects_missing_and_duplicate_keys(
+    monkeypatch,
+) -> None:
+    import antenna_lab.atu as atu
+
+    monkeypatch.setattr(
+        atu, "DIRECT_DEPLOYMENTS", {"test": (0.5, 20.0, 0.1, 90.0)}
+    )
+    monkeypatch.setattr(atu, "GROUNDS", {"average": (13.0, 0.005)})
+    monkeypatch.setattr(
+        atu, "ATU_DIRECT_CONDUCTIVITIES", (("copper", 58_000_000.0),)
+    )
+    monkeypatch.setattr(
+        atu,
+        "EXTENDED_BANDS",
+        (("40m", 7_050_000, True), ("20m", 14_050_000, True)),
+    )
+    row = {
+        "candidate": "41r-17c",
+        "radiator_ft": 41.0,
+        "counterpoise_ft": 17.0,
+        "deployment": "test",
+        "ground": "average",
+        "conductivity": "copper",
+        "band": "40m",
+        "frequency_hz": 7_050_000,
+    }
+
+    with pytest.raises(ValueError, match="missing="):
+        atu._validate_direct_41_17_ensemble([row])
+
+    complete = [
+        row,
+        {**row, "band": "20m", "frequency_hz": 14_050_000},
+    ]
+    with pytest.raises(ValueError, match="duplicates="):
+        atu._validate_direct_41_17_ensemble([*complete, row.copy()])
+
+
+def test_direct_nec_validation_accepts_the_exact_expected_ensemble(
+    monkeypatch,
+) -> None:
+    import antenna_lab.atu as atu
+
+    monkeypatch.setattr(
+        atu, "DIRECT_DEPLOYMENTS", {"test": (0.5, 20.0, 0.1, 90.0)}
+    )
+    monkeypatch.setattr(atu, "GROUNDS", {"average": (13.0, 0.005)})
+    monkeypatch.setattr(
+        atu, "ATU_DIRECT_CONDUCTIVITIES", (("copper", 58_000_000.0),)
+    )
+    monkeypatch.setattr(
+        atu, "EXTENDED_BANDS", (("20m", 14_050_000, True),)
+    )
+    row = {
+        "candidate": "41r-17c",
+        "radiator_ft": 41.0,
+        "counterpoise_ft": 17.0,
+        "deployment": "test",
+        "ground": "average",
+        "conductivity": "copper",
+        "band": "20m",
+        "frequency_hz": 14_050_000,
+    }
+
+    assert atu._validate_direct_41_17_ensemble([row]) == [row]
+
+
+def test_zm2_profile_matches_owned_prebuilt_range() -> None:
     from antenna_lab.atu import ZM2_PROFILE
 
     assert ZM2_PROFILE.label == "EMTECH ZM-2 BNC prebuilt coupled Z-match"
