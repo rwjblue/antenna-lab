@@ -35,8 +35,9 @@ jobs:
           EOF
           nec2c -i /tmp/dipole.nec -o /tmp/dipole
           ls -la /tmp/dipole*
-          cat /tmp/dipole.out
+          cat /tmp/dipole
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: nec2c-smoke-output
-          path: /tmp/dipole.out
+          path: /tmp/dipole
