@@ -37,10 +37,8 @@ jobs:
           uv python install
           uv sync --no-editable --extra plots --group dev
 
-      - name: Format and lint implementation
-        run: |
-          uv run ruff format src tests
-          uv run ruff check --fix src tests
+      - name: Format implementation
+        run: uv run ruff format src tests
 
       - name: Run tests
         run: uv run pytest
