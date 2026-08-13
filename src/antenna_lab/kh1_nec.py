@@ -27,6 +27,8 @@ from antenna_lab.transmission_line import (
     swr,
 )
 
+# BANDS is the measured/reference-plane anchored set.  Keep this order aligned
+# with data/measured/58ft_doublet_2026-08-08.csv.
 BANDS = (
     ("40m", 7_050_000, True),
     ("30m", 10_120_000, True),
@@ -36,6 +38,18 @@ BANDS = (
     ("12m", 24_910_000, False),
     ("10m", 28_050_000, False),
 )
+
+# The direct-fed and resonant-reference models do not depend on the measured
+# doublet reference plane, so they can cover the wider portable-HF question.
+# 6 m is included as an exploratory case for the KX3 and Z-11Pro II; the KH1
+# and KX2 do not transmit there.
+EXTENDED_BANDS = (
+    ("80m", 3_550_000, False),
+    ("60m", 5_357_000, False),
+    *BANDS,
+    ("6m", 50_100_000, False),
+)
+KH1_REQUIRED_BANDS = tuple(band for band, _, required in BANDS if required)
 REQUIRED = np.asarray(
     [index for index, (_, _, required) in enumerate(BANDS) if required]
 )
@@ -125,7 +139,9 @@ def run_study(
         direct_rows = _run_direct_nec(executable, work / "direct", job_count)
         _write_csv(data_dir / "direct_nec.csv", direct_rows)
         direct_summary = _summarize_direct(direct_rows)
+        direct_by_band = _summarize_direct_by_band(direct_rows)
         _write_csv(data_dir / "direct_candidates.csv", direct_summary)
+        _write_csv(data_dir / "direct_candidates_by_band.csv", direct_by_band)
 
         linked = _linked_reference(executable, work / "linked")
         _write_csv(data_dir / "linked_dipole_reference.csv", linked)
@@ -153,6 +169,7 @@ def run_study(
         len(line_scenarios),
         selections,
         direct_summary,
+        direct_by_band,
         linked,
     )
     _write_json(output_dir / "summary.json", summary)
@@ -178,7 +195,7 @@ def _run_doublet_nec(
         (geometry_id, geometry, float(length), band, frequency)
         for geometry_id, geometry in GEOMETRIES.items()
         for length in lengths
-        for band, frequency, _ in BANDS
+        for band, frequency, _ in EXTENDED_BANDS
     ]
     rows: list[dict[str, Any]] = []
     with ThreadPoolExecutor(max_workers=jobs) as pool:
@@ -551,8 +568,7 @@ def _run_direct_nec(
             ("ccs_mid", 15_000_000.0),
             ("copper", 58_000_000.0),
         )
-        for band, frequency, required in BANDS
-        if required
+        for band, frequency, _ in EXTENDED_BANDS
     ]
     rows = []
     with ThreadPoolExecutor(max_workers=jobs) as pool:
@@ -659,7 +675,14 @@ def _direct_case(
 
 
 def _summarize_direct(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Rank direct-fed candidates on the five KH1 priority bands.
+
+    Rows may contain additional exploratory bands.  Those bands are intentionally
+    excluded from the candidate ranking so extending the study cannot silently
+    change the original KH1 optimization objective.
+    """
     summaries = []
+    required_band_set = set(KH1_REQUIRED_BANDS)
     for candidate in DIRECT_CANDIDATES:
         subset = [row for row in rows if row["candidate"] == candidate]
         scenarios: dict[tuple, list[dict[str, Any]]] = {}
@@ -672,9 +695,7 @@ def _summarize_direct(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
         max_q = []
         max_stress = []
         band_compat: dict[str, float] = {}
-        for band, _, required in BANDS:
-            if not required:
-                continue
+        for band in KH1_REQUIRED_BANDS:
             band_rows = [row for row in subset if row["band"] == band]
             compatibility = [
                 bool(row[f"{envelope_id}_compatible"])
@@ -683,27 +704,33 @@ def _summarize_direct(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
             ]
             band_compat[band] = float(np.mean(compatibility))
         for scenario_rows in scenarios.values():
+            required_rows = [
+                row for row in scenario_rows if row["band"] in required_band_set
+            ]
+            if len(required_rows) != len(KH1_REQUIRED_BANDS):
+                raise ValueError(
+                    "Direct-fed scenario is missing one or more KH1 priority bands"
+                )
             for envelope_id in TUNER_ENVELOPES:
                 all_compatible.append(
                     all(
                         row[f"{envelope_id}_compatible"]
-                        for row in scenario_rows
+                        for row in required_rows
                     )
                 )
                 max_stress.append(
                     max(
                         row[f"{envelope_id}_tuner_stress"]
-                        for row in scenario_rows
+                        for row in required_rows
                     )
                 )
-            worst_eff.append(
-                min(
-                    row["nec_efficiency"]
-                    for row in scenario_rows
-                    if row["nec_efficiency"] is not None
-                )
-            )
-            max_q.append(max(row["minimum_q"] for row in scenario_rows))
+            efficiencies = [
+                row["nec_efficiency"]
+                for row in required_rows
+                if row["nec_efficiency"] is not None
+            ]
+            worst_eff.append(min(efficiencies))
+            max_q.append(max(row["minimum_q"] for row in required_rows))
         radiator, counterpoise = DIRECT_CANDIDATES[candidate]
         summaries.append(
             {
@@ -714,6 +741,7 @@ def _summarize_direct(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "physical_scenario_count": len(scenarios),
                 "tuner_envelope_count": len(TUNER_ENVELOPES),
                 "sample_count": len(scenarios) * len(TUNER_ENVELOPES),
+                "modeled_band_count": len(EXTENDED_BANDS),
                 "all_required_compatibility_fraction": float(
                     np.mean(all_compatible)
                 ),
@@ -744,16 +772,103 @@ def _summarize_direct(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     )
 
 
+def _summarize_direct_by_band(
+    rows: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Summarize every modeled band without changing the KH1 ranking."""
+    summaries: list[dict[str, Any]] = []
+    for candidate, (radiator, counterpoise) in DIRECT_CANDIDATES.items():
+        candidate_rows = [row for row in rows if row["candidate"] == candidate]
+        for band, frequency, kh1_required in EXTENDED_BANDS:
+            band_rows = [row for row in candidate_rows if row["band"] == band]
+            if not band_rows:
+                raise ValueError(f"No direct-fed rows for {candidate} on {band}")
+            resistance = [row["resistance_ohm"] for row in band_rows]
+            reactance = [row["reactance_ohm"] for row in band_rows]
+            raw_swrs = [row["raw_swr"] for row in band_rows]
+            minimum_q = [row["minimum_q"] for row in band_rows]
+            efficiencies = [
+                row["nec_efficiency"]
+                for row in band_rows
+                if row["nec_efficiency"] is not None
+            ]
+            all_stresses = [
+                row[f"{envelope_id}_tuner_stress"]
+                for row in band_rows
+                for envelope_id in TUNER_ENVELOPES
+            ]
+            all_compatibility = [
+                row[f"{envelope_id}_compatible"]
+                for row in band_rows
+                for envelope_id in TUNER_ENVELOPES
+            ]
+            central_stresses = [
+                row["central_tuner_stress"] for row in band_rows
+            ]
+            central_compatibility = [
+                row["central_compatible"] for row in band_rows
+            ]
+            summaries.append(
+                {
+                    "candidate": candidate,
+                    "radiator_ft": radiator,
+                    "counterpoise_ft": counterpoise,
+                    "band": band,
+                    "frequency_hz": frequency,
+                    "kh1_priority_band": kh1_required,
+                    "physical_scenario_count": len(band_rows),
+                    "resistance_p10": _quantile(resistance, 0.1),
+                    "resistance_p50": _quantile(resistance, 0.5),
+                    "resistance_p90": _quantile(resistance, 0.9),
+                    "reactance_p10": _quantile(reactance, 0.1),
+                    "reactance_p50": _quantile(reactance, 0.5),
+                    "reactance_p90": _quantile(reactance, 0.9),
+                    "raw_swr_p50": _quantile(raw_swrs, 0.5),
+                    "raw_swr_p90": _quantile(raw_swrs, 0.9),
+                    "minimum_q_p90": _quantile(minimum_q, 0.9),
+                    "nec_efficiency_p10": _quantile(efficiencies, 0.1),
+                    "nec_efficiency_p50": _quantile(efficiencies, 0.5),
+                    "generic_tuner_proxy_compatibility_fraction": float(
+                        np.mean(all_compatibility)
+                    ),
+                    "generic_tuner_proxy_stress_p90": _quantile(
+                        all_stresses, 0.9
+                    ),
+                    "central_proxy_compatibility_fraction": float(
+                        np.mean(central_compatibility)
+                    ),
+                    "central_proxy_stress_p90": _quantile(
+                        central_stresses, 0.9
+                    ),
+                }
+            )
+    band_order = {band: index for index, (band, _, _) in enumerate(EXTENDED_BANDS)}
+    return sorted(
+        summaries,
+        key=lambda row: (row["candidate"], band_order[row["band"]]),
+    )
+
+def _linked_geometry(band: str) -> tuple[str, InvertedV]:
+    if band == "80m":
+        return "reference_30_5", InvertedV(30.0, end_height_ft=5.0)
+    return "reference_30_120", GEOMETRIES["reference_30_120"]
+
+
 def _linked_reference(executable: Path, work: Path) -> list[dict[str, Any]]:
-    geometry = GEOMETRIES["reference_30_120"]
     rows = []
-    for band, frequency, required in BANDS:
-        if not required:
-            continue
+    for band, frequency, kh1_required in EXTENDED_BANDS:
+        geometry_id, geometry = _linked_geometry(band)
         estimate = 468.0 / (frequency / 1e6)
         cache = {}
 
-        def evaluate(length, *, band=band, frequency=frequency, cache=cache):
+        def evaluate(
+            length,
+            *,
+            band=band,
+            frequency=frequency,
+            cache=cache,
+            geometry=geometry,
+        ):
             key = round(float(length), 6)
             if key not in cache:
                 stem = f"linked-{band}-{key:.6f}".replace(".", "p")
@@ -787,17 +902,25 @@ def _linked_reference(executable: Path, work: Path) -> list[dict[str, Any]]:
         if brackets:
             bracket = min(brackets, key=lambda pair: abs(sum(pair) / 2 - estimate))
             length = brentq(
-                lambda value: evaluate(value).impedance_ohm.imag, *bracket, xtol=0.005
+                lambda value: evaluate(value).impedance_ohm.imag,
+                *bracket,
+                xtol=0.005,
             )
             result = evaluate(length)
         else:
             length, result = min(
                 values, key=lambda pair: abs(pair[1].impedance_ohm.imag)
             )
+        _, end_height = geometry.endpoints(float(length))
         rows.append(
             {
                 "band": band,
                 "frequency_hz": frequency,
+                "kh1_priority_band": kh1_required,
+                "geometry": geometry_id,
+                "center_height_ft": geometry.center_height_ft,
+                "end_height_ft": end_height,
+                "included_angle_deg": geometry.included_angle_deg(float(length)),
                 "resonant_total_length_ft": float(length),
                 "resistance_ohm": result.impedance_ohm.real,
                 "reactance_ohm": result.impedance_ohm.imag,
@@ -806,7 +929,6 @@ def _linked_reference(executable: Path, work: Path) -> list[dict[str, Any]]:
             }
         )
     return rows
-
 
 def _selected_patterns(selections, direct_summary, linked, executable, work, raw_dir):
     rows = []
@@ -820,6 +942,7 @@ def _selected_patterns(selections, direct_summary, linked, executable, work, raw
     for row in (
         direct_best,
         next(item for item in direct_summary if item["candidate"] == "35r-17c"),
+        next(item for item in direct_summary if item["candidate"] == "41r-17c"),
     ):
         cases.append(
             (
@@ -833,8 +956,8 @@ def _selected_patterns(selections, direct_summary, linked, executable, work, raw
     seen = set()
     linked_by_band = {row["band"]: row for row in linked}
     for kind, name, radiator, counterpoise, geometry in cases:
-        for band, frequency, required in BANDS:
-            if not required or (kind, radiator, counterpoise, band) in seen:
+        for band, frequency, _ in EXTENDED_BANDS:
+            if (kind, radiator, counterpoise, band) in seen:
                 continue
             seen.add((kind, radiator, counterpoise, band))
             stem = f"pattern-{kind}-{radiator}-{counterpoise}-{band}".replace(".", "p")
@@ -890,16 +1013,15 @@ def _selected_patterns(selections, direct_summary, linked, executable, work, raw
                     "nec_efficiency": result.efficiency,
                 }
             )
-    for band, frequency, required in BANDS:
-        if not required:
-            continue
+    for band, frequency, _ in EXTENDED_BANDS:
         length = linked_by_band[band]["resonant_total_length_ft"]
+        _, linked_geometry = _linked_geometry(band)
         stem = f"pattern-linked-{band}"
         result, deck_path, output_path = run(
             doublet_deck(
                 title=stem,
                 total_length_ft=length,
-                geometry=GEOMETRIES["reference_30_120"],
+                geometry=linked_geometry,
                 frequency_mhz=frequency / 1e6,
                 radius_m=RADIUS_M,
                 conductivity_s_m=WIRE_CONDUCTIVITY,
@@ -1172,6 +1294,7 @@ def _summary(
     line_count,
     selections,
     direct,
+    direct_by_band,
     linked,
 ):
     current = selections["current_58_28"]
@@ -1179,8 +1302,12 @@ def _summary(
     classic_opt = selections["44ft_optimized_line"]
     best = selections["robust_model_best"]
     plus3 = selections["current_plus_3ft_line"]
-    preferred = next(row for row in direct if row["candidate"] == "35r-17c")
+    preferred_35 = next(row for row in direct if row["candidate"] == "35r-17c")
+    preferred_41 = next(row for row in direct if row["candidate"] == "41r-17c")
     direct_best = direct[0]
+    direct_41_by_band = [
+        row for row in direct_by_band if row["candidate"] == "41r-17c"
+    ]
     if extension_window is None:
         existing_test = (
             f"reversibly test the model-best {best['feedline_ft']:.2f} ft line "
@@ -1198,6 +1325,9 @@ def _summary(
             "actual NEC-2 radiator/direct-wire runs with measured 58/28 "
             "radio-end anchoring and an explicit series-L/shunt-C tuner envelope"
         ),
+        "anchored_doublet_bands": [band for band, _, _ in BANDS],
+        "extended_nec_bands": [band for band, _, _ in EXTENDED_BANDS],
+        "kh1_priority_bands": list(KH1_REQUIRED_BANDS),
         "nec_feedpoint_run_count": nec_runs,
         "line_scenario_count": line_count,
         "tuner_envelopes": TUNER_ENVELOPES,
@@ -1211,25 +1341,30 @@ def _summary(
             "robust_model_best": best,
             "58ft_extension_window": extension_window,
         },
-        "direct_wire": {"preferred_35_17": preferred, "model_best": direct_best},
+        "direct_wire": {
+            "field_evidence_35_17": preferred_35,
+            "model_led_41_17": preferred_41,
+            "model_best": direct_best,
+            "41_17_by_band": direct_41_by_band,
+        },
         "linked_dipole_reference": linked,
         "practical_recommendation": {
             "existing_antenna_test": existing_test,
             "new_antenna_test": (
-                "build a separate 35 ft radiator / 17 ft explicit "
-                "counterpoise direct-fed trial"
+                "build a direct-fed 41 ft radiator / 17 ft explicit counterpoise "
+                "trial; retain 35/17 as the shorter field-evidence control"
             ),
-            "efficiency_reference": "five-band resonant linked dipole",
+            "efficiency_reference": "resonant linked dipoles on every modeled band",
             "field_validation_required": True,
         },
         "warnings": [
             "NEC geometry omits trees, operator, choke, connectors, insulation and sparse spacers.",
-            "Doublet station impedances are measured-reference-plane anchored; NEC supplies radiator changes.",
+            "Doublet station impedances are measured-reference-plane anchored only on 40 through 10 m; 80, 60 and 6 m doublet rows are radiator-only NEC results.",
             "The tuner envelopes are empirical sensitivity cases, not published KH1 component values.",
+            "The 80, 60, 12, 10 and 6 m direct-wire matchability columns use a generic topology proxy until tuner-specific loss models are applied.",
             "Line efficiency excludes tuner/choke/common-mode/radiator loss; direct-wire NEC efficiency includes modeled wire and ground loss only.",
         ],
     }
-
 
 def _report(summary):
     d = summary["doublet"]
@@ -1242,15 +1377,27 @@ def _report(summary):
         ("robust model best", d["robust_model_best"]),
     ]
     lines = [
-        "# KH1 portable antenna NEC-2 study",
+        "# KH1/KX2 portable antenna NEC-2 study",
         "",
         f"Solver: `{summary['solver']}`",
+        "",
+        "## Modeled band scope",
+        "",
+        "The measured-reference-plane doublet optimization remains anchored on "
+        + ", ".join(summary["anchored_doublet_bands"])
+        + ". Direct-fed wires, radiator-only doublet NEC rows, patterns, and resonant references now cover "
+        + ", ".join(summary["extended_nec_bands"])
+        + ".",
+        "",
+        "The hard KH1 objective remains "
+        + ", ".join(summary["kh1_priority_bands"])
+        + ". The other bands are exploratory and do not affect candidate ranking. Six meters is included for KX3/external-tuner investigation; the KH1 and KX2 do not transmit there.",
         "",
         "## Method",
         "",
         "The radiator and direct-wire impedance, loss, and pattern calculations in this result set were executed by NEC-2. The measured 58 ft / 28 ft radio-end impedances remain exact anchors because a bare-wire NEC deck cannot reproduce the installed insulation, trees, choke, connectors, and operator. NEC supplies the physical impedance change as radiator length/deployment changes; a lossy balanced-line ensemble carries that result to the radio.",
         "",
-        "Matchability uses the actual Elecraft-style topology class—series inductance and shunt capacitance, with the capacitor allowed on either side—not an unrestricted ideal L-network. Because the KH1 component range is unpublished, three explicit effective envelopes are evaluated: 8 uH/325 pF, 12 uH/400 pF, and 15 uH/500 pF. All reproduce the observed 58/28 success/failure split. These are sensitivity cases, not KH1 specifications.",
+        "Matchability uses the Elecraft-style topology class—series inductance and shunt capacitance, with the capacitor allowed on either side—not an unrestricted ideal L-network. Because the KH1 component range is unpublished, three explicit effective envelopes are evaluated: 8 uH/325 pF, 12 uH/400 pF, and 15 uH/500 pF. All reproduce the observed 58/28 success/failure split. These are sensitivity cases, not KH1 specifications, and this stage does not calculate tuner loss.",
         "",
         "## Measured-baseline tuner diagnostics",
         "",
@@ -1281,15 +1428,19 @@ def _report(summary):
         ]
     lines += [
         "",
-        "The percentages are fractions of the explicit NEC geometry, line, anchoring, reference-plane, and tuner-envelope ensemble. They are not tune probabilities.",
+        "The percentages are fractions of the explicit NEC geometry, line, anchoring, reference-plane, and tuner-envelope ensemble. They are not tune probabilities. The newly added 80, 60, and 6 m doublet feedpoint rows are not fed into this anchored optimization because no measured station-end anchor exists on those bands.",
         "",
-        "## Direct-fed wires",
+        "## Direct-fed wires: KH1 priority bands",
         "",
         "| case | wire | all five bands | weakest band | tuner stress p90 | Q p90 | worst NEC efficiency p10 |",
         "|---|---:|---:|---:|---:|---:|---:|",
     ]
     shown = []
-    for row in (direct["preferred_35_17"], direct["model_best"]):
+    for row in (
+        direct["field_evidence_35_17"],
+        direct["model_led_41_17"],
+        direct["model_best"],
+    ):
         if row["candidate"] in shown:
             continue
         shown.append(row["candidate"])
@@ -1298,16 +1449,29 @@ def _report(summary):
         )
     lines += [
         "",
-        "Direct-wire results span six counterpoise orientations/heights, two grounds, two conductor cases, and three tuner envelopes. They remain more deployment-sensitive than a balanced antenna.",
+        "Direct-wire results span six counterpoise orientations/heights, two grounds, two conductor cases, and three generic tuner envelopes. They remain more deployment-sensitive than a balanced antenna.",
+        "",
+        "## 41 ft radiator / 17 ft counterpoise by band",
+        "",
+        "| band | median R+jX | median raw SWR | generic proxy compatibility | NEC efficiency p10 / p50 |",
+        "|---|---:|---:|---:|---:|",
+    ]
+    for row in direct["41_17_by_band"]:
+        lines.append(
+            f"| {row['band']} | {row['resistance_p50']:.1f} {row['reactance_p50']:+.1f}j | {row['raw_swr_p50']:.1f} | {row['generic_tuner_proxy_compatibility_fraction'] * 100:.1f}% | {row['nec_efficiency_p10'] * 100:.1f}% / {row['nec_efficiency_p50'] * 100:.1f}% |"
+        )
+    lines += [
+        "",
+        "For 80, 60, 12, 10, and 6 m, the compatibility column is only the same generic series-L/shunt-C sensitivity proxy used for the KH1 study. It is not yet a prediction for a particular KX2, KX3, LDG, or manual tuner. The NEC efficiency column is the modeled wire-plus-ground radiation efficiency after power reaches the feedpoint; it excludes tuner loss.",
         "",
         "## Resonant linked-dipole reference",
         "",
-        "| band | total length | R+jX | raw SWR | NEC efficiency |",
-        "|---|---:|---:|---:|---:|",
+        "| band | geometry | total length | R+jX | raw SWR | NEC efficiency |",
+        "|---|---|---:|---:|---:|---:|",
     ]
     for row in summary["linked_dipole_reference"]:
         lines.append(
-            f"| {row['band']} | {row['resonant_total_length_ft']:.2f} ft | {row['resistance_ohm']:.1f} {row['reactance_ohm']:+.1f}j | {row['raw_swr']:.2f} | {row['nec_efficiency'] * 100:.1f}% |"
+            f"| {row['band']} | {row['geometry']} | {row['resonant_total_length_ft']:.2f} ft | {row['resistance_ohm']:.1f} {row['reactance_ohm']:+.1f}j | {row['raw_swr']:.2f} | {row['nec_efficiency'] * 100:.1f}% |"
         )
     recommendation = summary["practical_recommendation"]
     lines += [
@@ -1315,20 +1479,20 @@ def _report(summary):
         "## Practical conclusion",
         "",
         f"1. Existing antenna: **{recommendation['existing_antenna_test']}**.",
-        f"2. Separate compact KH1 antenna: **{recommendation['new_antenna_test']}**.",
+        f"2. Separate compact antenna: **{recommendation['new_antenna_test']}**.",
         f"3. Efficiency/matching reference: **{recommendation['efficiency_reference']}**.",
         "",
         "The classic 44/28 doublet is not the preferred build from this study: the 20 and 17 m station-end loads remain hostile across the uncertainty ensemble, and its modeled mismatched-line efficiency tails are poor.",
         "",
-        "Measure radio-end R+jX and final KH1 SWR on all five bands before cutting the existing antenna.",
+        "Measure radio-end R+jX and final tuner state on each intended band before cutting the existing antenna. The next study stage applies component-loss models for the actual tuners.",
         "",
         "## Reproduce",
         "",
         "```bash",
         "sudo apt-get install nec2c",
         "uv sync --no-editable --extra plots --group dev",
-        "uv run antenna-lab run-kh1-nec-study --output results/kh1-portable-nec-v1",
-        "uv run antenna-lab verify-results results/kh1-portable-nec-v1",
+        "uv run antenna-lab run-kh1-nec-study --output build/kh1-portable-nec-v2",
+        "uv run antenna-lab verify-results build/kh1-portable-nec-v2",
         "```",
         "",
         "## Limitations",
@@ -1336,7 +1500,6 @@ def _report(summary):
     ]
     lines += [f"- {warning}" for warning in summary["warnings"]]
     return "\n".join(lines) + "\n"
-
 
 def _version(executable):
     completed = subprocess.run(

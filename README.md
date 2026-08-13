@@ -14,9 +14,10 @@ This project keeps observations separate from assumptions:
 
 The current NEC-2 result is deliberately field-testable rather than final. For
 the existing 58 ft radiator, first test detachable balanced-line additions from
-3.75 to 4.50 ft; do not cut the antenna yet. For a separate compact KH1 antenna,
-the next direct-fed trial is a 35 ft radiator with an explicit 17 ft counterpoise.
-A five-band resonant linked dipole remains the matching and efficiency reference.
+3.75 to 4.50 ft; do not cut the antenna yet. For a separate compact antenna, the
+model-led trial is a 41 ft radiator with an explicit 17 ft counterpoise; 35/17
+remains the shorter field-evidence control. Resonant linked dipoles remain the
+matching and efficiency references.
 
 ## Quick start
 
@@ -63,7 +64,7 @@ mise run reference
 
 ## Sharded NEC-2 study
 
-The full KH1 study can still be run locally as one command:
+The full KH1/KX2 portable-antenna study can still be run locally as one command:
 
 ```bash
 sudo apt-get install nec2c
@@ -76,7 +77,10 @@ doublet feedpoints, two jobs calculate the direct-fed cases, and eight jobs spli
 the expensive doublet uncertainty grid by radiator length. A final job merges
 and validates every expected row, runs the smaller resonant-reference and
 pattern calculations, creates `SHA256SUMS`, and uploads the canonical result
-package.
+package. Direct-fed wires and resonant references cover 80, 60, 40, 30, 20, 17,
+15, 12, 10, and 6 meters. The measured-reference-plane doublet optimization
+remains anchored on 40 through 10 meters; 80, 60, and 6 meter doublet results are
+radiator-only NEC cases until matching station-end measurements exist.
 
 Every compute job uploads its CSV, metadata, manifest, and runner log as a
 separate workflow artifact. The final job uploads the complete result tree as
@@ -85,7 +89,7 @@ still retrievable when a later shard or assembly job fails. Artifacts are kept
 for 90 days, subject to the repository's Actions retention limit. Full generated
 study trees are not checked into `results/`; reproduce them under `build/` or use
 the corresponding verified workflow artifact. The review-corrected reference
-run is [31712534336](https://github.com/rwjblue/antenna-lab/actions/runs/31712534336).
+run is [31714329681](https://github.com/rwjblue/antenna-lab/actions/runs/31714329681).
 
 The stage commands are also available for local or alternate CI orchestration:
 

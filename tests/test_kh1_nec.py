@@ -2,7 +2,10 @@ import numpy as np
 
 from antenna_lab.kh1_nec import (
     BANDS,
+    EXTENDED_BANDS,
+    KH1_REQUIRED_BANDS,
     TUNER_ENVELOPES,
+    _linked_geometry,
     _anchor,
     _baseline_tuner_rows,
     _kh1_tuner_proxy,
@@ -45,3 +48,35 @@ def test_both_anchor_rules_preserve_baseline() -> None:
 
 def test_band_order_is_stable() -> None:
     assert [band for band, _, _ in BANDS[:5]] == ["40m", "30m", "20m", "17m", "15m"]
+
+
+def test_extended_band_scope_preserves_original_anchor_order() -> None:
+    assert [band for band, _, _ in EXTENDED_BANDS] == [
+        "80m",
+        "60m",
+        "40m",
+        "30m",
+        "20m",
+        "17m",
+        "15m",
+        "12m",
+        "10m",
+        "6m",
+    ]
+    assert KH1_REQUIRED_BANDS == ("40m", "30m", "20m", "17m", "15m")
+    assert [band for band, _, _ in BANDS] == [
+        "40m",
+        "30m",
+        "20m",
+        "17m",
+        "15m",
+        "12m",
+        "10m",
+    ]
+
+
+def test_80m_linked_reference_geometry_keeps_wire_above_ground() -> None:
+    geometry_id, geometry = _linked_geometry("80m")
+    assert geometry_id == "reference_30_5"
+    _, end_height = geometry.endpoints(132.0)
+    assert end_height == 5.0

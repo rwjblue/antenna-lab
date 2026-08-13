@@ -2,7 +2,15 @@ from pathlib import Path
 
 import pytest
 
+from antenna_lab.kh1_nec import (
+    DIRECT_CANDIDATES,
+    DIRECT_DEPLOYMENTS,
+    EXTENDED_BANDS,
+    GEOMETRIES,
+    GROUNDS,
+)
 from antenna_lab.kh1_pipeline import (
+    CONDUCTOR_CASES,
     STUDY_LENGTHS,
     _all_direct_cases,
     _all_doublet_cases,
@@ -61,3 +69,16 @@ def test_csv_coercion_preserves_identifiers_and_restores_scalars() -> None:
 
 def test_pipeline_module_is_committed_source() -> None:
     assert Path(__file__).with_name("test_kh1_pipeline.py").is_file()
+
+
+def test_extended_nec_case_counts_are_explicit() -> None:
+    assert len(_all_doublet_cases()) == (
+        len(GEOMETRIES) * len(STUDY_LENGTHS) * len(EXTENDED_BANDS)
+    )
+    assert len(_all_direct_cases()) == (
+        len(DIRECT_CANDIDATES)
+        * len(DIRECT_DEPLOYMENTS)
+        * len(GROUNDS)
+        * len(CONDUCTOR_CASES)
+        * len(EXTENDED_BANDS)
+    )

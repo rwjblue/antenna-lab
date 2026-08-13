@@ -17,6 +17,7 @@ from antenna_lab.kh1_nec import (
     BANDS,
     DIRECT_CANDIDATES,
     DIRECT_DEPLOYMENTS,
+    EXTENDED_BANDS,
     GEOMETRIES,
     GROUNDS,
     REQUIRED,
@@ -39,6 +40,7 @@ from antenna_lab.kh1_nec import (
     _selected_patterns,
     _sha256,
     _summarize_direct,
+    _summarize_direct_by_band,
     _summary,
     _tuner_stress_matrix,
     _version,
@@ -231,6 +233,7 @@ def assemble_study(
     scenarios = _line_scenarios(measured)
     named, band_detail = _select_doublets(grid, feedpoints, scenarios)
     direct_summary = _summarize_direct(direct_rows)
+    direct_by_band = _summarize_direct_by_band(direct_rows)
     selections = {
         "current_58_28": _named(named, "current_58_28"),
         "classic_44_28": _named(named, "classic_44_28"),
@@ -268,6 +271,7 @@ def assemble_study(
     )
     _write_csv(data_dir / "direct_nec.csv", direct_rows)
     _write_csv(data_dir / "direct_candidates.csv", direct_summary)
+    _write_csv(data_dir / "direct_candidates_by_band.csv", direct_by_band)
     _write_csv(data_dir / "linked_dipole_reference.csv", linked)
     _write_csv(data_dir / "selected_pattern_metrics.csv", pattern_rows)
     _write_csv(data_dir / "baseline_tuner_envelope.csv", baseline_tuner)
@@ -283,6 +287,7 @@ def assemble_study(
         len(scenarios),
         selections,
         direct_summary,
+        direct_by_band,
         linked,
     )
     summary["pipeline"] = {
@@ -496,7 +501,7 @@ def _all_doublet_cases() -> list[tuple]:
         (geometry_id, geometry, float(length), band, frequency)
         for geometry_id, geometry in GEOMETRIES.items()
         for length in STUDY_LENGTHS
-        for band, frequency, _ in BANDS
+        for band, frequency, _ in EXTENDED_BANDS
     ]
 
 
@@ -519,8 +524,7 @@ def _all_direct_cases() -> list[tuple]:
         for deployment_id, deployment in DIRECT_DEPLOYMENTS.items()
         for ground_id, ground in GROUNDS.items()
         for conductivity_id, conductivity in CONDUCTOR_CASES
-        for band, frequency, required in BANDS
-        if required
+        for band, frequency, _ in EXTENDED_BANDS
     ]
 
 
@@ -617,7 +621,7 @@ def _validate_doublet_feedpoints(rows: list[dict[str, Any]]) -> None:
         (geometry_id, float(length), band)
         for geometry_id in GEOMETRIES
         for length in STUDY_LENGTHS
-        for band, _, _ in BANDS
+        for band, _, _ in EXTENDED_BANDS
     }
     actual = {(row["geometry"], row["radiator_ft"], row["band"]) for row in rows}
     _validate_key_set("doublet NEC feedpoints", expected, actual, len(rows))
@@ -640,8 +644,7 @@ def _validate_direct_rows(rows: list[dict[str, Any]]) -> None:
         for deployment in DIRECT_DEPLOYMENTS
         for ground in GROUNDS
         for conductivity, _ in CONDUCTOR_CASES
-        for band, _, required in BANDS
-        if required
+        for band, _, _ in EXTENDED_BANDS
     }
     actual = {
         (
