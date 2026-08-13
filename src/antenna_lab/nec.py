@@ -207,9 +207,7 @@ def parse(text: str) -> NecResult:
     efficiency_match = EFFICIENCY_RE.search(text)
     points = []
     pattern_text = (
-        text.split("RADIATION PATTERNS", 1)[1]
-        if "RADIATION PATTERNS" in text
-        else ""
+        text.split("RADIATION PATTERNS", 1)[1] if "RADIATION PATTERNS" in text else ""
     )
     for match in PATTERN_RE.finditer(pattern_text):
         theta = float(match.group(1))

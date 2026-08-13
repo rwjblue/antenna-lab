@@ -1,0 +1,7 @@
+candidate,radiator_ft,counterpoise_ft,total_wire_ft,scenario_count,all_required_compatibility_fraction,minimum_required_band_compatibility_fraction,required_max_q_p90,required_worst_nec_efficiency_p10,40m_compatibility_fraction,30m_compatibility_fraction,20m_compatibility_fraction,17m_compatibility_fraction,15m_compatibility_fraction
+35r-25c,35.0,25.0,60.0,8,0.0,0.0,7.683933329650542,0.86178,1.0,1.0,0.0,0.0,0.0
+41r-17c,41.0,17.0,58.0,8,0.0,0.0,7.794159925387471,0.86729,1.0,0.75,0.5,1.0,0.0
+35r-17c,35.0,17.0,52.0,8,0.0,0.0,8.293248978449848,0.86985,0.0,1.0,0.0,1.0,1.0
+53r-17c,53.0,17.0,70.0,8,0.0,0.0,9.48695354104168,0.85315,1.0,0.0,1.0,0.0,1.0
+35r-13c,35.0,13.0,48.0,8,0.0,0.0,11.64606876360667,0.86847,0.0,1.0,0.0,1.0,1.0
+29r-17c,29.0,17.0,46.0,8,0.0,0.0,11.695316732088767,0.87078,0.0,1.0,0.0,0.0,1.0
