@@ -1,0 +1,56 @@
+name: Apply extended portable-band study
+
+on:
+  push:
+    branches:
+      - research/extended-portable-bands
+    paths:
+      - ".github/workflows/apply-extended-bands.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Decode and apply reviewed patch
+        shell: bash
+        run: |
+          cat .github/patches/extend-bands.part* \
+            | base64 --decode \
+            | gzip --decompress \
+            > /tmp/extend-bands.patch
+          git apply --check /tmp/extend-bands.patch
+          git apply /tmp/extend-bands.patch
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.12.3"
+          enable-cache: true
+
+      - name: Validate patched source
+        run: |
+          uv python install 3.12
+          uv sync --frozen --no-editable --group dev
+          uv run ruff check --select E4,E7,E9,F src tests
+          uv run python -m compileall -q src tests
+          uv run pytest
+
+      - name: Replace staging files with source commit
+        shell: bash
+        run: |
+          rm -f .github/patches/extend-bands.part*
+          rm -f .github/workflows/apply-extended-bands.yml
+          rmdir .github/patches 2>/dev/null || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Extend portable antenna study across 80 through 6 meters"
+          git push origin HEAD:${GITHUB_REF_NAME}
