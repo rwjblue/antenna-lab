@@ -7,7 +7,7 @@ on:
       - research/kh1-portable-nec
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   study:
@@ -16,13 +16,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Assemble study source
-        run: |
-          cat .bootstrap/kh1_nec.py.part* > src/antenna_lab/kh1_nec.py
-          sed -i 's/"reference_20_120": InvertedV(20.0, apex_angle_deg=120.0)/"reference_30_120": InvertedV(30.0, apex_angle_deg=120.0)/' src/antenna_lab/kh1_nec.py
-          sed -i 's/GEOMETRIES\["reference_20_120"\]/GEOMETRIES["reference_30_120"]/g' src/antenna_lab/kh1_nec.py
-          rm -rf .bootstrap
 
       - name: Install NEC-2 solver
         run: |
@@ -39,35 +32,35 @@ jobs:
           uv python install
           uv sync --no-editable --extra plots --group dev
 
-      - name: Format implementation
-        run: uv run ruff format src tests
+      - name: Format check
+        run: uv run ruff format --check src tests
+
+      - name: Lint
+        run: uv run ruff check src tests
 
       - name: Run tests
         run: uv run pytest
 
       - name: Execute NEC-2 study
         run: |
+          rm -rf /tmp/kh1-portable-nec-v1
           uv run antenna-lab run-kh1-nec-study \
-            --output results/kh1-portable-nec-v1 \
+            --output /tmp/kh1-portable-nec-v1 \
             --jobs 6
 
       - name: Verify generated manifest
-        run: uv run antenna-lab verify-results results/kh1-portable-nec-v1
+        run: uv run antenna-lab verify-results /tmp/kh1-portable-nec-v1
 
-      - name: Upload complete result set
+      - name: Upload source snapshot and fresh result set
         uses: actions/upload-artifact@v4
         with:
-          name: kh1-portable-nec-v1
-          path: results/kh1-portable-nec-v1
+          name: kh1-nec-source-snapshot
+          path: |
+            src
+            tests
+            README.md
+            MODEL_LIMITATIONS.md
+            NEXT_EXPERIMENT.md
+            .github/workflows/kh1-nec-study.yml
+            /tmp/kh1-portable-nec-v1
           if-no-files-found: error
-
-      - name: Commit formatted source and generated results
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A src tests .bootstrap results/kh1-portable-nec-v1
-          if git diff --cached --quiet; then
-            exit 0
-          fi
-          git commit -m 'Add reproducible KH1 NEC-2 study results [skip ci]'
-          git push
