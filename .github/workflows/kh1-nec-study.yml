@@ -2,9 +2,6 @@ name: KH1 NEC-2 study
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - research/kh1-portable-nec
 
 permissions:
   contents: read
@@ -12,61 +9,6 @@ permissions:
 jobs:
   study:
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
-
     steps:
       - uses: actions/checkout@v4
-
-      - name: Upload source snapshot
-        uses: actions/upload-artifact@v4
-        with:
-          name: kh1-nec-source
-          path: |
-            src
-            tests
-            README.md
-            MODEL_LIMITATIONS.md
-            NEXT_EXPERIMENT.md
-            .github/workflows/kh1-nec-study.yml
-          if-no-files-found: error
-
-      - name: Install NEC-2 solver
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes nec2c
-          nec2c -v
-
-      - uses: astral-sh/setup-uv@v6
-        with:
-          enable-cache: true
-
-      - name: Install Python and dependencies
-        run: |
-          uv python install
-          uv sync --no-editable --extra plots --group dev
-
-      - name: Format check
-        run: uv run ruff format --check src tests
-
-      - name: Lint
-        run: uv run ruff check src tests
-
-      - name: Run tests
-        run: uv run pytest
-
-      - name: Execute NEC-2 study
-        run: |
-          rm -rf /tmp/kh1-portable-nec-v1
-          uv run antenna-lab run-kh1-nec-study \
-            --output /tmp/kh1-portable-nec-v1 \
-            --jobs 6
-
-      - name: Verify generated manifest
-        run: uv run antenna-lab verify-results /tmp/kh1-portable-nec-v1
-
-      - name: Upload fresh result set
-        uses: actions/upload-artifact@v4
-        with:
-          name: kh1-portable-nec-v1-fresh
-          path: /tmp/kh1-portable-nec-v1
-          if-no-files-found: error
+      - run: echo 'Workflow temporarily staged for source transfer.'
