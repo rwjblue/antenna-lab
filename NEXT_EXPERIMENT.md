@@ -34,7 +34,10 @@ Treat the model's 3.75-4.50 ft interval as a test window, not a cutting length.
 
 ## Secondary build
 
-After the extension experiment, a separate compact direct-fed trial may use a
-35 ft radiator with an explicit 17 ft counterpoise. Test it against the same
-five-band measurement protocol. A 35/25 ft version is the modeled robustness
-reference but uses more wire; the 35/17 ft build is the compact field trial.
+After the extension experiment, build a separate direct-fed 41 ft radiator with
+an explicit 17 ft counterpoise. Test it first on the five KH1 priority bands,
+then record 80, 60, 12, 10, and 6 meter R+jX when the radio/analyzer supports
+them. A 35/17 ft version remains the shorter field-evidence control; a 35/25 ft
+version remains a useful counterpoise-length comparison. Record the final tuner
+state when the radio exposes it, because tuner insertion loss is the next major
+modeling uncertainty.
