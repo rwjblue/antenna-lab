@@ -594,9 +594,13 @@ def _direct_case(
     work,
 ):
     feed, support, counterpoise_height, counterpoise_azimuth = deployment
+    case_identity = (
+        f"{candidate_id}|{deployment_id}|{ground_id}|"
+        f"{conductivity_id}|{band}"
+    )
     stem = (
-        f"direct-{candidate_id}-{deployment_id}-{ground_id}-"
-        f"{conductivity_id}-{band}"
+        f"d-{candidate_id}-"
+        f"{hashlib.sha256(case_identity.encode()).hexdigest()[:12]}"
     )
     result, deck_path, output_path = run(
         direct_wire_deck(
