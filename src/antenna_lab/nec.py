@@ -145,7 +145,17 @@ def direct_wire_deck(
             radius_m,
         ),
         _gw(2, 1, -gap / 2, 0, feed_z, gap / 2, 0, feed_z, radius_m),
-        _gw(3, 61, gap / 2, 0, feed_z, run * FT, 0, support_height_ft * FT, radius_m),
+        _gw(
+            3,
+            61,
+            gap / 2,
+            0,
+            feed_z,
+            run * FT,
+            0,
+            support_height_ft * FT,
+            radius_m,
+        ),
         "GE 0",
         "EK 0",
         f"LD 5 0 0 0 {conductivity_s_m:.9e} 0 0",
@@ -158,25 +168,35 @@ def direct_wire_deck(
     return "\n".join(cards) + "\n"
 
 
-def run(deck: str, work_dir: Path, stem: str, nec2c: str | Path | None = None) -> tuple[NecResult, Path, Path]:
+def run(
+    deck: str,
+    work_dir: Path,
+    stem: str,
+    nec2c: str | Path | None = None,
+) -> tuple[NecResult, Path, Path]:
     work_dir.mkdir(parents=True, exist_ok=True)
     deck_path = work_dir / f"{stem}.nec"
-    prefix = work_dir / stem
     deck_path.write_text(deck, encoding="utf-8")
     executable = find_nec2c(nec2c)
     completed = subprocess.run(
-        [str(executable), "-i", str(deck_path), "-o", str(prefix)],
+        [str(executable), "-i", str(deck_path)],
         check=False,
         capture_output=True,
         text=True,
         timeout=180,
     )
-    output_path = prefix.with_suffix(".out")
+    output_path = deck_path.with_suffix(".out")
     if completed.returncode != 0 or not output_path.exists():
         raise RuntimeError(
-            f"nec2c failed ({completed.returncode})\nstdout:\n{completed.stdout}\nstderr:\n{completed.stderr}"
+            "nec2c failed "
+            f"({completed.returncode})\nstdout:\n{completed.stdout}"
+            f"\nstderr:\n{completed.stderr}"
         )
-    return parse(output_path.read_text(encoding="utf-8", errors="replace")), deck_path, output_path
+    return (
+        parse(output_path.read_text(encoding="utf-8", errors="replace")),
+        deck_path,
+        output_path,
+    )
 
 
 def parse(text: str) -> NecResult:
@@ -186,7 +206,11 @@ def parse(text: str) -> NecResult:
         raise ValueError("Could not parse NEC frequency/input impedance")
     efficiency_match = EFFICIENCY_RE.search(text)
     points = []
-    pattern_text = text.split("RADIATION PATTERNS", 1)[1] if "RADIATION PATTERNS" in text else ""
+    pattern_text = (
+        text.split("RADIATION PATTERNS", 1)[1]
+        if "RADIATION PATTERNS" in text
+        else ""
+    )
     for match in PATTERN_RE.finditer(pattern_text):
         theta = float(match.group(1))
         phi = float(match.group(2))
@@ -194,7 +218,9 @@ def parse(text: str) -> NecResult:
     return NecResult(
         frequency_mhz=float(frequency.group(1)),
         impedance_ohm=complex(float(impedance.group(1)), float(impedance.group(2))),
-        efficiency=None if not efficiency_match else float(efficiency_match.group(1)) / 100.0,
+        efficiency=None
+        if not efficiency_match
+        else float(efficiency_match.group(1)) / 100.0,
         pattern=tuple(points),
     )
 
@@ -204,7 +230,17 @@ def _header(title: str) -> list[str]:
     return [f"CM {clean}", "CE"]
 
 
-def _gw(tag: int, segments: int, x1: float, y1: float, z1: float, x2: float, y2: float, z2: float, radius: float) -> str:
+def _gw(
+    tag: int,
+    segments: int,
+    x1: float,
+    y1: float,
+    z1: float,
+    x2: float,
+    y2: float,
+    z2: float,
+    radius: float,
+) -> str:
     return (
         f"GW {tag} {segments} {x1:.9f} {y1:.9f} {z1:.9f} "
         f"{x2:.9f} {y2:.9f} {z2:.9f} {radius:.9f}"
