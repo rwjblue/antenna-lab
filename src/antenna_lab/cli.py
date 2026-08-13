@@ -7,6 +7,7 @@ import json
 from collections.abc import Sequence
 from pathlib import Path
 
+from antenna_lab.kh1_nec import run_study
 from antenna_lab.measurements import load_impedance_measurements
 from antenna_lab.optimization import (
     compare_candidate,
@@ -51,6 +52,15 @@ def build_parser() -> argparse.ArgumentParser:
     pattern.add_argument("--radiator-ft", type=float, default=58.0)
     pattern.add_argument("--apex-angle-deg", type=float, default=120.0)
 
+    nec_study = subparsers.add_parser(
+        "run-kh1-nec-study",
+        help="Run the actual NEC-2 KH1 portable-antenna study",
+    )
+    nec_study.add_argument("--output", type=Path, required=True)
+    nec_study.add_argument("--measurements", type=Path, default=DEFAULT_MEASUREMENTS)
+    nec_study.add_argument("--nec2c", type=Path)
+    nec_study.add_argument("--jobs", type=int)
+
     verify = subparsers.add_parser(
         "verify-results", help="Verify a generated SHA256SUMS manifest"
     )
@@ -89,6 +99,15 @@ def main(argv: Sequence[str] | None = None) -> int:
             args.apex_angle_deg,
         )
         print(args.output)
+        return 0
+    if args.command == "run-kh1-nec-study":
+        summary = run_study(
+            args.output,
+            measurement_path=args.measurements,
+            nec2c=args.nec2c,
+            jobs=args.jobs,
+        )
+        print(json.dumps(summary, indent=2, sort_keys=True))
         return 0
     if args.command == "verify-results":
         valid, failures = verify_manifest(args.result_directory)

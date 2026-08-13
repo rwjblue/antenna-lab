@@ -1,0 +1,73 @@
+name: KH1 NEC-2 study
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/kh1-portable-nec
+
+permissions:
+  contents: write
+
+jobs:
+  study:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Assemble study source
+        run: |
+          cat .bootstrap/kh1_nec.py.part* > src/antenna_lab/kh1_nec.py
+          rm -rf .bootstrap
+
+      - name: Install NEC-2 solver
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes nec2c
+          nec2c -v
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Install Python and dependencies
+        run: |
+          uv python install
+          uv sync --no-editable --extra plots --group dev
+
+      - name: Format and lint implementation
+        run: |
+          uv run ruff format src tests
+          uv run ruff check --fix src tests
+
+      - name: Run tests
+        run: uv run pytest
+
+      - name: Execute NEC-2 study
+        run: |
+          uv run antenna-lab run-kh1-nec-study \
+            --output results/kh1-portable-nec-v1 \
+            --jobs 6
+
+      - name: Verify generated manifest
+        run: uv run antenna-lab verify-results results/kh1-portable-nec-v1
+
+      - name: Upload complete result set
+        uses: actions/upload-artifact@v4
+        with:
+          name: kh1-portable-nec-v1
+          path: results/kh1-portable-nec-v1
+          if-no-files-found: error
+
+      - name: Commit formatted source and generated results
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A src tests .bootstrap results/kh1-portable-nec-v1
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m 'Add reproducible KH1 NEC-2 study results [skip ci]'
+          git push

@@ -1,0 +1,120 @@
+mary,
+        linked,
+    )
+    _write_json(output_dir / "summary.json", summary)
+    (output_dir / "REPORT.md").write_text(_report(summary), encoding="utf-8")
+    _write_json(
+        output_dir / "run_metadata.json",
+        {
+            "solver": solver_version,
+            "measurement_sha256": _sha256(measurement_path),
+            "source_sha256": _sha256(Path(__file__)),
+            "github_sha": os.environ.get("GITHUB_SHA"),
+            "method": "actual NEC-2 radiator/direct-wire runs; measured-reference-plane anchored doublet deltas",
+        },
+    )
+    _manifest(output_dir)
+    return summary
+
+
+def _run_doublet_nec(lengths: np.ndarray, executable: Path, work: Path, jobs: int) -> list[dict[str, Any]]:
+    cases = [
+        (geometry_id, geometry, float(length), band, frequency)
+        for geometry_id, geometry in GEOMETRIES.items()
+        for length in lengths
+        for band, frequency, _ in BANDS
+    ]
+    rows: list[dict[str, Any]] = []
+    with ThreadPoolExecutor(max_workers=jobs) as pool:
+        future_map = {
+            pool.submit(
+                _doublet_case,
+                geometry_id,
+                geometry,
+                length,
+                band,
+                frequency,
+                executable,
+                work,
+            ): (geometry_id, length, band)
+            for geometry_id, geometry, length, band, frequency in cases
+        }
+        for index, future in enumerate(as_completed(future_map), 1):
+            try:
+                rows.append(future.result())
+            except Exception as error:
+                raise RuntimeError(f"NEC failed for {future_map[future]}") from error
+            if index % 100 == 0:
+                print(f"doublet NEC {index}/{len(future_map)}", flush=True)
+    return sorted(rows, key=lambda row: (row["geometry"], row["radiator_ft"], row["frequency_hz"]))
+
+
+def _doublet_case(
+    geometry_id: str,
+    geometry: InvertedV,
+    length: float,
+    band: str,
+    frequency_hz: int,
+    executable: Path,
+    work: Path,
+) -> dict[str, Any]:
+    stem = f"{geometry_id}-{length:.1f}-{band}".replace(".", "p")
+    result, deck_path, output_path = run(
+        doublet_deck(
+            title=stem,
+            total_length_ft=length,
+            geometry=geometry,
+            frequency_mhz=frequency_hz / 1e6,
+            radius_m=RADIUS_M,
+            conductivity_s_m=WIRE_CONDUCTIVITY,
+            epsilon_r=13.0,
+            ground_conductivity_s_m=0.005,
+        ),
+        work,
+        stem,
+        executable,
+    )
+    deck_path.unlink()
+    output_path.unlink()
+    _, end_height = geometry.endpoints(length)
+    return {
+        "geometry": geometry_id,
+        "radiator_ft": length,
+        "band": band,
+        "frequency_hz": frequency_hz,
+        "resistance_ohm": result.impedance_ohm.real,
+        "reactance_ohm": result.impedance_ohm.imag,
+        "nec_efficiency": result.efficiency,
+        "center_height_ft": geometry.center_height_ft,
+        "end_height_ft": end_height,
+        "included_angle_deg": geometry.included_angle_deg(length),
+    }
+
+
+def _line_scenarios(measured: np.ndarray) -> list[tuple[dict[str, Any], LineParameters, LineParameters, float, np.ndarray]]:
+    spacing = 0.0127
+    diameter = 0.000483
+    air_z0 = 120.0 * math.acosh(spacing / diameter)
+    coax = LineParameters(50.0, 0.78, 0.45)
+    rows = []
+    for vf in (0.90, 0.95, 0.99):
+        for scale in (0.90, 1.00, 1.10):
+            for loss in (0.20, 0.60):
+                line = LineParameters(air_z0 * vf * scale, vf, loss)
+                for coax_ft in (0.0, 3.0):
+                    loads = []
+                    for z, (_, frequency, _) in zip(measured, BANDS, strict=True):
+                        at_line = z if not coax_ft else load_impedance(z, frequency, coax_ft, coax)
+                        loads.append(load_impedance(at_line, frequency, 28.0, line))
+                    loads_array = np.asarray(loads)
+                    if np.min(loads_array.real) <= 0.05:
+                        continue
+                    metadata = {
+                        "id": f"vf{vf:.2f}-scale{scale:.2f}-loss{loss:.2f}-coax{coax_ft:.0f}",
+                        "air_z0_ohm": air_z0,
+                        "effective_z0_ohm": line.characteristic_impedance_ohm,
+                        "velocity_factor": vf,
+                        "z0_scale": scale,
+                        "loss_db_100ft_10mhz": loss,
+                        "coax_length_ft": coax_ft,
+                    

@@ -1,0 +1,85 @@
+    "minimum_deembedded_r_ohm": float(np.min(loads_array.real)),
+                    }
+                    rows.append((metadata, line, coax, coax_ft, loads_array))
+    if not rows:
+        raise RuntimeError("No passive line scenarios")
+    return rows
+
+
+def _evaluate_doublets(
+    lengths: np.ndarray,
+    feedpoint_rows: list[dict[str, Any]],
+    measured: np.ndarray,
+    scenarios: list[tuple[dict[str, Any], LineParameters, LineParameters, float, np.ndarray]],
+    threshold: float,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
+    geometry_ids = list(GEOMETRIES)
+    lookup = {
+        (row["geometry"], row["radiator_ft"], row["band"]): complex(
+            row["resistance_ohm"], row["reactance_ohm"]
+        )
+        for row in feedpoint_rows
+    }
+    feedlines = np.arange(10.0, 40.0 + 0.25, 0.5)
+    sample_count = len(geometry_ids) * 2 * len(scenarios)
+    grid: list[dict[str, Any]] = []
+    sample_cache: dict[tuple[float, float], list[tuple[np.ndarray, np.ndarray, np.ndarray]]] = {}
+
+    for length in lengths:
+        for feedline in feedlines:
+            compat_count = np.zeros(len(BANDS), dtype=int)
+            qmax = []
+            worst_eff = []
+            max_swrs = []
+            samples = []
+            for geometry_id in geometry_ids:
+                nec_base = np.asarray([lookup[(geometry_id, 58.0, band)] for band, _, _ in BANDS])
+                nec_candidate = np.asarray([lookup[(geometry_id, float(length), band)] for band, _, _ in BANDS])
+                for metadata, line, coax, coax_ft, baseline_load in scenarios:
+                    for method in ("impedance_delta", "smith_displacement"):
+                        load = _anchor(baseline_load, nec_base, nec_candidate, line.characteristic_impedance_ohm, method)
+                        radio = np.empty(len(BANDS), dtype=complex)
+                        efficiency = np.empty(len(BANDS))
+                        valid = np.ones(len(BANDS), dtype=bool)
+                        for index, (_, frequency, _) in enumerate(BANDS):
+                            if load[index].real <= 0:
+                                valid[index] = False
+                                radio[index] = np.nan + 1j * np.nan
+                                efficiency[index] = np.nan
+                                continue
+                            at_line = input_impedance(load[index], frequency, feedline, line)
+                            eff = line_efficiency(load[index], frequency, feedline, line)
+                            if coax_ft:
+                                eff *= line_efficiency(at_line, frequency, coax_ft, coax)
+                                at_line = input_impedance(at_line, frequency, coax_ft, coax)
+                            radio[index] = at_line
+                            efficiency[index] = eff
+                        q = _minimum_q(radio)
+                        compatible = valid & np.isfinite(q) & (q <= threshold)
+                        compat_count += compatible
+                        if np.all(valid[REQUIRED]):
+                            qmax.append(float(np.max(q[REQUIRED])))
+                            worst_eff.append(float(np.min(efficiency[REQUIRED])))
+                            max_swrs.append(float(np.max(swr(radio[REQUIRED]))))
+                        samples.append((radio, q, efficiency))
+            row = {
+                "radiator_ft": float(length),
+                "feedline_ft": float(feedline),
+                "total_wire_ft": float(length + 2 * feedline),
+                "sample_count": sample_count,
+                "all_required_compatibility_fraction": float(
+                    np.mean([
+                        bool(np.all(q[REQUIRED] <= threshold) and np.all(np.isfinite(q[REQUIRED])))
+                        for _, q, _ in samples
+                    ])
+                ),
+                "minimum_required_band_compatibility_fraction": float(np.min(compat_count[REQUIRED] / sample_count)),
+                "required_max_q_p90": _quantile(qmax, 0.90),
+                "required_max_raw_swr_p90": _quantile(max_swrs, 0.90),
+                "required_worst_line_efficiency_p10": _quantile(worst_eff, 0.10),
+            }
+            for index, (band, _, _) in enumerate(BANDS):
+                row[f"{band}_compatibility_fraction"] = float(compat_count[index] / sample_count)
+            grid.append(row)
+            if (length, feedline) in ((58.0, 28.0), (44.0, 28.0), (58.0, 31.0), (57.0, 28.0)):
+       

@@ -1,0 +1,87 @@
+         sample_cache[(float(length), float(feedline))] = samples
+
+    ranked = sorted(grid, key=_rank_doublet)
+    by_dimensions = {(row["radiator_ft"], row["feedline_ft"]): row for row in grid}
+    selections: dict[str, dict[str, Any]] = {
+        "current_58_28": by_dimensions[(58.0, 28.0)],
+        "classic_44_28": by_dimensions[(44.0, 28.0)],
+        "current_plus_3ft_line": by_dimensions[(58.0, 31.0)],
+        "reversible_57_28": by_dimensions[(57.0, 28.0)],
+        "robust_model_best": ranked[0],
+    }
+    selections["44ft_optimized_line"] = sorted(
+        [row for row in grid if row["radiator_ft"] == 44.0], key=_rank_doublet
+    )[0]
+    named = [{"selection": name, **row} for name, row in selections.items()]
+    details = []
+    for name, row in selections.items():
+        key = (row["radiator_ft"], row["feedline_ft"])
+        samples = sample_cache.get(key)
+        if samples is None:
+            samples = _samples_for_candidate(key[0], key[1], lookup, scenarios)
+        for band_index, (band, frequency, _) in enumerate(BANDS):
+            z = np.asarray([sample[0][band_index] for sample in samples])
+            q = np.asarray([sample[1][band_index] for sample in samples])
+            eff = np.asarray([sample[2][band_index] for sample in samples])
+            valid = np.isfinite(z.real) & (z.real > 0) & np.isfinite(q)
+            details.append(
+                {
+                    "selection": name,
+                    "band": band,
+                    "frequency_hz": frequency,
+                    "compatibility_fraction": float(np.mean(valid & (q <= threshold))),
+                    "resistance_p50": _nanquantile(z.real, 0.5),
+                    "reactance_p50": _nanquantile(z.imag, 0.5),
+                    "minimum_q_p50": _nanquantile(q, 0.5),
+                    "minimum_q_p90": _nanquantile(q, 0.9),
+                    "raw_swr_p50": _nanquantile(swr(z), 0.5),
+                    "line_efficiency_p10": _nanquantile(eff, 0.1),
+                }
+            )
+    return sorted(grid, key=lambda row: (row["radiator_ft"], row["feedline_ft"])), named, details
+
+
+def _samples_for_candidate(length: float, feedline: float, lookup: dict, scenarios: list) -> list:
+    samples = []
+    for geometry_id in GEOMETRIES:
+        nec_base = np.asarray([lookup[(geometry_id, 58.0, band)] for band, _, _ in BANDS])
+        nec_candidate = np.asarray([lookup[(geometry_id, length, band)] for band, _, _ in BANDS])
+        for _, line, coax, coax_ft, baseline_load in scenarios:
+            for method in ("impedance_delta", "smith_displacement"):
+                load = _anchor(baseline_load, nec_base, nec_candidate, line.characteristic_impedance_ohm, method)
+                radio = []
+                efficiency = []
+                for z, (_, frequency, _) in zip(load, BANDS, strict=True):
+                    if z.real <= 0:
+                        radio.append(np.nan + 1j * np.nan)
+                        efficiency.append(np.nan)
+                        continue
+                    at_line = input_impedance(z, frequency, feedline, line)
+                    eff = line_efficiency(z, frequency, feedline, line)
+                    if coax_ft:
+                        eff *= line_efficiency(at_line, frequency, coax_ft, coax)
+                        at_line = input_impedance(at_line, frequency, coax_ft, coax)
+                    radio.append(at_line)
+                    efficiency.append(eff)
+                radio_array = np.asarray(radio)
+                samples.append((radio_array, _minimum_q(radio_array), np.asarray(efficiency)))
+    return samples
+
+
+def _run_direct_nec(executable: Path, work: Path, jobs: int, threshold: float) -> list[dict[str, Any]]:
+    cases = [
+        (candidate_id, radiator, counterpoise, deployment_id, deployment, ground_id, ground, conductivity_id, conductivity, band, frequency)
+        for candidate_id, (radiator, counterpoise) in DIRECT_CANDIDATES.items()
+        for deployment_id, deployment in DIRECT_DEPLOYMENTS.items()
+        for ground_id, ground in GROUNDS.items()
+        for conductivity_id, conductivity in (("ccs_mid", 15_000_000.0), ("copper", 58_000_000.0))
+        for band, frequency, required in BANDS
+        if required
+    ]
+    rows = []
+    with ThreadPoolExecutor(max_workers=jobs) as pool:
+        futures = {
+            pool.submit(_direct_case, *case, executable, work, threshold): case[:2] + (case[3], case[5], case[7], case[9])
+            for case in cases
+        }
+        for 
