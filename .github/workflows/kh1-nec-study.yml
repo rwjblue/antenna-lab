@@ -54,8 +54,12 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Commit restored source and sharded workflow
+      - name: Commit restored source without changing the workflow
         run: |
+          # GitHub's job token may update repository contents, but it may not
+          # update workflow files. Keep this temporary finalizer in the commit;
+          # the final sharded workflow is installed separately after this push.
+          git checkout HEAD -- .github/workflows/kh1-nec-study.yml
           rm -rf .bootstrap-v2 .bootstrap-v3
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -65,5 +69,5 @@ jobs:
             echo 'Nothing to commit.'
             exit 0
           fi
-          git commit -m 'Split KH1 NEC study across sharded Actions jobs'
+          git commit -m 'Restore corrected KH1 NEC source [skip ci]'
           git push origin HEAD:research/kh1-portable-nec
