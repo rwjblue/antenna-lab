@@ -27,20 +27,22 @@ jobs:
 
           path = Path("src/antenna_lab/kh1_nec.py")
           source = path.read_text(encoding="utf-8")
-          old = '''    stem = (
-              f"direct-{candidate_id}-{deployment_id}-{ground_id}-"
-              f"{conductivity_id}-{band}"
+          old = (
+              "    stem = (\n"
+              "        f\"direct-{candidate_id}-{deployment_id}-{ground_id}-\"\n"
+              "        f\"{conductivity_id}-{band}\"\n"
+              "    )\n"
           )
-          '''
-          new = '''    case_identity = (
-              f"{candidate_id}|{deployment_id}|{ground_id}|"
-              f"{conductivity_id}|{band}"
+          new = (
+              "    case_identity = (\n"
+              "        f\"{candidate_id}|{deployment_id}|{ground_id}|\"\n"
+              "        f\"{conductivity_id}|{band}\"\n"
+              "    )\n"
+              "    stem = (\n"
+              "        f\"d-{candidate_id}-\"\n"
+              "        f\"{hashlib.sha256(case_identity.encode()).hexdigest()[:12]}\"\n"
+              "    )\n"
           )
-          stem = (
-              f"d-{candidate_id}-"
-              f"{hashlib.sha256(case_identity.encode()).hexdigest()[:12]}"
-          )
-          '''
           if old not in source:
               raise SystemExit("Expected direct-fed NEC stem block was not found")
           path.write_text(source.replace(old, new, 1), encoding="utf-8")
