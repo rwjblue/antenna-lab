@@ -1,322 +1,65 @@
-name: KH1 NEC-2 study
+name: Patch KH1 NEC source path length
 
 on:
   workflow_dispatch:
   push:
     branches:
       - research/kh1-portable-nec
-  pull_request:
-    paths:
-      - ".github/workflows/kh1-nec-study.yml"
-      - "data/measured/**"
-      - "src/antenna_lab/kh1_nec.py"
-      - "src/antenna_lab/kh1_pipeline.py"
-      - "src/antenna_lab/nec.py"
-      - "src/antenna_lab/transmission_line.py"
-      - "tests/test_kh1_*.py"
 
 permissions:
-  contents: read
-
-concurrency:
-  group: kh1-nec-${{ github.ref }}
-  cancel-in-progress: false
-
-env:
-  UV_VERSION: "0.12.3"
-  PYTHON_VERSION: "3.12"
-  ARTIFACT_RETENTION_DAYS: "90"
+  contents: write
 
 jobs:
-  quality:
-    name: Source checks
+  patch-source:
+    if: github.ref == 'refs/heads/research/kh1-portable-nec'
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v4
-
-      - uses: astral-sh/setup-uv@v6
         with:
-          version: ${{ env.UV_VERSION }}
-          enable-cache: true
+          fetch-depth: 0
 
-      - name: Install Python and dependencies
+      - name: Shorten direct-fed NEC filenames
         run: |
-          uv python install "$PYTHON_VERSION"
-          uv sync --frozen --no-editable --group dev
+          python3 - <<'PY'
+          from pathlib import Path
 
-      - name: Critical lint
-        run: uv run ruff check --select E4,E7,E9,F src tests
+          path = Path("src/antenna_lab/kh1_nec.py")
+          source = path.read_text(encoding="utf-8")
+          old = '''    stem = (
+              f"direct-{candidate_id}-{deployment_id}-{ground_id}-"
+              f"{conductivity_id}-{band}"
+          )
+          '''
+          new = '''    case_identity = (
+              f"{candidate_id}|{deployment_id}|{ground_id}|"
+              f"{conductivity_id}|{band}"
+          )
+          stem = (
+              f"d-{candidate_id}-"
+              f"{hashlib.sha256(case_identity.encode()).hexdigest()[:12]}"
+          )
+          '''
+          if old not in source:
+              raise SystemExit("Expected direct-fed NEC stem block was not found")
+          path.write_text(source.replace(old, new, 1), encoding="utf-8")
+          PY
+          python3 -m compileall -q src tests
 
-      - name: Compile Python sources
-        run: uv run python -m compileall -q src tests
-
-      - name: Run tests
-        run: uv run pytest
-
-      - name: Upload exact source snapshot
+      - name: Upload patched source
         uses: actions/upload-artifact@v4
         with:
-          name: kh1-source-${{ github.run_id }}
-          path: |
-            .github/workflows/kh1-nec-study.yml
-            configs
-            data/measured
-            src
-            tests
-            MODEL_LIMITATIONS.md
-            NEXT_EXPERIMENT.md
-            README.md
-            pyproject.toml
-            uv.lock
+          name: kh1-nec-path-length-patch-${{ github.run_id }}
+          path: src/antenna_lab/kh1_nec.py
           if-no-files-found: error
-          retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
+          retention-days: 30
 
-  doublet-nec:
-    name: Doublet NEC shard ${{ matrix.shard }}
-    needs: quality
-    runs-on: ubuntu-24.04
-    timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        shard: [0, 1]
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install NEC-2 solver
+      - name: Commit source-only patch
         run: |
-          sudo apt-get update
-          sudo apt-get install --yes nec2c
-          nec2c -v
-
-      - uses: astral-sh/setup-uv@v6
-        with:
-          version: ${{ env.UV_VERSION }}
-          enable-cache: true
-
-      - name: Install Python dependencies
-        run: |
-          uv python install "$PYTHON_VERSION"
-          uv sync --frozen --no-editable
-
-      - name: Run doublet NEC shard
-        shell: bash
-        run: |
-          output="/tmp/kh1-doublet-nec-${{ matrix.shard }}"
-          set +e
-          uv run antenna-lab run-kh1-doublet-nec-shard \
-            --output "$output" \
-            --shard-index "${{ matrix.shard }}" \
-            --shard-count 2 \
-            --jobs 6 2>&1 | tee /tmp/kh1-doublet-nec.log
-          status=${PIPESTATUS[0]}
-          set -e
-          mkdir -p "$output"
-          cp /tmp/kh1-doublet-nec.log "$output/runner.log"
-          exit "$status"
-
-      - name: Upload doublet NEC shard
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: kh1-doublet-nec-${{ github.run_id }}-${{ matrix.shard }}
-          path: /tmp/kh1-doublet-nec-${{ matrix.shard }}
-          if-no-files-found: warn
-          retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
-
-  direct-nec:
-    name: Direct-fed NEC shard ${{ matrix.shard }}
-    needs: quality
-    runs-on: ubuntu-24.04
-    timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        shard: [0, 1]
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install NEC-2 solver
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes nec2c
-          nec2c -v
-
-      - uses: astral-sh/setup-uv@v6
-        with:
-          version: ${{ env.UV_VERSION }}
-          enable-cache: true
-
-      - name: Install Python dependencies
-        run: |
-          uv python install "$PYTHON_VERSION"
-          uv sync --frozen --no-editable
-
-      - name: Run direct-fed NEC shard
-        shell: bash
-        run: |
-          output="/tmp/kh1-direct-nec-${{ matrix.shard }}"
-          set +e
-          uv run antenna-lab run-kh1-direct-nec-shard \
-            --output "$output" \
-            --shard-index "${{ matrix.shard }}" \
-            --shard-count 2 \
-            --jobs 6 2>&1 | tee /tmp/kh1-direct-nec.log
-          status=${PIPESTATUS[0]}
-          set -e
-          mkdir -p "$output"
-          cp /tmp/kh1-direct-nec.log "$output/runner.log"
-          exit "$status"
-
-      - name: Upload direct-fed NEC shard
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: kh1-direct-nec-${{ github.run_id }}-${{ matrix.shard }}
-          path: /tmp/kh1-direct-nec-${{ matrix.shard }}
-          if-no-files-found: warn
-          retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
-
-  doublet-grid:
-    name: Doublet grid shard ${{ matrix.shard }}
-    needs: [quality, doublet-nec]
-    runs-on: ubuntu-24.04
-    timeout-minutes: 45
-    strategy:
-      fail-fast: false
-      matrix:
-        shard: [0, 1, 2, 3, 4, 5, 6, 7]
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download all doublet NEC shards
-        uses: actions/download-artifact@v4
-        with:
-          pattern: kh1-doublet-nec-${{ github.run_id }}-*
-          path: /tmp/kh1-inputs
-          merge-multiple: true
-
-      - uses: astral-sh/setup-uv@v6
-        with:
-          version: ${{ env.UV_VERSION }}
-          enable-cache: true
-
-      - name: Install Python dependencies
-        run: |
-          uv python install "$PYTHON_VERSION"
-          uv sync --frozen --no-editable
-
-      - name: Evaluate doublet grid shard
-        shell: bash
-        run: |
-          output="/tmp/kh1-doublet-grid-${{ matrix.shard }}"
-          set +e
-          uv run antenna-lab run-kh1-doublet-grid-shard \
-            --input /tmp/kh1-inputs \
-            --output "$output" \
-            --shard-index "${{ matrix.shard }}" \
-            --shard-count 8 2>&1 | tee /tmp/kh1-doublet-grid.log
-          status=${PIPESTATUS[0]}
-          set -e
-          mkdir -p "$output"
-          cp /tmp/kh1-doublet-grid.log "$output/runner.log"
-          exit "$status"
-
-      - name: Upload doublet grid shard
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: kh1-doublet-grid-${{ github.run_id }}-${{ matrix.shard }}
-          path: /tmp/kh1-doublet-grid-${{ matrix.shard }}
-          if-no-files-found: warn
-          retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
-
-  assemble:
-    name: Assemble and verify result package
-    needs: [quality, doublet-nec, direct-nec, doublet-grid]
-    runs-on: ubuntu-24.04
-    timeout-minutes: 30
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download doublet NEC shards
-        uses: actions/download-artifact@v4
-        with:
-          pattern: kh1-doublet-nec-${{ github.run_id }}-*
-          path: /tmp/kh1-inputs
-          merge-multiple: true
-
-      - name: Download direct-fed NEC shards
-        uses: actions/download-artifact@v4
-        with:
-          pattern: kh1-direct-nec-${{ github.run_id }}-*
-          path: /tmp/kh1-inputs
-          merge-multiple: true
-
-      - name: Download doublet grid shards
-        uses: actions/download-artifact@v4
-        with:
-          pattern: kh1-doublet-grid-${{ github.run_id }}-*
-          path: /tmp/kh1-inputs
-          merge-multiple: true
-
-      - name: Install NEC-2 solver
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes nec2c
-          nec2c -v
-
-      - uses: astral-sh/setup-uv@v6
-        with:
-          version: ${{ env.UV_VERSION }}
-          enable-cache: true
-
-      - name: Install Python dependencies
-        run: |
-          uv python install "$PYTHON_VERSION"
-          uv sync --frozen --no-editable
-
-      - name: Assemble canonical result package
-        shell: bash
-        run: |
-          mkdir -p /tmp/kh1-assembly
-          set +e
-          uv run antenna-lab assemble-kh1-nec-study \
-            --input /tmp/kh1-inputs \
-            --output /tmp/kh1-portable-nec-v2 \
-            2>&1 | tee /tmp/kh1-assembly/runner.log
-          status=${PIPESTATUS[0]}
-          set -e
-          exit "$status"
-
-      - name: Verify generated manifest
-        run: uv run antenna-lab verify-results /tmp/kh1-portable-nec-v2
-
-      - name: Add report to workflow summary
-        run: cat /tmp/kh1-portable-nec-v2/REPORT.md >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload complete result set
-        uses: actions/upload-artifact@v4
-        with:
-          name: kh1-portable-nec-v2-${{ github.run_id }}
-          path: /tmp/kh1-portable-nec-v2
-          if-no-files-found: error
-          retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
-          compression-level: 6
-
-      - name: Upload assembly diagnostics on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: kh1-assembly-diagnostics-${{ github.run_id }}
-          path: |
-            /tmp/kh1-assembly
-            /tmp/kh1-portable-nec-v2
-          if-no-files-found: warn
-          retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/antenna_lab/kh1_nec.py
+          git diff --cached --stat
+          git commit -m 'Shorten direct-fed NEC working filenames [skip ci]'
+          git push origin HEAD:research/kh1-portable-nec
