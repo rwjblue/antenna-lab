@@ -5,8 +5,20 @@ from __future__ import annotations
 import argparse
 import json
 from collections.abc import Sequence
+from dataclasses import asdict
 from pathlib import Path
 
+from antenna_lab.atu import (
+    ATU_PROFILE_IDS,
+    LOSS_ENVELOPES,
+    PROFILES,
+    assemble_atu_loss_study,
+    run_atu_direct_nec_stage,
+    run_atu_loss_study,
+    run_atu_profile_stage,
+    solve_switched_l_network,
+    solve_zm2,
+)
 from antenna_lab.kh1_nec import run_study
 from antenna_lab.kh1_pipeline import (
     assemble_study,
@@ -108,6 +120,59 @@ def build_parser() -> argparse.ArgumentParser:
     assemble_nec.add_argument("--measurements", type=Path, default=DEFAULT_MEASUREMENTS)
     assemble_nec.add_argument("--nec2c", type=Path)
 
+    solve_atu = subparsers.add_parser(
+        "solve-atu-loss",
+        help="Enumerate a tuner profile for one complex antenna load",
+    )
+    solve_atu.add_argument(
+        "--profile", choices=sorted(PROFILES) + ["zm2"], required=True
+    )
+    solve_atu.add_argument("--frequency-mhz", type=float, required=True)
+    solve_atu.add_argument("--resistance-ohm", type=float, required=True)
+    solve_atu.add_argument("--reactance-ohm", type=float, required=True)
+    solve_atu.add_argument(
+        "--loss-envelope",
+        choices=[item.id for item in LOSS_ENVELOPES],
+        default="nominal",
+    )
+    solve_atu.add_argument(
+        "--objective",
+        choices=["best_swr", "lowest_loss_under_target"],
+        default="lowest_loss_under_target",
+    )
+
+    atu_study = subparsers.add_parser(
+        "run-atu-loss-study",
+        help="Model tuner and end-to-end loss for the direct-fed 41/17 antenna",
+    )
+    atu_study.add_argument("--output", type=Path, required=True)
+    atu_study.add_argument("--direct-nec-csv", type=Path)
+    atu_study.add_argument("--nec2c", type=Path)
+    atu_study.add_argument("--jobs", type=int, default=6)
+
+    atu_direct = subparsers.add_parser(
+        "run-atu-direct-nec",
+        help="Generate the shared direct-fed 41/17 NEC load ensemble",
+    )
+    atu_direct.add_argument("--output", type=Path, required=True)
+    atu_direct.add_argument("--nec2c", type=Path)
+    atu_direct.add_argument("--jobs", type=int, default=6)
+
+    atu_profile = subparsers.add_parser(
+        "run-atu-profile-study",
+        help="Evaluate one ATU profile against a generated NEC load ensemble",
+    )
+    atu_profile.add_argument("--output", type=Path, required=True)
+    atu_profile.add_argument("--direct-nec-csv", type=Path, required=True)
+    atu_profile.add_argument("--profile", choices=ATU_PROFILE_IDS, required=True)
+
+    assemble_atu = subparsers.add_parser(
+        "assemble-atu-loss-study",
+        help="Assemble independently computed ATU profile artifacts",
+    )
+    assemble_atu.add_argument("--input", type=Path, required=True)
+    assemble_atu.add_argument("--output", type=Path, required=True)
+
     verify = subparsers.add_parser(
         "verify-results", help="Verify a generated SHA256SUMS manifest"
     )
@@ -194,6 +259,52 @@ def main(argv: Sequence[str] | None = None) -> int:
             nec2c=args.nec2c,
         )
         print(json.dumps(summary, indent=2, sort_keys=True))
+        return 0
+    if args.command == "solve-atu-loss":
+        loss = next(
+            item for item in LOSS_ENVELOPES if item.id == args.loss_envelope
+        )
+        load = complex(args.resistance_ohm, args.reactance_ohm)
+        if args.profile == "zm2":
+            result = solve_zm2(load, args.frequency_mhz * 1e6, loss)
+        else:
+            result = asdict(
+                solve_switched_l_network(
+                    PROFILES[args.profile],
+                    load,
+                    args.frequency_mhz * 1e6,
+                    loss,
+                    objective=args.objective,
+                )
+            )
+        print(json.dumps(result, indent=2, sort_keys=True, allow_nan=True))
+        return 0
+    if args.command == "run-atu-loss-study":
+        summary = run_atu_loss_study(
+            args.output,
+            direct_nec_csv=args.direct_nec_csv,
+            nec2c=args.nec2c,
+            jobs=args.jobs,
+        )
+        print(json.dumps(summary, indent=2, sort_keys=True, allow_nan=True))
+        return 0
+    if args.command == "run-atu-direct-nec":
+        summary = run_atu_direct_nec_stage(
+            args.output, nec2c=args.nec2c, jobs=args.jobs
+        )
+        print(json.dumps(summary, indent=2, sort_keys=True, allow_nan=True))
+        return 0
+    if args.command == "run-atu-profile-study":
+        summary = run_atu_profile_stage(
+            args.output,
+            direct_nec_csv=args.direct_nec_csv,
+            profile_id=args.profile,
+        )
+        print(json.dumps(summary, indent=2, sort_keys=True, allow_nan=True))
+        return 0
+    if args.command == "assemble-atu-loss-study":
+        summary = assemble_atu_loss_study(args.output, input_dir=args.input)
+        print(json.dumps(summary, indent=2, sort_keys=True, allow_nan=True))
         return 0
     if args.command == "verify-results":
         valid, failures = verify_manifest(args.result_directory)

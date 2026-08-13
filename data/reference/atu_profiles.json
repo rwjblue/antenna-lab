@@ -1,0 +1,164 @@
+{
+  "loss_envelopes": [
+    {
+      "capacitor_q": 800.0,
+      "fixed_series_ohm": 0.04,
+      "id": "conservative",
+      "inductor_q": 35.0,
+      "relay_contact_ohm": 0.05
+    },
+    {
+      "capacitor_q": 2000.0,
+      "fixed_series_ohm": 0.02,
+      "id": "nominal",
+      "inductor_q": 70.0,
+      "relay_contact_ohm": 0.025
+    },
+    {
+      "capacitor_q": 5000.0,
+      "fixed_series_ohm": 0.01,
+      "id": "optimistic",
+      "inductor_q": 120.0,
+      "relay_contact_ohm": 0.012
+    }
+  ],
+  "switched_l": {
+    "khatu1": {
+      "allow_bypass": true,
+      "allow_load_shunt": true,
+      "allow_source_shunt": true,
+      "bypass_swr": 2.5,
+      "capacitors_pF": [
+        47.0,
+        100.0,
+        220.0
+      ],
+      "component_status": "inferred",
+      "id": "khatu1",
+      "inductors_uH": [
+        0.75,
+        1.5,
+        3.0,
+        6.0
+      ],
+      "label": "Elecraft KHATU1 (KH1; range-calibrated inference)",
+      "provenance": "KH1 manual documents series-L/shunt-C operation, L/C/Z display, and eight ATU relays; public bank values were not found",
+      "supported_max_mhz": 21.45,
+      "supported_min_mhz": 7.0,
+      "topology_relay_count": 1
+    },
+    "kxat2": {
+      "allow_bypass": true,
+      "allow_load_shunt": true,
+      "allow_source_shunt": true,
+      "bypass_swr": 2.5,
+      "capacitors_pF": [
+        10.0,
+        18.0,
+        39.0,
+        82.0,
+        164.0,
+        330.0,
+        680.0
+      ],
+      "component_status": "published",
+      "id": "kxat2",
+      "inductors_uH": [
+        0.063,
+        0.125,
+        0.25,
+        0.5,
+        1.0,
+        2.0,
+        4.0
+      ],
+      "label": "Elecraft KXAT2 (KX2)",
+      "provenance": "Elecraft KX2 schematic E740324 Rev A, KXAT2 page",
+      "supported_max_mhz": 30.0,
+      "supported_min_mhz": 1.8,
+      "topology_relay_count": 1
+    },
+    "kxat3": {
+      "allow_bypass": true,
+      "allow_load_shunt": true,
+      "allow_source_shunt": true,
+      "bypass_swr": 2.5,
+      "capacitors_pF": [
+        10.0,
+        18.0,
+        39.0,
+        82.0,
+        164.0,
+        330.0,
+        680.0,
+        1360.0
+      ],
+      "component_status": "published",
+      "id": "kxat3",
+      "inductors_uH": [
+        0.06,
+        0.12,
+        0.25,
+        0.5,
+        1.0,
+        2.0,
+        4.0,
+        8.0
+      ],
+      "label": "Elecraft KXAT3 (KX3)",
+      "provenance": "Elecraft KX3 schematic, KXAT3 page",
+      "supported_max_mhz": 54.0,
+      "supported_min_mhz": 1.8,
+      "topology_relay_count": 1
+    },
+    "z11pro2": {
+      "allow_bypass": true,
+      "allow_load_shunt": true,
+      "allow_source_shunt": true,
+      "bypass_swr": 2.5,
+      "capacitors_pF": [
+        15.0,
+        30.0,
+        60.0,
+        120.0,
+        240.0,
+        480.0,
+        960.0,
+        1920.0
+      ],
+      "component_status": "range-fit",
+      "id": "z11pro2",
+      "inductors_uH": [
+        0.08,
+        0.16,
+        0.32,
+        0.64,
+        1.28,
+        2.56,
+        5.12,
+        10.24
+      ],
+      "label": "LDG Z-11Pro II (specification range-fit)",
+      "provenance": "Z-11Pro II manual publishes switched-L/high-low-Z architecture and matching range, but not current-production bank values",
+      "supported_max_mhz": 54.0,
+      "supported_min_mhz": 1.8,
+      "topology_relay_count": 1
+    }
+  },
+  "zm2": {
+    "al_nh_per_turn2": 11.0,
+    "c1_max_pF": 1032.0,
+    "c2_max_pF": 532.0,
+    "coupling": 0.9,
+    "id": "zm2",
+    "label": "Emtech ZM-2 equivalent coupled Z-match",
+    "primary_turn_options": [
+      27,
+      16,
+      11
+    ],
+    "secondary_turns": 7,
+    "supported_max_mhz": 30.0,
+    "supported_min_mhz": 7.0
+  }
+}

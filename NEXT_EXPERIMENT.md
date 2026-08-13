@@ -34,10 +34,25 @@ Treat the model's 3.75-4.50 ft interval as a test window, not a cutting length.
 
 ## Secondary build
 
-After the extension experiment, build a separate direct-fed 41 ft radiator with
-an explicit 17 ft counterpoise. Test it first on the five KH1 priority bands,
-then record 80, 60, 12, 10, and 6 meter R+jX when the radio/analyzer supports
-them. A 35/17 ft version remains the shorter field-evidence control; a 35/25 ft
-version remains a useful counterpoise-length comparison. Record the final tuner
-state when the radio exposes it, because tuner insertion loss is the next major
-modeling uncertainty.
+After the extension experiment, a separate compact direct-fed trial may use a
+35 ft radiator with an explicit 17 ft counterpoise. Test it against the same
+five-band measurement protocol. A 35/25 ft version is the modeled robustness
+reference but uses more wire; the 35/17 ft build is the compact field trial.
+
+## Extended-band measurements
+
+For the 41/17 direct-fed trial, collect raw feedpoint `R+jX` and tuner outcome on
+80/60/40/30/20/17/15/12/10 m with the KX2. Record 6 m only with equipment that
+supports it. Keep deployment geometry, counterpoise orientation, and ground
+condition in the notes; those variables are part of the modeled ensemble.
+
+## Tuner-loss validation
+
+The 41/17 direct-fed build is the preferred system-level validation article
+because it removes mismatched feedline loss. For each available tuner—KXAT2,
+KXAT3, KHATU1, Z-11Pro II, and ZM-2—record raw feedpoint `R+jX`, final SWR, and
+selected tuner state when exposed by the device. Populate
+`data/measured/atu_states_template.csv`. Then measure low-power insertion loss
+with a calibrated VNA or power-meter fixture. Compare both the lowest-SWR state
+and any alternate state below 1.5:1; the lowest-SWR state is not necessarily the
+lowest-loss state.
