@@ -105,16 +105,15 @@ the production board.
 
 Source: [LDG Z-11Pro II product documentation](https://ldgelectronics.com/index.php/products/zero-power/z-11proii/).
 
-### EMTECH ZM-2
+### EMTECH ZM-2 — BNC prebuilt
 
-The ZM-2 is not an L network. It is represented as a coupled-resonator Z-match
+The modeled unit is the EMTECH `ZM-2 - BNC Connectors - Prebuilt`. It is rated by EMTECH for 80 through 10 meters and 15 W maximum. The ZM-2 is not an L network. It is represented as a coupled-resonator Z-match
 using the documented 27-turn primary with 16/11-turn tap choices, 7-turn link,
 dual 266 pF capacitors, and switched 500 pF input capacitance. The model solves
 capacitor settings and tap choice while including finite coil and capacitor Q.
-Core AL, coupling coefficient, parasitics, and variable-capacitor law are not yet
-calibrated, so ZM-2 results are exploratory.
+The documented SWR-indicator bridge is modeled as bypassed during normal operation, as instructed after tuning. Core AL, frequency-dependent core loss, coupling coefficient, winding parasitics, and variable-capacitor law are not yet calibrated, so the topology is specific to the owned unit but its loss result remains a sensitivity estimate.
 
-Source: [EMTECH ZM-2 construction and operation guide](https://manuals.plus/m/77d9a99e14f1a25e02aa2c2a9489da5db5e04c52c27d9c256ca3dbc769cac1fa).
+Sources: [EMTECH ZM-2 BNC prebuilt product page](https://emtech-qrp.com/product/zm-2-bnc-connectors-prebuilt/) and [EMTECH ZM-2 construction and operation guide](https://manuals.plus/m/77d9a99e14f1a25e02aa2c2a9489da5db5e04c52c27d9c256ca3dbc769cac1fa).
 
 ## Reproducing the study
 

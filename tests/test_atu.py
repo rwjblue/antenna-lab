@@ -114,3 +114,13 @@ def test_sharded_profile_pipeline_assembles_manifest(tmp_path) -> None:
     assert summary["solution_row_count"] > 0
     valid, failures = verify_manifest(output_dir)
     assert valid, failures
+
+
+def test_zm2_profile_matches_owned_prebuilt_range():
+    from antenna_lab.atu import ZM2_PROFILE
+
+    assert ZM2_PROFILE.label == "EMTECH ZM-2 BNC prebuilt coupled Z-match"
+    assert ZM2_PROFILE.supports(3.5e6)
+    assert ZM2_PROFILE.supports(30.0e6)
+    assert not ZM2_PROFILE.supports(3.49e6)
+    assert not ZM2_PROFILE.supports(30.01e6)

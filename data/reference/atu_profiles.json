@@ -151,7 +151,7 @@
     "c2_max_pF": 532.0,
     "coupling": 0.9,
     "id": "zm2",
-    "label": "Emtech ZM-2 equivalent coupled Z-match",
+    "label": "EMTECH ZM-2 BNC prebuilt coupled Z-match",
     "primary_turn_options": [
       27,
       16,
@@ -159,6 +159,11 @@
     ],
     "secondary_turns": 7,
     "supported_max_mhz": 30.0,
-    "supported_min_mhz": 7.0
+    "supported_min_mhz": 3.5,
+    "product": "ZM-2 - BNC Connectors - Prebuilt",
+    "power_limit_w": 15.0,
+    "swr_bridge_operating_state": "bypassed after tuning",
+    "component_status": "documented topology; uncalibrated loss parameters",
+    "provenance": "EMTECH product page and ZM-2 construction/operation guide: T130-2 27-turn winding with 16/11-turn selections, 7-turn link, two dual-section 266 pF variables, switchable 500 pF input capacitor"
   }
 }

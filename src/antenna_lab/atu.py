@@ -26,7 +26,6 @@ from antenna_lab.kh1_nec import (
     DIRECT_DEPLOYMENTS,
     EXTENDED_BANDS,
     GROUNDS,
-    RADIUS_M,
     _direct_case,
     _manifest,
     _quantile,
@@ -513,14 +512,14 @@ def solve_switched_l_network(
 @dataclass(frozen=True)
 class ZMatchProfile:
     id: str = "zm2"
-    label: str = "Emtech ZM-2 equivalent coupled Z-match"
+    label: str = "EMTECH ZM-2 BNC prebuilt coupled Z-match"
     primary_turn_options: tuple[int, ...] = (27, 16, 11)
     secondary_turns: int = 7
     al_nh_per_turn2: float = 11.0
     coupling: float = 0.90
     c1_max_pF: float = 1_032.0
     c2_max_pF: float = 532.0
-    supported_min_mhz: float = 7.0
+    supported_min_mhz: float = 3.5
     supported_max_mhz: float = 30.0
 
     def supports(self, frequency_hz: float) -> bool:
@@ -668,7 +667,10 @@ def solve_zm2(
         "transducer_efficiency": best["load_power"],
         "tuner_loss_db": _db_loss(best["efficiency"]),
         "total_loss_db": _db_loss(best["load_power"]),
-        "model_status": "equivalent-circuit; tap parasitics and winding geometry uncalibrated",
+        "model_status": (
+            "documented EMTECH ZM-2 topology; core loss, coupling, "
+            "parasitics, and capacitor law remain sensitivity inputs"
+        ),
     }
 
 
