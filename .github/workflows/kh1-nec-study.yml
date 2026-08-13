@@ -17,6 +17,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Upload source snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: kh1-nec-source
+          path: |
+            src
+            tests
+            README.md
+            MODEL_LIMITATIONS.md
+            NEXT_EXPERIMENT.md
+            .github/workflows/kh1-nec-study.yml
+          if-no-files-found: error
+
       - name: Install NEC-2 solver
         run: |
           sudo apt-get update
@@ -51,16 +64,9 @@ jobs:
       - name: Verify generated manifest
         run: uv run antenna-lab verify-results /tmp/kh1-portable-nec-v1
 
-      - name: Upload source snapshot and fresh result set
+      - name: Upload fresh result set
         uses: actions/upload-artifact@v4
         with:
-          name: kh1-nec-source-snapshot
-          path: |
-            src
-            tests
-            README.md
-            MODEL_LIMITATIONS.md
-            NEXT_EXPERIMENT.md
-            .github/workflows/kh1-nec-study.yml
-            /tmp/kh1-portable-nec-v1
+          name: kh1-portable-nec-v1-fresh
+          path: /tmp/kh1-portable-nec-v1
           if-no-files-found: error
