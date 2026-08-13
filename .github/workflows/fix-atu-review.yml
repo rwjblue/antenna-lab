@@ -1,0 +1,100 @@
+name: Apply ATU review corrections
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/atu-loss-model
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: contains(github.event.head_commit.message || '', 'Run ATU review corrections') || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply corrections
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+
+          atu = Path('src/antenna_lab/atu.py')
+          text = atu.read_text()
+          text = text.replace('    RADIUS_M,\n', '', 1)
+          text = text.replace(
+              'label: str = "Emtech ZM-2 equivalent coupled Z-match"',
+              'label: str = "EMTECH ZM-2 BNC prebuilt coupled Z-match"',
+              1,
+          )
+          text = text.replace(
+              '    supported_min_mhz: float = 7.0\n    supported_max_mhz: float = 30.0',
+              '    supported_min_mhz: float = 3.5\n    supported_max_mhz: float = 30.0',
+              1,
+          )
+          text = text.replace(
+              '"model_status": "equivalent-circuit; tap parasitics and winding geometry uncalibrated",',
+              '"model_status": (\n            "documented EMTECH ZM-2 topology; core loss, coupling, "\n            "parasitics, and capacitor law remain sensitivity inputs"\n        ),',
+              1,
+          )
+          atu.write_text(text)
+
+          profiles_path = Path('data/reference/atu_profiles.json')
+          profiles = json.loads(profiles_path.read_text())
+          zm2 = profiles['zm2']
+          zm2['label'] = 'EMTECH ZM-2 BNC prebuilt coupled Z-match'
+          zm2['supported_min_mhz'] = 3.5
+          zm2['product'] = 'ZM-2 - BNC Connectors - Prebuilt'
+          zm2['power_limit_w'] = 15.0
+          zm2['swr_bridge_operating_state'] = 'bypassed after tuning'
+          zm2['component_status'] = 'documented topology; uncalibrated loss parameters'
+          zm2['provenance'] = (
+              'EMTECH product page and ZM-2 construction/operation guide: '
+              'T130-2 27-turn winding with 16/11-turn selections, 7-turn link, '
+              'two dual-section 266 pF variables, switchable 500 pF input capacitor'
+          )
+          profiles_path.write_text(json.dumps(profiles, indent=2, sort_keys=False) + '\n')
+
+          docs_path = Path('docs/atu-loss-model.md')
+          docs = docs_path.read_text()
+          docs = docs.replace(
+              '### EMTECH ZM-2\n\nThe ZM-2 is not an L network.',
+              '### EMTECH ZM-2 — BNC prebuilt\n\nThe modeled unit is the EMTECH `ZM-2 - BNC Connectors - Prebuilt`. '
+              'It is rated by EMTECH for 80 through 10 meters and 15 W maximum. '
+              'The ZM-2 is not an L network.',
+              1,
+          )
+          docs = docs.replace(
+              'Core AL, coupling coefficient, parasitics, and variable-capacitor law are not yet\ncalibrated, so ZM-2 results are exploratory.',
+              'The documented SWR-indicator bridge is modeled as bypassed during normal operation, '
+              'as instructed after tuning. Core AL, frequency-dependent core loss, coupling '
+              'coefficient, winding parasitics, and variable-capacitor law are not yet calibrated, '
+              'so the topology is specific to the owned unit but its loss result remains a sensitivity estimate.',
+              1,
+          )
+          docs = docs.replace(
+              'Source: [EMTECH ZM-2 construction and operation guide](https://manuals.plus/m/77d9a99e14f1a25e02aa2c2a9489da5db5e04c52c27d9c256ca3dbc769cac1fa).',
+              'Sources: [EMTECH ZM-2 BNC prebuilt product page](https://emtech-qrp.com/product/zm-2-bnc-connectors-prebuilt/) and [EMTECH ZM-2 construction and operation guide](https://manuals.plus/m/77d9a99e14f1a25e02aa2c2a9489da5db5e04c52c27d9c256ca3dbc769cac1fa).',
+              1,
+          )
+          docs_path.write_text(docs)
+
+          tests = Path('tests/test_atu.py')
+          test_text = tests.read_text()
+          if 'test_zm2_profile_matches_owned_prebuilt_range' not in test_text:
+              test_text += '''\n\ndef test_zm2_profile_matches_owned_prebuilt_range():\n    from antenna_lab.atu import ZM2_PROFILE\n\n    assert ZM2_PROFILE.label == "EMTECH ZM-2 BNC prebuilt coupled Z-match"\n    assert ZM2_PROFILE.supports(3.5e6)\n    assert ZM2_PROFILE.supports(30.0e6)\n    assert not ZM2_PROFILE.supports(3.49e6)\n    assert not ZM2_PROFILE.supports(30.01e6)\n'''
+          tests.write_text(test_text)
+          PY
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/antenna_lab/atu.py data/reference/atu_profiles.json docs/atu-loss-model.md tests/test_atu.py
+          git commit -m 'Correct EMTECH ZM-2 profile and ATU lint'
+          git push origin HEAD:research/atu-loss-model
