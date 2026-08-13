@@ -12,10 +12,11 @@ This project keeps observations separate from assumptions:
 - Line efficiency, SWR, and rankings are **derived/model outputs**, not measured
   radiation efficiency.
 
-The current practical conclusion is deliberately modest: the existing 58/28
-antenna is already near a broad robust region. The next experiment is a
-reversible 57/28 configuration made by folding back 6 inches at each free end;
-do not cut the antenna yet.
+The current NEC-2 result is deliberately field-testable rather than final. For
+the existing 58 ft radiator, first test detachable balanced-line additions from
+3.75 to 4.50 ft; do not cut the antenna yet. For a separate compact KH1 antenna,
+the next direct-fed trial is a 35 ft radiator with an explicit 17 ft counterpoise.
+A five-band resonant linked dipole remains the matching and efficiency reference.
 
 ## Quick start
 
@@ -37,11 +38,15 @@ uv run antenna-lab optimize-doublet \
 uv run antenna-lab verify-results build/58ft-doublet-full
 ```
 
-Compare the measured baseline with the reversible experiment:
+Run a paired legacy-surrogate comparison when investigating radiator-length
+changes:
 
 ```bash
 uv run antenna-lab compare-configs --radiator-ft 57 --feedline-ft 28
 ```
+
+This command belongs to the earlier surrogate optimizer; it is not the current
+feedline-extension field recommendation.
 
 Generate the analytical thin-wire pattern (this is not NEC/MININEC):
 
@@ -54,6 +59,41 @@ The same checks are exposed as file-based mise tasks:
 ```bash
 mise run check
 mise run reference
+```
+
+## Sharded NEC-2 study
+
+The full KH1 study can still be run locally as one command:
+
+```bash
+sudo apt-get install nec2c
+uv run antenna-lab run-kh1-nec-study \
+  --output results/kh1-portable-nec-v2
+```
+
+GitHub Actions uses a shard-and-assemble pipeline instead. Two jobs calculate
+doublet feedpoints, two jobs calculate the direct-fed cases, and eight jobs split
+the expensive doublet uncertainty grid by radiator length. A final job merges
+and validates every expected row, runs the smaller resonant-reference and
+pattern calculations, creates `SHA256SUMS`, and uploads the canonical result
+package.
+
+Every compute job uploads its CSV, metadata, manifest, and runner log as a
+separate workflow artifact. The final job uploads the complete result tree as
+`kh1-portable-nec-v2-<run-id>`. Consequently, successful intermediate work is
+still retrievable when a later shard or assembly job fails. Artifacts are kept
+for 90 days, subject to the repository's Actions retention limit. Full generated
+study trees are not checked into `results/`; reproduce them under `build/` or use
+the corresponding verified workflow artifact. The review-corrected reference
+run is [31712534336](https://github.com/rwjblue/antenna-lab/actions/runs/31712534336).
+
+The stage commands are also available for local or alternate CI orchestration:
+
+```bash
+antenna-lab run-kh1-doublet-nec-shard --help
+antenna-lab run-kh1-direct-nec-shard --help
+antenna-lab run-kh1-doublet-grid-shard --help
+antenna-lab assemble-kh1-nec-study --help
 ```
 
 ## Project map
