@@ -1,4 +1,4 @@
-name: Recover KH1 NEC study source
+name: Finalize KH1 NEC study source
 
 on:
   workflow_dispatch:
@@ -7,41 +7,63 @@ on:
       - research/kh1-portable-nec
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  recover-source:
+  finalize-source:
+    if: github.ref == 'refs/heads/research/kh1-portable-nec'
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Restore staged source archive
+      - name: Restore corrected source and sharded pipeline
         run: |
-          cat .bootstrap-v2/source.tgz.b64.part* | base64 --decode > /tmp/kh1-nec-source.tgz
-          tar --extract --gzip --file /tmp/kh1-nec-source.tgz --directory .
-          test -f src/antenna_lab/kh1_nec.py
-          test -f src/antenna_lab/cli.py
+          cat .bootstrap-v2/source.tgz.b64.part* | base64 --decode > /tmp/kh1-nec-source-v2.tgz
+          tar --extract --gzip --file /tmp/kh1-nec-source-v2.tgz --directory .
 
-      - name: Upload restored source
+          cat .bootstrap-v3/patch.tgz.b64.part* | base64 --decode > /tmp/kh1-pipeline-patch.tgz
+          echo '97ec0169d4bb3981e2096f729d3a0d4187715190c94bc06c252b2419bae0b89d  /tmp/kh1-pipeline-patch.tgz' | sha256sum --check
+          tar --extract --gzip --file /tmp/kh1-pipeline-patch.tgz --directory .
+
+          test -f src/antenna_lab/kh1_nec.py
+          test -f src/antenna_lab/kh1_pipeline.py
+          test -f tests/test_kh1_pipeline.py
+          grep -q 'Doublet NEC shard' .github/workflows/kh1-nec-study.yml
+          grep -q 'kh1-portable-nec-v2-' .github/workflows/kh1-nec-study.yml
+          python3 -m compileall -q src tests
+
+      - name: Upload finalized source snapshot
         uses: actions/upload-artifact@v4
         with:
-          name: kh1-nec-source-v2
+          name: kh1-nec-finalized-source-${{ github.run_id }}
           path: |
+            .github/workflows/kh1-nec-study.yml
+            configs
+            data/measured
             src
             tests
-            README.md
             MODEL_LIMITATIONS.md
             NEXT_EXPERIMENT.md
-            .github/workflows/kh1-nec-study.yml
+            README.md
+            pyproject.toml
+            uv.lock
           if-no-files-found: error
           retention-days: 30
 
-      - name: Upload exact staged archive
-        uses: actions/upload-artifact@v4
-        with:
-          name: kh1-nec-source-v2-tarball
-          path: /tmp/kh1-nec-source.tgz
-          if-no-files-found: error
-          retention-days: 30
+      - name: Commit restored source and sharded workflow
+        run: |
+          rm -rf .bootstrap-v2 .bootstrap-v3
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --stat
+          if git diff --cached --quiet; then
+            echo 'Nothing to commit.'
+            exit 0
+          fi
+          git commit -m 'Split KH1 NEC study across sharded Actions jobs'
+          git push origin HEAD:research/kh1-portable-nec
