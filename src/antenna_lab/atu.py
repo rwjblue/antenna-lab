@@ -112,16 +112,30 @@ PROFILES: dict[str, SwitchedLNetworkProfile] = {
     ),
     "khatu1": SwitchedLNetworkProfile(
         id="khatu1",
-        label="Elecraft KHATU1 (KH1; range-calibrated inference)",
+        label="Elecraft KHATU1 (KH1; secondary-source inferred banks)",
+        inductors_uH=(0.35, 0.70, 1.40, 2.80),
+        capacitors_pF=(60.0, 120.0, 240.0),
+        supported_min_mhz=7.0,
+        supported_max_mhz=21.45,
+        provenance=(
+            "KH1 manual documents series-L/shunt-C operation, L/C/Z display, "
+            "and eight ATU relays; a secondary hardware report gives aggregate "
+            "0.35-5.25 uH and 60-420 pF ranges"
+        ),
+        component_status="inferred",
+    ),
+    "khatu1_wide_sensitivity": SwitchedLNetworkProfile(
+        id="khatu1_wide_sensitivity",
+        label="Elecraft KHATU1 (KH1; wider range-fit sensitivity)",
         inductors_uH=(0.75, 1.5, 3.0, 6.0),
         capacitors_pF=(47.0, 100.0, 220.0),
         supported_min_mhz=7.0,
         supported_max_mhz=21.45,
         provenance=(
-            "KH1 manual documents series-L/shunt-C operation, L/C/Z display, "
-            "and eight ATU relays; public bank values were not found"
+            "Explicit sensitivity profile retained from the initial observed-"
+            "outcome range fit; not a published component bank"
         ),
-        component_status="inferred",
+        component_status="range-fit",
     ),
     "z11pro2": SwitchedLNetworkProfile(
         id="z11pro2",

@@ -29,20 +29,44 @@
       "allow_source_shunt": true,
       "bypass_swr": 2.5,
       "capacitors_pF": [
+        60.0,
+        120.0,
+        240.0
+      ],
+      "component_status": "inferred",
+      "id": "khatu1",
+      "inductors_uH": [
+        0.35,
+        0.7,
+        1.4,
+        2.8
+      ],
+      "label": "Elecraft KHATU1 (KH1; secondary-source inferred banks)",
+      "provenance": "KH1 manual documents series-L/shunt-C operation, L/C/Z display, and eight ATU relays; a secondary hardware report gives aggregate 0.35-5.25 uH and 60-420 pF ranges",
+      "supported_max_mhz": 21.45,
+      "supported_min_mhz": 7.0,
+      "topology_relay_count": 1
+    },
+    "khatu1_wide_sensitivity": {
+      "allow_bypass": true,
+      "allow_load_shunt": true,
+      "allow_source_shunt": true,
+      "bypass_swr": 2.5,
+      "capacitors_pF": [
         47.0,
         100.0,
         220.0
       ],
-      "component_status": "inferred",
-      "id": "khatu1",
+      "component_status": "range-fit",
+      "id": "khatu1_wide_sensitivity",
       "inductors_uH": [
         0.75,
         1.5,
         3.0,
         6.0
       ],
-      "label": "Elecraft KHATU1 (KH1; range-calibrated inference)",
-      "provenance": "KH1 manual documents series-L/shunt-C operation, L/C/Z display, and eight ATU relays; public bank values were not found",
+      "label": "Elecraft KHATU1 (KH1; wider range-fit sensitivity)",
+      "provenance": "Explicit sensitivity profile retained from the initial observed-outcome range fit; not a published component bank",
       "supported_max_mhz": 21.45,
       "supported_min_mhz": 7.0,
       "topology_relay_count": 1
@@ -159,13 +183,6 @@
     ],
     "secondary_turns": 7,
     "supported_max_mhz": 30.0,
-    "supported_min_mhz": 3.5,
-    "product": "ZM-2 - BNC Connectors - Prebuilt",
-    "product_url": "https://emtech-qrp.com/product/zm-2-bnc-connectors-prebuilt/",
-    "construction_guide_url": "https://manuals.plus/m/77d9a99e14f1a25e02aa2c2a9489da5db5e04c52c27d9c256ca3dbc769cac1fa",
-    "power_limit_w": 15.0,
-    "swr_bridge_operating_state": "bypassed after tuning",
-    "component_status": "documented topology; uncalibrated loss parameters",
-    "provenance": "EMTECH product page and ZM-2 construction/operation guide: T130-2 27-turn winding with 16/11-turn selections, 7-turn link, two dual-section 266 pF variables, switchable 500 pF input capacitor"
+    "supported_min_mhz": 3.5
   }
 }

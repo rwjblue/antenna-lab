@@ -132,7 +132,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        profile: [kxat2, kxat3, khatu1, z11pro2, zm2]
+        profile: [kxat2, kxat3, khatu1, khatu1_wide_sensitivity, z11pro2, zm2]
 
     steps:
       - uses: actions/checkout@v4

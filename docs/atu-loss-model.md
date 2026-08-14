@@ -89,12 +89,19 @@ Source: [Elecraft KX3 schematic diagram](https://ftp.elecraft.com/KX3/Manuals%20
 The KH1 owner’s manual documents a medium-range series-L/shunt-C tuner, a
 switchable high/low impedance orientation, eight latching relays including the
 orientation relay, and an `ATU PARAM` diagnostic that displays the selected L,
-C, and Z state. Public documentation does not expose the individual L/C bank
-values. The current profile is therefore an explicitly labeled 4-L/3-C inferred
-bank that is constrained by the observed 58/28 tune/fail behavior. It must not
-be treated as the KHATU1 bill of materials.
+C, and Z state. Public Elecraft documentation does not expose the individual
+L/C bank values.
+
+A secondary KH1 hardware profile reports aggregate ranges of 0.35–5.25 uH and
+60–420 pF. Those endpoints exactly fit four and three binary banks, respectively,
+so the nominal inferred profile uses 0.35/0.70/1.40/2.80 uH and
+60/120/240 pF. The earlier 0.75/1.5/3/6 uH and 47/100/220 pF range fit is retained
+as a separate wide-range sensitivity profile. Neither is an Elecraft bill of
+materials, and robust antenna conclusions must be checked against both.
 
 Source: [Elecraft KH1 owner’s manual, rev. B7](https://ftp.elecraft.com/KH1/Manuals%20Downloads/KH1%20Owner%27s%20Manual,%20rev%20B7.pdf).
+
+Secondary corroboration: [QRZ.ru KH1 hardware profile](https://forum.qrz.ru/2146374-post24.html).
 
 Populate `data/measured/atu_states_template.csv` with `ATU PARAM` observations
 to replace the inferred aggregate state with measurements.

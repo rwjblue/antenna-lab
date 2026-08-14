@@ -22,6 +22,17 @@ def test_published_elecraft_profiles_have_expected_binary_bank_totals() -> None:
     assert math.isclose(sum(kxat3.capacitors_pF), 2683.0)
 
 
+def test_khatu_profiles_separate_secondary_evidence_from_sensitivity() -> None:
+    secondary = PROFILES["khatu1"]
+    wide = PROFILES["khatu1_wide_sensitivity"]
+
+    assert secondary.component_status == "inferred"
+    assert math.isclose(sum(secondary.inductors_uH), 5.25)
+    assert math.isclose(sum(secondary.capacitors_pF), 420.0)
+    assert wide.component_status == "range-fit"
+    assert sum(wide.inductors_uH) > sum(secondary.inductors_uH)
+
+
 def test_bypass_is_lossless_for_a_fifty_ohm_load() -> None:
     solution = solve_switched_l_network(
         PROFILES["kxat2"],
