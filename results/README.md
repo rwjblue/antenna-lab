@@ -30,3 +30,9 @@ uv run antenna-lab verify-results build/kh1-portable-nec-v2
 Generated scratch and full runs belong under `build/`, which is ignored by Git.
 Every generated result set must contain `SHA256SUMS` and must pass
 `antenna-lab verify-results`.
+
+`kh1-portable-final-v1/` is the compact, committed decision package for the
+complete 40/30/20/17/15 m KH1 system comparison. It contains derived shortlists
+and finalist decompositions; the much larger NEC/tuner scenario trees remain
+reproducible build artifacts whose exact input hashes are recorded in
+`run_metadata.json`.

@@ -12,11 +12,14 @@ This project keeps observations separate from assumptions:
 - Line efficiency, SWR, and rankings are **derived/model outputs**, not measured
   radiation efficiency.
 
-The current NEC-2 result is deliberately field-testable rather than final. For
-the existing 58 ft radiator, first test detachable balanced-line additions from
-3.75 to 4.50 ft; do not cut the antenna yet. For a separate compact KH1 antenna,
-the next direct-fed trial is a 35 ft radiator with an explicit 17 ft counterpoise.
-A five-band resonant linked dipole remains the matching and efficiency reference.
+The current complete-system result recommends a **44 ft radiator, 14 ft explicit
+counterpoise, compact 4:1 transformer, and separate choke** as the next KH1
+build. It reaches 54.7% p10 worst-band pre-ATU-to-radiated efficiency in the
+equal-weight model envelope, within 0.3 percentage point of the much longer
+52/28 ft non-reference winner. The five-band resonant linked dipole remains the
+absolute efficiency reference at 82.8%, but requires physical link changes.
+See the [final decision report](results/kh1-portable-final-v1/REPORT.md) and
+[evidence classification](docs/kh1-portable-system-evidence.md).
 
 ## Quick start
 
@@ -84,8 +87,9 @@ separate workflow artifact. The final job uploads the complete result tree as
 still retrievable when a later shard or assembly job fails. Artifacts are kept
 for 90 days, subject to the repository's Actions retention limit. Full generated
 study trees are not checked into `results/`; reproduce them under `build/` or use
-the corresponding verified workflow artifact. The review-corrected reference
-run is [31712534336](https://github.com/rwjblue/antenna-lab/actions/runs/31712534336).
+the corresponding verified workflow artifact. The final comparison uses the
+newer manifest-verified source ensemble from
+[run 31750551947](https://github.com/rwjblue/antenna-lab/actions/runs/31750551947).
 
 The stage commands are also available for local or alternate CI orchestration:
 
@@ -105,6 +109,7 @@ antenna-lab assemble-kh1-nec-study --help
 - `configs/`: explicit optimization uncertainty and sweep definitions.
 - `results/reference-small/`: fast deterministic regression result and hashes.
 - `results/published-v1.0/`: selected canonical results imported from v1.0.
+- `results/kh1-portable-final-v1/`: manifest-verified complete-system decision package.
 - `reports/`: preserved v1.0 optimization and analytical-pattern artifacts.
 - `docs/case-studies/`: interpretation for the physical 58 ft doublet.
 - `archive/source-bundles/`: the two original ZIP archives, byte-for-byte.
@@ -144,9 +149,10 @@ by the separate ATU-loss study rather than folded into antenna efficiency.
 ## ATU loss study
 
 The antenna NEC result reports radiation efficiency at the antenna feedpoint; it
-does not include tuner dissipation. The ATU study enumerates lossy tuner states
-and combines tuner transducer efficiency with the NEC 41 ft radiator / 17 ft
-counterpoise ensemble.
+does not include tuner dissipation. The historical ATU study enumerates lossy
+tuner states for the NEC 41/17 ft ensemble. The final multi-family study retests
+that geometry and rejects it as a build recommendation: the untransformed
+version has 0% all-band success at 2.5:1 and a 50.8% rollback-flag rate.
 
 ```bash
 sudo apt-get install nec2c
@@ -162,9 +168,9 @@ interpretation, and the measurement plan needed to replace inferred inputs.
 GitHub Actions computes the common NEC loads once, evaluates each tuner in a
 separate matrix job, and publishes both intermediate and canonical artifacts.
 
-## Multi-family coarse system screen
+## Multi-family system decision
 
-The next-generation study compares complete pre-ATU systems across direct wires
+The current study compares complete pre-ATU systems across direct wires
 with explicit counterpoises, transformer-fed variants, OCFD and near-end-fed
 wires, radial verticals, a five-wire fan dipole, and trap-loaded dipoles. It
 retains separate best-SWR and maximum-final-efficiency tuner states at 1.5:1 and
@@ -172,14 +178,23 @@ retains separate best-SWR and maximum-final-efficiency tuner states at 1.5:1 and
 
 ```bash
 uv run antenna-lab run-kh1-portable-coarse-study \
-  --config configs/kh1-portable-coarse-v1.json \
-  --output build/kh1-portable-coarse-v1 \
+  --config configs/kh1-portable-refine-v1.json \
+  --output build/kh1-portable-refine-v1 \
   --nec2c /path/to/nec2c \
   --jobs 8
+uv run antenna-lab run-kh1-comparative-study \
+  --nec-artifact build/upstream-artifacts-31750551947 \
+  --portable-study build/kh1-portable-refine-v1 \
+  --output build/kh1-portable-comparative-v1
+uv run antenna-lab run-kh1-final-decision \
+  --config configs/kh1-portable-final-v1.json \
+  --output results/kh1-portable-final-v1
+uv run antenna-lab verify-results results/kh1-portable-final-v1
 ```
 
-This command is deliberately a coarse central-environment screen. Its NEC cache
-is keyed by exact deck and solver binary, so transformer, choke, tuner, and
-ranking changes reuse antenna loads. Refine promising regions across deployment,
-ground, and conductor envelopes before treating the coarse ranking as a build
-recommendation.
+The final objective is radiated RF power divided by transmitter-available RF
+power immediately before the tuner. It includes residual mismatch, tuner,
+transformer/choke, mismatch-enhanced line, lumped loading, conductor, and NEC
+radiator/ground loss where applicable. Scenario quantiles are equal-weight
+sensitivity envelopes, not probabilities. The NEC cache is keyed by exact deck
+and solver binary, so downstream network and ranking changes reuse antenna loads.
