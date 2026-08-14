@@ -43,7 +43,7 @@
     ]
   },
   "families": {
-    "direct_counterpoise": {"radiator_ft": [42, 44, 46, 50, 52, 54, 58, 60, 62], "counterpoise_ft": [12, 14, 16, 18, 22, 24, 28, 32], "transformer_ratios": [1, 4, 9]},
+    "direct_counterpoise": {"radiator_ft": [41, 42, 44, 46, 50, 52, 54, 58, 60, 62], "counterpoise_ft": [12, 14, 16, 17, 18, 22, 24, 28, 32], "transformer_ratios": [1, 4, 9]},
     "ocfd": {"total_length_ft": [60, 62, 64, 66, 68], "feed_fraction": [0.25, 0.3, 0.33, 0.36, 0.4], "transformer_ratios": [4, 6]},
     "efhw": {"total_length_ft": [62], "feed_fraction": [0.01], "transformer_ratios": [49]},
     "radial_vertical": {"radiator_ft": [28, 30, 32, 34], "radial_ft": [6, 8, 10, 12, 16], "radial_count": [2, 4], "transformer_ratios": [1, 4, 9]},
