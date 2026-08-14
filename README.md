@@ -161,3 +161,25 @@ exploratory equivalent-circuit EMTECH ZM-2 model. See
 interpretation, and the measurement plan needed to replace inferred inputs.
 GitHub Actions computes the common NEC loads once, evaluates each tuner in a
 separate matrix job, and publishes both intermediate and canonical artifacts.
+
+## Multi-family coarse system screen
+
+The next-generation study compares complete pre-ATU systems across direct wires
+with explicit counterpoises, transformer-fed variants, OCFD and near-end-fed
+wires, radial verticals, a five-wire fan dipole, and trap-loaded dipoles. It
+retains separate best-SWR and maximum-final-efficiency tuner states at 1.5:1 and
+2.5:1.
+
+```bash
+uv run antenna-lab run-kh1-portable-coarse-study \
+  --config configs/kh1-portable-coarse-v1.json \
+  --output build/kh1-portable-coarse-v1 \
+  --nec2c /path/to/nec2c \
+  --jobs 8
+```
+
+This command is deliberately a coarse central-environment screen. Its NEC cache
+is keyed by exact deck and solver binary, so transformer, choke, tuner, and
+ranking changes reuse antenna loads. Refine promising regions across deployment,
+ground, and conductor envelopes before treating the coarse ranking as a build
+recommendation.

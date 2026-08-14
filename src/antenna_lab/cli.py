@@ -33,6 +33,7 @@ from antenna_lab.optimization import (
     verify_manifest,
 )
 from antenna_lab.plotting import plot_analytical_pattern
+from antenna_lab.portable_systems import run_coarse_system_study
 from antenna_lab.transmission_line import swr
 
 DEFAULT_MEASUREMENTS = Path("data/measured/58ft_doublet_2026-08-08.csv")
@@ -173,6 +174,19 @@ def build_parser() -> argparse.ArgumentParser:
     assemble_atu.add_argument("--input", type=Path, required=True)
     assemble_atu.add_argument("--output", type=Path, required=True)
 
+    coarse_systems = subparsers.add_parser(
+        "run-kh1-portable-coarse-study",
+        help="Run the cached-NEC multi-family KH1 system screen",
+    )
+    coarse_systems.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/kh1-portable-coarse-v1.json"),
+    )
+    coarse_systems.add_argument("--output", type=Path, required=True)
+    coarse_systems.add_argument("--nec2c", type=Path)
+    coarse_systems.add_argument("--jobs", type=int, default=6)
+
     verify = subparsers.add_parser(
         "verify-results", help="Verify a generated SHA256SUMS manifest"
     )
@@ -305,6 +319,15 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.command == "assemble-atu-loss-study":
         summary = assemble_atu_loss_study(args.output, input_dir=args.input)
         print(json.dumps(summary, indent=2, sort_keys=True, allow_nan=True))
+        return 0
+    if args.command == "run-kh1-portable-coarse-study":
+        summary = run_coarse_system_study(
+            args.config,
+            args.output,
+            nec2c=args.nec2c,
+            jobs=args.jobs,
+        )
+        print(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False))
         return 0
     if args.command == "verify-results":
         valid, failures = verify_manifest(args.result_directory)

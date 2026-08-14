@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "study_id": "kh1-portable-coarse-v1",
+  "bands": {
+    "40m": 7050000,
+    "30m": 10120000,
+    "20m": 14050000,
+    "17m": 18080000,
+    "15m": 21050000
+  },
+  "environment": {
+    "epsilon_r": 13.0,
+    "ground_conductivity_s_m": 0.005,
+    "wire_conductivity_s_m": 58000000.0,
+    "wire_radius_m": 0.0002415
+  },
+  "transformer_loss_db": {
+    "0.25": [0.2, 0.35, 1.0],
+    "1": [0.0, 0.0, 0.0],
+    "4": [0.2, 0.35, 1.0],
+    "6": [0.25, 0.5, 1.1],
+    "9": [0.25, 0.6, 1.2],
+    "49": [0.3, 0.5, 2.0]
+  },
+  "choke_loss_db": [0.1, 0.2, 0.5],
+  "families": {
+    "direct_counterpoise": {
+      "radiator_ft": [28, 32, 36, 40, 44, 48, 52, 56, 60],
+      "counterpoise_ft": [8, 12, 16, 20, 24, 28, 32],
+      "transformer_ratios": [0.25, 1, 4, 9]
+    },
+    "ocfd": {
+      "total_length_ft": [52, 56, 60, 64, 68, 72],
+      "feed_fraction": [0.1, 0.2, 0.33],
+      "transformer_ratios": [1, 4, 6, 9]
+    },
+    "efhw": {
+      "total_length_ft": [62, 66, 70],
+      "feed_fraction": [0.005, 0.01, 0.02],
+      "transformer_ratios": [49]
+    },
+    "radial_vertical": {
+      "radiator_ft": [20, 24, 28, 32],
+      "radial_ft": [8, 12, 16, 20],
+      "radial_count": [2, 4],
+      "transformer_ratios": [1, 4, 9]
+    },
+    "fan_dipole": {
+      "total_lengths_ft": [66.4, 46.2, 33.3, 25.8, 22.2]
+    },
+    "trap_loaded": {
+      "designs": [
+        {"id": "55ft-15m-traps", "total_length_ft": 55, "trap_positions_ft": [10], "trap_resonances_mhz": [21.05]},
+        {"id": "60ft-20m-traps", "total_length_ft": 60, "trap_positions_ft": [12], "trap_resonances_mhz": [14.05]},
+        {"id": "60ft-15m-20m-traps", "total_length_ft": 60, "trap_positions_ft": [7, 13], "trap_resonances_mhz": [21.05, 14.05]}
+      ]
+    }
+  }
+}
