@@ -121,20 +121,27 @@ def build_designs(config: dict[str, Any]) -> tuple[AntennaDesign, ...]:
                         "medium" if count == 2 else "high",
                     )
                 )
-    fan = families["fan_dipole"]["total_lengths_ft"]
-    designs.append(
-        AntennaDesign(
-            "fan-five-band",
-            "fan_dipole",
-            {"total_lengths_ft": fan},
-            float(sum(fan)),
-            0,
-            1,
-            False,
-            "very_high",
+    fan_specification = families["fan_dipole"]
+    if fan_specification.get("enabled", True):
+        fan = fan_specification["total_lengths_ft"]
+        designs.append(
+            AntennaDesign(
+                "fan-five-band",
+                "fan_dipole",
+                {"total_lengths_ft": fan},
+                float(sum(fan)),
+                0,
+                1,
+                False,
+                "very_high",
+            )
         )
-    )
-    for trap in families["trap_loaded"]["designs"]:
+    trap_specification = families["trap_loaded"]
+    for trap in (
+        trap_specification["designs"]
+        if trap_specification.get("enabled", True)
+        else ()
+    ):
         designs.append(
             AntennaDesign(
                 f"trap-{trap['id']}",
@@ -202,7 +209,10 @@ def run_coarse_system_study(
     _write_csv(output_dir / "system_candidates.csv", aggregates)
     summary = {
         "study_id": config["study_id"],
-        "status": "coarse central-environment screening; refine before conclusions",
+        "status": config.get(
+            "study_status",
+            "coarse central-environment screening; refine before conclusions",
+        ),
         "physical_design_count": len(designs),
         "system_candidate_count": len(systems),
         "nec_load_count": len(load_rows),
@@ -211,12 +221,15 @@ def run_coarse_system_study(
             label: [row for row in aggregates if row["objective"] == label][:20]
             for label, _, _ in OBJECTIVES
         },
-        "warnings": [
-            "This coarse pass uses one copper/average-ground deployment per family.",
-            "Transformer and choke loss are empirical dB envelopes, not equivalent-circuit fits.",
-            "KHATU1 component banks are inferred sensitivity profiles, not published values.",
-            "Design-envelope quantiles are equal-weight sensitivities, not probabilities.",
-        ],
+        "warnings": config.get(
+            "study_warnings",
+            [
+                "This coarse pass uses one copper/average-ground deployment per family.",
+                "Transformer and choke loss are empirical dB envelopes, not equivalent-circuit fits.",
+                "KHATU1 component banks are inferred sensitivity profiles, not published values.",
+                "Design-envelope quantiles are equal-weight sensitivities, not probabilities.",
+            ],
+        ),
     }
     (output_dir / "summary.json").write_text(
         json.dumps(summary, indent=2, sort_keys=True, allow_nan=False) + "\n",
@@ -227,15 +240,49 @@ def run_coarse_system_study(
 
 def _run_nec_loads(designs, config, cache_dir, nec2c, jobs):
     bands = config["bands"]
-    cases = [(design, band, frequency) for design in designs for band, frequency in bands.items()]
+    cases = [
+        (design, deployment_id, deployment, ground_id, ground, conductor_id, conductor, band, frequency)
+        for design in designs
+        for deployment_id, deployment in _deployments(config, design.family).items()
+        for ground_id, ground in _grounds(config).items()
+        for conductor_id, conductor in _conductors(config).items()
+        for band, frequency in bands.items()
+    ]
     rows = []
     with ThreadPoolExecutor(max_workers=jobs) as pool:
         futures = {
-            pool.submit(_nec_case, design, band, frequency, config, cache_dir, nec2c): (
+            pool.submit(
+                _nec_case,
+                design,
+                deployment_id,
+                deployment,
+                ground_id,
+                ground,
+                conductor_id,
+                conductor,
+                band,
+                frequency,
+                config,
+                cache_dir,
+                nec2c,
+            ): (
                 design.id,
+                deployment_id,
+                ground_id,
+                conductor_id,
                 band,
             )
-            for design, band, frequency in cases
+            for (
+                design,
+                deployment_id,
+                deployment,
+                ground_id,
+                ground,
+                conductor_id,
+                conductor,
+                band,
+                frequency,
+            ) in cases
         }
         for future in as_completed(futures):
             try:
@@ -243,36 +290,58 @@ def _run_nec_loads(designs, config, cache_dir, nec2c, jobs):
             except Exception as error:
                 raise RuntimeError(f"NEC failed for {futures[future]}") from error
     band_order = {band: index for index, band in enumerate(bands)}
-    return sorted(rows, key=lambda row: (row["design_id"], band_order[row["band"]]))
+    return sorted(
+        rows,
+        key=lambda row: (
+            row["design_id"],
+            row["deployment"],
+            row["ground"],
+            row["conductor"],
+            band_order[row["band"]],
+        ),
+    )
 
 
-def _nec_case(design, band, frequency_hz, config, cache_dir, nec2c):
+def _nec_case(
+    design,
+    deployment_id,
+    deployment,
+    ground_id,
+    ground,
+    conductor_id,
+    conductor,
+    band,
+    frequency_hz,
+    config,
+    cache_dir,
+    nec2c,
+):
     environment = config["environment"]
     common = {
         "title": f"{design.id}-{band}",
         "frequency_mhz": frequency_hz / 1e6,
         "radius_m": environment["wire_radius_m"],
-        "conductivity_s_m": environment["wire_conductivity_s_m"],
-        "epsilon_r": environment["epsilon_r"],
-        "ground_conductivity_s_m": environment["ground_conductivity_s_m"],
+        "conductivity_s_m": conductor,
+        "epsilon_r": ground[0],
+        "ground_conductivity_s_m": ground[1],
     }
     parameters = design.parameters
     if design.family == "direct_counterpoise":
         deck = direct_wire_deck(
             radiator_ft=parameters["radiator_ft"],
             counterpoise_ft=parameters["counterpoise_ft"],
-            feed_height_ft=3.0,
-            support_height_ft=30.0,
-            counterpoise_height_ft=0.5,
-            counterpoise_azimuth_deg=135.0,
+            feed_height_ft=deployment["feed_height_ft"],
+            support_height_ft=deployment["support_height_ft"],
+            counterpoise_height_ft=deployment["counterpoise_height_ft"],
+            counterpoise_azimuth_deg=deployment["counterpoise_azimuth_deg"],
             **common,
         )
     elif design.family in {"ocfd", "efhw"}:
         deck = asymmetric_inverted_v_deck(
             total_length_ft=parameters["total_length_ft"],
             feed_fraction=parameters["feed_fraction"],
-            center_height_ft=30.0,
-            apex_angle_deg=140.0,
+            center_height_ft=deployment["center_height_ft"],
+            apex_angle_deg=deployment["apex_angle_deg"],
             **common,
         )
     elif design.family == "radial_vertical":
@@ -280,8 +349,8 @@ def _nec_case(design, band, frequency_hz, config, cache_dir, nec2c):
             radiator_ft=parameters["radiator_ft"],
             radial_ft=parameters["radial_ft"],
             radial_count=parameters["radial_count"],
-            feed_height_ft=1.0,
-            radial_end_height_ft=0.1,
+            feed_height_ft=deployment["feed_height_ft"],
+            radial_end_height_ft=deployment["radial_end_height_ft"],
             **common,
         )
     elif design.family == "fan_dipole":
@@ -289,8 +358,8 @@ def _nec_case(design, band, frequency_hz, config, cache_dir, nec2c):
         deck = fan_dipole_deck(
             total_lengths_ft=lengths,
             azimuths_deg=(-16.0, -8.0, 0.0, 8.0, 16.0),
-            center_height_ft=30.0,
-            apex_angle_deg=120.0,
+            center_height_ft=deployment["center_height_ft"],
+            apex_angle_deg=deployment["apex_angle_deg"],
             **common,
         )
     elif design.family == "trap_loaded":
@@ -315,7 +384,10 @@ def _nec_case(design, band, frequency_hz, config, cache_dir, nec2c):
         deck = loaded_inverted_v_deck(
             total_length_ft=parameters["total_length_ft"],
             loads_from_center_ft=tuple(loads),
-            geometry=InvertedV(30.0, apex_angle_deg=120.0),
+            geometry=InvertedV(
+                deployment["center_height_ft"],
+                apex_angle_deg=deployment["apex_angle_deg"],
+            ),
             **common,
         )
     else:
@@ -326,6 +398,9 @@ def _nec_case(design, band, frequency_hz, config, cache_dir, nec2c):
     return {
         "design_id": design.id,
         "family": design.family,
+        "deployment": deployment_id,
+        "ground": ground_id,
+        "conductor": conductor_id,
         "band": band,
         "frequency_hz": frequency_hz,
         "resistance_ohm": result.impedance_ohm.real,
@@ -336,7 +411,9 @@ def _nec_case(design, band, frequency_hz, config, cache_dir, nec2c):
 
 
 def _evaluate_systems(systems, load_rows, config):
-    load_lookup = {(row["design_id"], row["band"]): row for row in load_rows}
+    load_lookup: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    for row in load_rows:
+        load_lookup.setdefault((row["design_id"], row["band"]), []).append(row)
     transformer_losses = config["transformer_loss_db"]
     choke_losses = config["choke_loss_db"]
     rows = []
@@ -345,39 +422,48 @@ def _evaluate_systems(systems, load_rows, config):
         losses = transformer_losses[ratio_key]
         system_choke_losses = choke_losses if system.choke_required else (0, 0, 0)
         for band, frequency_hz in config["bands"].items():
-            antenna = load_lookup[(system.design_id, band)]
-            antenna_load = complex(antenna["resistance_ohm"], antenna["reactance_ohm"])
-            tuner_load = antenna_load / system.transformer_ratio
-            for profile_id in KH1_PROFILE_IDS:
-                profile = PROFILES[profile_id]
-                for loss in LOSS_ENVELOPES:
-                    for component_envelope, (transformer_db, choke_db) in enumerate(
-                        zip(losses, system_choke_losses, strict=True)
-                    ):
-                        downstream_efficiency = 10 ** (
-                            -(float(transformer_db) + float(choke_db)) / 10.0
+            for antenna in load_lookup[(system.design_id, band)]:
+                antenna_load = complex(
+                    antenna["resistance_ohm"], antenna["reactance_ohm"]
+                )
+                tuner_load = antenna_load / system.transformer_ratio
+                for profile_id in KH1_PROFILE_IDS:
+                    profile = PROFILES[profile_id]
+                    for loss in LOSS_ENVELOPES:
+                        component_losses = zip(
+                            losses, system_choke_losses, strict=True
                         )
-                        for label, objective, target_swr in OBJECTIVES:
-                            solution = solve_switched_l_network(
-                                profile,
-                                tuner_load,
-                                frequency_hz,
-                                loss,
-                                objective=objective,
-                                target_swr=target_swr,
+                        for component_envelope, (
+                            transformer_db,
+                            choke_db,
+                        ) in enumerate(component_losses):
+                            downstream_efficiency = 10 ** (
+                                -(float(transformer_db) + float(choke_db)) / 10.0
                             )
-                            final = (
-                                antenna["nec_efficiency"]
-                                * downstream_efficiency
-                                * solution.transducer_efficiency
-                            )
-                            rows.append(
+                            for label, objective, target_swr in OBJECTIVES:
+                                solution = solve_switched_l_network(
+                                    profile,
+                                    tuner_load,
+                                    frequency_hz,
+                                    loss,
+                                    objective=objective,
+                                    target_swr=target_swr,
+                                )
+                                final = (
+                                    antenna["nec_efficiency"]
+                                    * downstream_efficiency
+                                    * solution.transducer_efficiency
+                                )
+                                rows.append(
                                 {
                                     "candidate_id": system.id,
                                     "design_id": system.design_id,
                                     "family": system.family,
                                     "band": band,
                                     "frequency_hz": frequency_hz,
+                                    "deployment": antenna["deployment"],
+                                    "ground": antenna["ground"],
+                                    "conductor": antenna["conductor"],
                                     "profile": profile_id,
                                     "tuner_loss_envelope": loss.id,
                                     "component_loss_envelope": component_envelope,
@@ -409,7 +495,7 @@ def _evaluate_systems(systems, load_rows, config):
                                         else math.inf
                                     ),
                                 }
-                            )
+                                )
     return rows
 
 
@@ -420,12 +506,15 @@ def _aggregate_systems(systems, rows):
         grouped.setdefault((row["candidate_id"], row["objective"]), []).append(row)
     aggregates = []
     for (candidate_id, objective), subset in grouped.items():
-        scenario_groups: dict[tuple[str, str, int], list[dict[str, Any]]] = {}
+        scenario_groups: dict[tuple[str, ...], list[dict[str, Any]]] = {}
         for row in subset:
             key = (
                 row["profile"],
                 row["tuner_loss_envelope"],
-                row["component_loss_envelope"],
+                str(row["component_loss_envelope"]),
+                row["deployment"],
+                row["ground"],
+                row["conductor"],
             )
             scenario_groups.setdefault(key, []).append(row)
         worst = [min(row["final_efficiency"] for row in value) for value in scenario_groups.values()]
@@ -468,6 +557,49 @@ def _aggregate_systems(systems, rows):
 
 def _quantile(values, q):
     return float(np.quantile(np.asarray(values, dtype=float), q))
+
+
+def _deployments(config, family):
+    configured = config.get("deployments", {}).get(family)
+    if configured:
+        return {row["id"]: row for row in configured}
+    defaults = {
+        "direct_counterpoise": {
+            "feed_height_ft": 3.0,
+            "support_height_ft": 30.0,
+            "counterpoise_height_ft": 0.5,
+            "counterpoise_azimuth_deg": 135.0,
+        },
+        "radial_vertical": {"feed_height_ft": 1.0, "radial_end_height_ft": 0.1},
+        "ocfd": {"center_height_ft": 30.0, "apex_angle_deg": 140.0},
+        "efhw": {"center_height_ft": 30.0, "apex_angle_deg": 140.0},
+        "fan_dipole": {"center_height_ft": 30.0, "apex_angle_deg": 120.0},
+        "trap_loaded": {"center_height_ft": 30.0, "apex_angle_deg": 120.0},
+    }
+    return {"central": defaults[family]}
+
+
+def _grounds(config):
+    configured = config.get("grounds")
+    if configured:
+        return {
+            row["id"]: (row["epsilon_r"], row["conductivity_s_m"])
+            for row in configured
+        }
+    environment = config["environment"]
+    return {
+        "central": (
+            environment["epsilon_r"],
+            environment["ground_conductivity_s_m"],
+        )
+    }
+
+
+def _conductors(config):
+    configured = config.get("conductors")
+    if configured:
+        return {row["id"]: row["conductivity_s_m"] for row in configured}
+    return {"central": config["environment"]["wire_conductivity_s_m"]}
 
 
 def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:

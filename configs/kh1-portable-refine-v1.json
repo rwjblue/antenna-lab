@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "study_id": "kh1-portable-refine-v1",
+  "study_status": "multi-environment refinement of promising coarse candidates",
+  "study_warnings": [
+    "Ground, conductor, deployment, component-loss, and tuner-loss cases are equal-weight sensitivities, not probabilities.",
+    "Transformer and choke loss are source-backed empirical dB envelopes, not measured equivalent-circuit fits.",
+    "KHATU1 component banks are inferred sensitivity profiles, not Elecraft-published values.",
+    "Fan-dipole and trap-loaded sentinels failed the coarse screen; only the trap sentinel is retained here to characterize its loss floor."
+  ],
+  "bands": {"40m": 7050000, "30m": 10120000, "20m": 14050000, "17m": 18080000, "15m": 21050000},
+  "environment": {"epsilon_r": 13.0, "ground_conductivity_s_m": 0.005, "wire_conductivity_s_m": 58000000.0, "wire_radius_m": 0.0002415},
+  "grounds": [
+    {"id": "poor", "epsilon_r": 5.0, "conductivity_s_m": 0.001},
+    {"id": "average", "epsilon_r": 13.0, "conductivity_s_m": 0.005}
+  ],
+  "conductors": [
+    {"id": "ccs_mid", "conductivity_s_m": 15000000.0},
+    {"id": "copper", "conductivity_s_m": 58000000.0}
+  ],
+  "transformer_loss_db": {"1": [0.0, 0.0, 0.0], "4": [0.2, 0.35, 1.0], "6": [0.25, 0.5, 1.1], "9": [0.25, 0.6, 1.2], "49": [0.3, 0.5, 2.0]},
+  "choke_loss_db": [0.1, 0.2, 0.5],
+  "deployments": {
+    "direct_counterpoise": [
+      {"id": "ground_side_20", "feed_height_ft": 0.5, "support_height_ft": 20.0, "counterpoise_height_ft": 0.1, "counterpoise_azimuth_deg": 90.0},
+      {"id": "ground_collinear_20", "feed_height_ft": 0.5, "support_height_ft": 20.0, "counterpoise_height_ft": 0.1, "counterpoise_azimuth_deg": 180.0},
+      {"id": "table_side_30", "feed_height_ft": 3.0, "support_height_ft": 30.0, "counterpoise_height_ft": 0.5, "counterpoise_azimuth_deg": 90.0},
+      {"id": "table_collinear_30", "feed_height_ft": 3.0, "support_height_ft": 30.0, "counterpoise_height_ft": 0.5, "counterpoise_azimuth_deg": 180.0}
+    ],
+    "ocfd": [
+      {"id": "20ft_140", "center_height_ft": 20.0, "apex_angle_deg": 140.0},
+      {"id": "30ft_140", "center_height_ft": 30.0, "apex_angle_deg": 140.0}
+    ],
+    "efhw": [{"id": "30ft_140", "center_height_ft": 30.0, "apex_angle_deg": 140.0}],
+    "radial_vertical": [
+      {"id": "ground_feed", "feed_height_ft": 0.5, "radial_end_height_ft": 0.1},
+      {"id": "table_feed", "feed_height_ft": 3.0, "radial_end_height_ft": 0.5}
+    ],
+    "fan_dipole": [{"id": "30ft_140", "center_height_ft": 30.0, "apex_angle_deg": 140.0}],
+    "trap_loaded": [
+      {"id": "20ft_140", "center_height_ft": 20.0, "apex_angle_deg": 140.0},
+      {"id": "30ft_140", "center_height_ft": 30.0, "apex_angle_deg": 140.0}
+    ]
+  },
+  "families": {
+    "direct_counterpoise": {"radiator_ft": [42, 44, 46, 50, 52, 54, 58, 60, 62], "counterpoise_ft": [12, 14, 16, 18, 22, 24, 28, 32], "transformer_ratios": [1, 4, 9]},
+    "ocfd": {"total_length_ft": [60, 62, 64, 66, 68], "feed_fraction": [0.25, 0.3, 0.33, 0.36, 0.4], "transformer_ratios": [4, 6]},
+    "efhw": {"total_length_ft": [62], "feed_fraction": [0.01], "transformer_ratios": [49]},
+    "radial_vertical": {"radiator_ft": [28, 30, 32, 34], "radial_ft": [6, 8, 10, 12, 16], "radial_count": [2, 4], "transformer_ratios": [1, 4, 9]},
+    "fan_dipole": {"enabled": false, "total_lengths_ft": [66.4, 46.2, 33.3, 25.8, 22.2]},
+    "trap_loaded": {"designs": [{"id": "60ft-20m-traps", "total_length_ft": 60, "trap_positions_ft": [12], "trap_resonances_mhz": [14.05]}]}
+  }
+}
