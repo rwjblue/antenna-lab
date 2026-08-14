@@ -61,6 +61,9 @@ Build the 44 ft radiator + 14 ft counterpoise with a measured 4:1 transformer an
 PYTHONPATH=src uv run antenna-lab run-kh1-portable-coarse-study \
   --config configs/kh1-portable-refine-v1.json \
   --output build/kh1-portable-refine-v1 --nec2c /path/to/nec2c --jobs 8
+gh run download 31750551947 \
+  --name kh1-portable-nec-v2-31750551947 \
+  --dir build/upstream-artifacts-31750551947
 PYTHONPATH=src uv run antenna-lab run-kh1-comparative-study \
   --nec-artifact build/upstream-artifacts-31750551947 \
   --portable-study build/kh1-portable-refine-v1 \

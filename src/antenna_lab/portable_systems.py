@@ -138,9 +138,7 @@ def build_designs(config: dict[str, Any]) -> tuple[AntennaDesign, ...]:
         )
     trap_specification = families["trap_loaded"]
     for trap in (
-        trap_specification["designs"]
-        if trap_specification.get("enabled", True)
-        else ()
+        trap_specification["designs"] if trap_specification.get("enabled", True) else ()
     ):
         designs.append(
             AntennaDesign(
@@ -241,7 +239,17 @@ def run_coarse_system_study(
 def _run_nec_loads(designs, config, cache_dir, nec2c, jobs):
     bands = config["bands"]
     cases = [
-        (design, deployment_id, deployment, ground_id, ground, conductor_id, conductor, band, frequency)
+        (
+            design,
+            deployment_id,
+            deployment,
+            ground_id,
+            ground,
+            conductor_id,
+            conductor,
+            band,
+            frequency,
+        )
         for design in designs
         for deployment_id, deployment in _deployments(config, design.family).items()
         for ground_id, ground in _grounds(config).items()
@@ -430,9 +438,7 @@ def _evaluate_systems(systems, load_rows, config):
                 for profile_id in KH1_PROFILE_IDS:
                     profile = PROFILES[profile_id]
                     for loss in LOSS_ENVELOPES:
-                        component_losses = zip(
-                            losses, system_choke_losses, strict=True
-                        )
+                        component_losses = zip(losses, system_choke_losses, strict=True)
                         for component_envelope, (
                             transformer_db,
                             choke_db,
@@ -455,46 +461,47 @@ def _evaluate_systems(systems, load_rows, config):
                                     * solution.transducer_efficiency
                                 )
                                 rows.append(
-                                {
-                                    "candidate_id": system.id,
-                                    "design_id": system.design_id,
-                                    "family": system.family,
-                                    "band": band,
-                                    "frequency_hz": frequency_hz,
-                                    "deployment": antenna["deployment"],
-                                    "ground": antenna["ground"],
-                                    "conductor": antenna["conductor"],
-                                    "profile": profile_id,
-                                    "tuner_loss_envelope": loss.id,
-                                    "component_loss_envelope": component_envelope,
-                                    "objective": label,
-                                    "raw_resistance_ohm": antenna_load.real,
-                                    "raw_reactance_ohm": antenna_load.imag,
-                                    "tuner_load_resistance_ohm": tuner_load.real,
-                                    "tuner_load_reactance_ohm": tuner_load.imag,
-                                    "nec_efficiency": antenna["nec_efficiency"],
-                                    "transformer_loss_db": transformer_db,
-                                    "choke_loss_db": choke_db,
-                                    "input_swr": solution.input_swr,
-                                    "target_met": solution.input_swr <= target_swr,
-                                    "likely_power_rollback": solution.input_swr > 2.5,
-                                    "topology": solution.topology,
-                                    "l_mask": solution.l_mask,
-                                    "c_mask": solution.c_mask,
-                                    "inductance_uH": solution.inductance_uH,
-                                    "capacitance_pF": solution.capacitance_pF,
-                                    "residual_mismatch_efficiency": (
-                                        solution.accepted_power_w
-                                    ),
-                                    "tuner_efficiency": solution.tuner_efficiency,
-                                    "tuner_loss_db": solution.tuner_loss_db,
-                                    "final_efficiency": final,
-                                    "total_loss_db": (
-                                        -10.0 * math.log10(final)
-                                        if final > 0
-                                        else math.inf
-                                    ),
-                                }
+                                    {
+                                        "candidate_id": system.id,
+                                        "design_id": system.design_id,
+                                        "family": system.family,
+                                        "band": band,
+                                        "frequency_hz": frequency_hz,
+                                        "deployment": antenna["deployment"],
+                                        "ground": antenna["ground"],
+                                        "conductor": antenna["conductor"],
+                                        "profile": profile_id,
+                                        "tuner_loss_envelope": loss.id,
+                                        "component_loss_envelope": component_envelope,
+                                        "objective": label,
+                                        "raw_resistance_ohm": antenna_load.real,
+                                        "raw_reactance_ohm": antenna_load.imag,
+                                        "tuner_load_resistance_ohm": tuner_load.real,
+                                        "tuner_load_reactance_ohm": tuner_load.imag,
+                                        "nec_efficiency": antenna["nec_efficiency"],
+                                        "transformer_loss_db": transformer_db,
+                                        "choke_loss_db": choke_db,
+                                        "input_swr": solution.input_swr,
+                                        "target_met": solution.input_swr <= target_swr,
+                                        "likely_power_rollback": solution.input_swr
+                                        > 2.5,
+                                        "topology": solution.topology,
+                                        "l_mask": solution.l_mask,
+                                        "c_mask": solution.c_mask,
+                                        "inductance_uH": solution.inductance_uH,
+                                        "capacitance_pF": solution.capacitance_pF,
+                                        "residual_mismatch_efficiency": (
+                                            solution.accepted_power_w
+                                        ),
+                                        "tuner_efficiency": solution.tuner_efficiency,
+                                        "tuner_loss_db": solution.tuner_loss_db,
+                                        "final_efficiency": final,
+                                        "total_loss_db": (
+                                            -10.0 * math.log10(final)
+                                            if final > 0
+                                            else math.inf
+                                        ),
+                                    }
                                 )
     return rows
 
@@ -518,8 +525,14 @@ def _aggregate_systems(systems, rows):
                 ),
             )
             scenario_groups.setdefault(key, []).append(row)
-        worst = [min(row["final_efficiency"] for row in value) for value in scenario_groups.values()]
-        all_match = [all(row["target_met"] for row in value) for value in scenario_groups.values()]
+        worst = [
+            min(row["final_efficiency"] for row in value)
+            for value in scenario_groups.values()
+        ]
+        all_match = [
+            all(row["target_met"] for row in value)
+            for value in scenario_groups.values()
+        ]
         system = metadata[candidate_id]
         aggregates.append(
             {
@@ -541,9 +554,7 @@ def _aggregate_systems(systems, rows):
                 ),
             }
         )
-    objective_order = {
-        label: index for index, (label, _, _) in enumerate(OBJECTIVES)
-    }
+    objective_order = {label: index for index, (label, _, _) in enumerate(OBJECTIVES)}
     return sorted(
         aggregates,
         key=lambda row: (
@@ -584,8 +595,7 @@ def _grounds(config):
     configured = config.get("grounds")
     if configured:
         return {
-            row["id"]: (row["epsilon_r"], row["conductivity_s_m"])
-            for row in configured
+            row["id"]: (row["epsilon_r"], row["conductivity_s_m"]) for row in configured
         }
     environment = config["environment"]
     return {

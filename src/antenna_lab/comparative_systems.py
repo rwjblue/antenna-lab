@@ -11,7 +11,13 @@ from typing import Any
 import numpy as np
 
 from antenna_lab.atu import LOSS_ENVELOPES, PROFILES, solve_switched_l_network
-from antenna_lab.kh1_nec import BANDS, GEOMETRIES, _anchor, _line_scenarios, _rank_doublet
+from antenna_lab.kh1_nec import (
+    BANDS,
+    GEOMETRIES,
+    _anchor,
+    _line_scenarios,
+    _rank_doublet,
+)
 from antenna_lab.measurements import load_impedance_measurements
 from antenna_lab.portable_systems import (
     KH1_PROFILE_IDS,
@@ -38,12 +44,16 @@ def select_doublet_shortlist(grid_rows: list[dict[str, Any]]) -> list[dict[str, 
         add(row)
     for dimensions in ((58.0, 28.0), (44.0, 28.0), (57.0, 28.0)):
         add(next(row for row in grid_rows if _dimensions(row) == dimensions))
-    add(min((row for row in grid_rows if row["radiator_ft"] == 44.0), key=_rank_doublet))
+    add(
+        min((row for row in grid_rows if row["radiator_ft"] == 44.0), key=_rank_doublet)
+    )
     for budget in (80.0, 90.0, 100.0, 110.0, 120.0):
         eligible = [row for row in grid_rows if row["total_wire_ft"] <= budget]
         if eligible:
             add(min(eligible, key=_rank_doublet))
-    return sorted(selected.values(), key=lambda row: (row["total_wire_ft"], _rank_doublet(row)))
+    return sorted(
+        selected.values(), key=lambda row: (row["total_wire_ft"], _rank_doublet(row))
+    )
 
 
 def run_comparative_study(
@@ -73,9 +83,7 @@ def run_comparative_study(
         doublet_systems + (reference_system,),
         doublet_rows + reference_rows,
     )
-    portable_aggregates = _read_typed_csv(
-        portable_study_dir / "system_candidates.csv"
-    )
+    portable_aggregates = _read_typed_csv(portable_study_dir / "system_candidates.csv")
     all_aggregates = sorted(
         portable_aggregates + comparison_aggregates,
         key=lambda row: (
@@ -181,7 +189,10 @@ def _evaluate_doublets(
                 [impedance_lookup[(geometry_id, 58.0, band)] for band, _, _ in BANDS]
             )
             candidate = np.asarray(
-                [impedance_lookup[(geometry_id, radiator, band)] for band, _, _ in BANDS]
+                [
+                    impedance_lookup[(geometry_id, radiator, band)]
+                    for band, _, _ in BANDS
+                ]
             )
             for metadata, line, coax, coax_ft, baseline_load in line_scenarios:
                 for anchor_method in ("impedance_delta", "smith_displacement"):
@@ -349,8 +360,12 @@ def _tuner_rows(
                             ),
                             "l_mask": solution.l_mask if solution else -1,
                             "c_mask": solution.c_mask if solution else -1,
-                            "inductance_uH": solution.inductance_uH if solution else 0.0,
-                            "capacitance_pF": solution.capacitance_pF if solution else 0.0,
+                            "inductance_uH": solution.inductance_uH
+                            if solution
+                            else 0.0,
+                            "capacitance_pF": solution.capacitance_pF
+                            if solution
+                            else 0.0,
                             "residual_mismatch_efficiency": (
                                 solution.accepted_power_w if solution else 0.0
                             ),

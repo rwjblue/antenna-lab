@@ -23,15 +23,11 @@ def run_final_decision(config_path: Path, output_dir: Path) -> dict[str, Any]:
     inputs = {key: Path(value) for key, value in config["inputs"].items()}
     rows = [
         row
-        for row in _read_typed_csv(
-            inputs["comparative"] / "candidate_aggregates.csv"
-        )
+        for row in _read_typed_csv(inputs["comparative"] / "candidate_aggregates.csv")
         if row["objective"] == objective
     ]
     by_id = {row["candidate_id"]: row for row in rows}
-    non_reference = [
-        row for row in rows if row["family"] != "linked_dipole_reference"
-    ]
+    non_reference = [row for row in rows if row["family"] != "linked_dipole_reference"]
     eligible = [row for row in non_reference if _match_safe(row, config)]
     rankings = _rankings(rows, non_reference, eligible, by_id, config)
     pareto = _pareto_shortlist(rows, config)
@@ -39,14 +35,25 @@ def run_final_decision(config_path: Path, output_dir: Path) -> dict[str, Any]:
     finalist_specs = {row["candidate_id"]: row for row in config["finalists"]}
     scenario_rows = _load_finalist_scenarios(inputs, finalist_specs, objective)
     representative = _representative_rows(scenario_rows, finalist_specs)
-    breakdown = [_power_budget(row, finalist_specs[row["candidate_id"]]) for row in representative]
+    breakdown = [
+        _power_budget(row, finalist_specs[row["candidate_id"]])
+        for row in representative
+    ]
     sensitivity = _band_sensitivity(scenario_rows)
     complexity = [
         {
-            **{key: by_id[candidate_id][key] for key in (
-                "candidate_id", "family", "total_wire_ft", "component_count",
-                "support_count", "band_changes_touch_antenna", "packed_complexity",
-            )},
+            **{
+                key: by_id[candidate_id][key]
+                for key in (
+                    "candidate_id",
+                    "family",
+                    "total_wire_ft",
+                    "component_count",
+                    "support_count",
+                    "band_changes_touch_antenna",
+                    "packed_complexity",
+                )
+            },
             "label": specification["label"],
             "weight_class": specification["weight_class"],
             "tangle_risk": specification["tangle_risk"],
@@ -143,13 +150,41 @@ def _rankings(rows, non_reference, eligible, by_id, config):
     )
     absolute = max(rows, key=lambda row: row["worst_band_final_efficiency_p10"])
     choices = (
-        ("best_worst_band_non_reference", best_worst, "maximize median-case worst band among match-safe non-reference systems"),
-        ("best_robust_lower_tail", robust, "maximize p10 worst-band efficiency among match-safe non-reference systems"),
-        ("best_median", median, "maximize five-band median among match-safe non-reference systems"),
-        ("best_no_band_switching", no_switch, "maximize robust efficiency without touching the antenna on band changes"),
-        ("smallest_above_threshold", smallest, f"minimum wire with p10 >= {config['useful_efficiency_threshold']:.0%} and match-safe"),
-        ("absolute_efficiency_winner", absolute, "include the resonant linked-dipole reference and physical band changes"),
-        ("recommended_overall", by_id["direct-44r-14c-z4"], "near-best robustness with 22 ft less wire than the non-reference winner"),
+        (
+            "best_worst_band_non_reference",
+            best_worst,
+            "maximize median-case worst band among match-safe non-reference systems",
+        ),
+        (
+            "best_robust_lower_tail",
+            robust,
+            "maximize p10 worst-band efficiency among match-safe non-reference systems",
+        ),
+        (
+            "best_median",
+            median,
+            "maximize five-band median among match-safe non-reference systems",
+        ),
+        (
+            "best_no_band_switching",
+            no_switch,
+            "maximize robust efficiency without touching the antenna on band changes",
+        ),
+        (
+            "smallest_above_threshold",
+            smallest,
+            f"minimum wire with p10 >= {config['useful_efficiency_threshold']:.0%} and match-safe",
+        ),
+        (
+            "absolute_efficiency_winner",
+            absolute,
+            "include the resonant linked-dipole reference and physical band changes",
+        ),
+        (
+            "recommended_overall",
+            by_id["direct-44r-14c-z4"],
+            "near-best robustness with 22 ft less wire than the non-reference winner",
+        ),
     )
     return [
         {
@@ -177,7 +212,9 @@ def _pareto_shortlist(rows, config):
     ]
     frontier = []
     for candidate in eligible:
-        if any(_dominates(other, candidate) for other in eligible if other is not candidate):
+        if any(
+            _dominates(other, candidate) for other in eligible if other is not candidate
+        ):
             continue
         frontier.append(candidate)
     family_ids = {
@@ -188,7 +225,11 @@ def _pareto_shortlist(rows, config):
         for family in {row["family"] for row in rows}
     }
     selected = {
-        row["candidate_id"]: {**row, "pareto": True, "selection_reason": "nondominated efficiency/wire tradeoff"}
+        row["candidate_id"]: {
+            **row,
+            "pareto": True,
+            "selection_reason": "nondominated efficiency/wire tradeoff",
+        }
         for row in frontier
     }
     for row in rows:
@@ -226,7 +267,8 @@ def _load_finalist_scenarios(inputs, finalists, objective):
     sources = {
         "portable": inputs["portable"] / "system_band_scenarios.csv",
         "doublet": inputs["comparative"] / "doublet_band_scenarios.csv",
-        "linked_reference": inputs["comparative"] / "linked_reference_band_scenarios.csv",
+        "linked_reference": inputs["comparative"]
+        / "linked_reference_band_scenarios.csv",
     }
     ids_by_source = defaultdict(set)
     for candidate_id, specification in finalists.items():
@@ -235,7 +277,10 @@ def _load_finalist_scenarios(inputs, finalists, objective):
     for source, candidate_ids in ids_by_source.items():
         with sources[source].open(newline="", encoding="utf-8") as handle:
             for raw in csv.DictReader(handle):
-                if raw["candidate_id"] in candidate_ids and raw["objective"] == objective:
+                if (
+                    raw["candidate_id"] in candidate_ids
+                    and raw["objective"] == objective
+                ):
                     rows.append({key: _coerce(value) for key, value in raw.items()})
     return rows
 
@@ -246,7 +291,8 @@ def _representative_rows(rows, finalists):
         filters = specification["representative"]
         for band in REQUIRED_BANDS:
             matches = [
-                row for row in rows
+                row
+                for row in rows
                 if row["candidate_id"] == candidate_id
                 and row["band"] == band
                 and all(str(row.get(key)) == value for key, value in filters.items())
@@ -313,26 +359,38 @@ def _band_sensitivity(rows):
                 "final_efficiency_p10": _quantile(efficiencies, 0.1),
                 "final_efficiency_p50": _quantile(efficiencies, 0.5),
                 "final_efficiency_p90": _quantile(efficiencies, 0.9),
-                "swr_le_1p5_fraction": float(np.mean([row["input_swr"] <= 1.5 for row in subset])),
-                "swr_le_2p5_fraction": float(np.mean([row["input_swr"] <= 2.5 for row in subset])),
-                "rollback_fraction": float(np.mean([row["likely_power_rollback"] for row in subset])),
+                "swr_le_1p5_fraction": float(
+                    np.mean([row["input_swr"] <= 1.5 for row in subset])
+                ),
+                "swr_le_2p5_fraction": float(
+                    np.mean([row["input_swr"] <= 2.5 for row in subset])
+                ),
+                "rollback_fraction": float(
+                    np.mean([row["likely_power_rollback"] for row in subset])
+                ),
             }
         )
-    return sorted(result, key=lambda row: (row["candidate_id"], REQUIRED_BANDS.index(row["band"])))
+    return sorted(
+        result, key=lambda row: (row["candidate_id"], REQUIRED_BANDS.index(row["band"]))
+    )
 
 
 def _linked_sacrifice(breakdown, by_id):
     reference = {
-        row["band"]: row for row in breakdown
+        row["band"]: row
+        for row in breakdown
         if row["candidate_id"] == "linked-dipole-five-band"
     }
     recommended = {
-        row["band"]: row for row in breakdown
+        row["band"]: row
+        for row in breakdown
         if row["candidate_id"] == "direct-44r-14c-z4"
     }
     by_band = []
     for band in REQUIRED_BANDS:
-        ratio = recommended[band]["final_efficiency"] / reference[band]["final_efficiency"]
+        ratio = (
+            recommended[band]["final_efficiency"] / reference[band]["final_efficiency"]
+        )
         by_band.append(
             {
                 "band": band,
@@ -371,13 +429,23 @@ def _family_winners(rows):
 
 
 def _failure_rows(by_id, inputs):
-    failures = [by_id[candidate_id] for candidate_id in (
-        "direct-41r-17c-z1", "efhw-62ft-f0.01-z49",
-        "trap-60ft-20m-traps-z1", "doublet-58r-32l",
-    )]
+    failures = [
+        by_id[candidate_id]
+        for candidate_id in (
+            "direct-41r-17c-z1",
+            "efhw-62ft-f0.01-z49",
+            "trap-60ft-20m-traps-z1",
+            "doublet-58r-32l",
+        )
+    ]
     coarse = _read_typed_csv(inputs["coarse"] / "system_candidates.csv")
     fan = max(
-        (row for row in coarse if row["family"] == "fan_dipole" and row["objective"] == "lowest_loss_swr_2p5"),
+        (
+            row
+            for row in coarse
+            if row["family"] == "fan_dipole"
+            and row["objective"] == "lowest_loss_swr_2p5"
+        ),
         key=lambda row: row["worst_band_final_efficiency_p10"],
     )
     return failures + [fan]
@@ -405,7 +473,7 @@ def _report(summary, family_winners, failures):
         "",
         f"**Best no-touch system:** 52/28 ft direct radiator/counterpoise through a compact 4:1 transformer, at {robust['worst_band_final_efficiency_p10']:.1%} p10 and {robust['worst_band_final_efficiency_p50']:.1%} p50 worst-band efficiency.",
         "",
-        f"**Recommended overall:** 44/14 ft with the same 4:1 interface. Its {recommended['worst_band_final_efficiency_p10']:.1%} robust result gives up only {(robust['worst_band_final_efficiency_p10']-recommended['worst_band_final_efficiency_p10']):.1%} absolute efficiency while removing 22 ft of wire.",
+        f"**Recommended overall:** 44/14 ft with the same 4:1 interface. Its {recommended['worst_band_final_efficiency_p10']:.1%} robust result gives up only {(robust['worst_band_final_efficiency_p10'] - recommended['worst_band_final_efficiency_p10']):.1%} absolute efficiency while removing 22 ft of wire.",
         "",
         f"Relative to the resonant reference, the recommendation retains {sacrifice['robust_relative_power_fraction']:.1%} of robust radiated power: a {sacrifice['robust_relative_sacrifice_fraction']:.1%} sacrifice or {sacrifice['robust_deficit_db']:.2f} dB.",
         "",
@@ -427,55 +495,62 @@ def _report(summary, family_winners, failures):
         lines.append(
             f"| {row['family']} | `{row['candidate_id']}` | {row['worst_band_final_efficiency_p10']:.1%} | {row['worst_band_final_efficiency_p50']:.1%} | {row['median_final_efficiency']:.1%} | {row['all_band_target_fraction']:.1%} | {row['rollback_fraction']:.1%} |"
         )
-    lines.extend([
-        "",
-        "## What failed",
-        "",
-    ])
+    lines.extend(
+        [
+            "",
+            "## What failed",
+            "",
+        ]
+    )
     for row in failures:
         lines.append(
             f"- `{row['candidate_id']}`: {row['worst_band_final_efficiency_p10']:.1%} p10 worst-band, {row['all_band_target_fraction']:.1%} all-band <=2.5, {row['rollback_fraction']:.1%} rollback flag."
         )
-    lines.extend([
-        "",
-        "The EFHW result applies to the modeled compact 49:1 implementation, not every EFHW. The fan and trap entries are coarse sentinels, sufficient to pivot effort but not universal impossibility proofs.",
-        "",
-        "## Build next",
-        "",
-        "Build the 44 ft radiator + 14 ft counterpoise with a measured 4:1 transformer and separate choke. Also retain taps or extension points for 12, 16, and 28 ft counterpoises. Measure the tuner-plane complex impedance and RF power budget before changing lengths.",
-        "",
-        "## Physical validation plan",
-        "",
-        "1. Characterize the 4:1 transformer and choke independently with calibrated two-port measurements into representative complex loads; separate mismatch from dissipation.",
-        "2. Measure raw R+jX at both antenna and KH1 tuner planes for 44/12, 44/14, 44/16, and 52/28 on all five bands, with tuner bypassed.",
-        "3. Repeat ground-side, ground-collinear, table-side, and table-collinear deployments over poor and average ground; record wire height, soil, weather, and conductor.",
-        "4. Record KH1 L/C/Z diagnostic states, residual SWR, tune power, and any power fallback. Compare the actual state with the model's minimum-SWR and maximum-transducer states.",
-        "5. Measure forward/reflected power before the tuner and delivered power after the transformer/choke with calibrated couplers; use thermal or calorimetric checks for transformer loss where feasible.",
-        "6. Run paired field-strength or WSPR tests against the linked resonant dipole without moving the support or receiver, alternating frequently to suppress propagation drift.",
-        "7. Update the profile and loss envelopes from measurements, rerun the committed commands, and accept the 44/14 build only if every band stays below the chosen rollback threshold in the deployment matrix.",
-        "",
-        "## Reproduce",
-        "",
-        "```sh",
-        "PYTHONPATH=src uv run antenna-lab run-kh1-portable-coarse-study \\",
-        "  --config configs/kh1-portable-refine-v1.json \\",
-        "  --output build/kh1-portable-refine-v1 --nec2c /path/to/nec2c --jobs 8",
-        "PYTHONPATH=src uv run antenna-lab run-kh1-comparative-study \\",
-        "  --nec-artifact build/upstream-artifacts-31750551947 \\",
-        "  --portable-study build/kh1-portable-refine-v1 \\",
-        "  --output build/kh1-portable-comparative-v1",
-        "PYTHONPATH=src uv run antenna-lab run-kh1-final-decision \\",
-        "  --config configs/kh1-portable-final-v1.json \\",
-        "  --output results/kh1-portable-final-v1",
-        "uv run antenna-lab verify-results results/kh1-portable-final-v1",
-        "```",
-        "",
-        "## Interpretation limits",
-        "",
-        "All quantiles are equal-weight engineering sensitivities, not probabilities. Exact KH1 L/C bank values remain secondary-source corroborated. The 2.5:1 rollback flag is conservative and not an Elecraft-published trip point. Ground and common-mode behavior are simplified NEC/system models; human coupling, wet foliage, and routing remain field-validation items.",
-        "",
-        "See the CSV files beside this report for the seven rankings, Pareto shortlist, per-band power budgets, deployment sensitivity, complexity, linked-reference delta, and failed sentinels.",
-    ])
+    lines.extend(
+        [
+            "",
+            "The EFHW result applies to the modeled compact 49:1 implementation, not every EFHW. The fan and trap entries are coarse sentinels, sufficient to pivot effort but not universal impossibility proofs.",
+            "",
+            "## Build next",
+            "",
+            "Build the 44 ft radiator + 14 ft counterpoise with a measured 4:1 transformer and separate choke. Also retain taps or extension points for 12, 16, and 28 ft counterpoises. Measure the tuner-plane complex impedance and RF power budget before changing lengths.",
+            "",
+            "## Physical validation plan",
+            "",
+            "1. Characterize the 4:1 transformer and choke independently with calibrated two-port measurements into representative complex loads; separate mismatch from dissipation.",
+            "2. Measure raw R+jX at both antenna and KH1 tuner planes for 44/12, 44/14, 44/16, and 52/28 on all five bands, with tuner bypassed.",
+            "3. Repeat ground-side, ground-collinear, table-side, and table-collinear deployments over poor and average ground; record wire height, soil, weather, and conductor.",
+            "4. Record KH1 L/C/Z diagnostic states, residual SWR, tune power, and any power fallback. Compare the actual state with the model's minimum-SWR and maximum-transducer states.",
+            "5. Measure forward/reflected power before the tuner and delivered power after the transformer/choke with calibrated couplers; use thermal or calorimetric checks for transformer loss where feasible.",
+            "6. Run paired field-strength or WSPR tests against the linked resonant dipole without moving the support or receiver, alternating frequently to suppress propagation drift.",
+            "7. Update the profile and loss envelopes from measurements, rerun the committed commands, and accept the 44/14 build only if every band stays below the chosen rollback threshold in the deployment matrix.",
+            "",
+            "## Reproduce",
+            "",
+            "```sh",
+            "PYTHONPATH=src uv run antenna-lab run-kh1-portable-coarse-study \\",
+            "  --config configs/kh1-portable-refine-v1.json \\",
+            "  --output build/kh1-portable-refine-v1 --nec2c /path/to/nec2c --jobs 8",
+            "gh run download 31750551947 \\",
+            "  --name kh1-portable-nec-v2-31750551947 \\",
+            "  --dir build/upstream-artifacts-31750551947",
+            "PYTHONPATH=src uv run antenna-lab run-kh1-comparative-study \\",
+            "  --nec-artifact build/upstream-artifacts-31750551947 \\",
+            "  --portable-study build/kh1-portable-refine-v1 \\",
+            "  --output build/kh1-portable-comparative-v1",
+            "PYTHONPATH=src uv run antenna-lab run-kh1-final-decision \\",
+            "  --config configs/kh1-portable-final-v1.json \\",
+            "  --output results/kh1-portable-final-v1",
+            "uv run antenna-lab verify-results results/kh1-portable-final-v1",
+            "```",
+            "",
+            "## Interpretation limits",
+            "",
+            "All quantiles are equal-weight engineering sensitivities, not probabilities. Exact KH1 L/C bank values remain secondary-source corroborated. The 2.5:1 rollback flag is conservative and not an Elecraft-published trip point. Ground and common-mode behavior are simplified NEC/system models; human coupling, wet foliage, and routing remain field-validation items.",
+            "",
+            "See the CSV files beside this report for the seven rankings, Pareto shortlist, per-band power budgets, deployment sensitivity, complexity, linked-reference delta, and failed sentinels.",
+        ]
+    )
     return "\n".join(lines) + "\n"
 
 

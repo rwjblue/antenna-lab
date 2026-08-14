@@ -60,12 +60,8 @@ def test_active_series_element_is_rejected() -> None:
         series_impedance(-1 + 1j)
 
 
-@pytest.mark.parametrize(
-    ("swr", "expected"), ((1.5, 0.96), (2.5, 0.8163265306122449))
-)
-def test_mismatch_efficiency_at_study_thresholds(
-    swr: float, expected: float
-) -> None:
+@pytest.mark.parametrize(("swr", "expected"), ((1.5, 0.96), (2.5, 0.8163265306122449)))
+def test_mismatch_efficiency_at_study_thresholds(swr: float, expected: float) -> None:
     flow = power_flow((), 50.0 * swr + 0j)
 
     assert flow.residual_mismatch_efficiency == pytest.approx(expected)
@@ -93,9 +89,7 @@ def test_transformer_primary_resistance_matches_analytical_efficiency() -> None:
 
 
 def test_radiated_power_budget_closes() -> None:
-    flow = power_flow(
-        (NetworkStage("series loss", series_impedance(2 + 0j)),), 48 + 0j
-    )
+    flow = power_flow((NetworkStage("series loss", series_impedance(2 + 0j)),), 48 + 0j)
     radiated = RadiatedPowerFlow(flow, radiation_efficiency=0.8)
 
     radiated.assert_energy_balance()
