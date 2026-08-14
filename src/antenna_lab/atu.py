@@ -456,17 +456,13 @@ def solve_switched_l_network(
     for topology, zin, load_voltage_ratio in candidates:
         swrs = _swr(zin)
         load_power = np.abs(source_v * load_voltage_ratio) ** 2 * load_conductance
-        gamma = (zin - 50.0) / (zin + 50.0)
-        accepted = np.maximum(0.0, 1.0 - np.abs(gamma) ** 2)
-        tuner_eff = np.divide(
-            load_power,
-            accepted,
-            out=np.zeros_like(load_power, dtype=float),
-            where=accepted > 1e-15,
-        )
         if objective == "lowest_loss_under_target":
             eligible = swrs <= target_swr
-            score = np.where(eligible, -tuner_eff, np.inf)
+            # The study reference plane is immediately before the tuner, so
+            # optimize load power / source available power. Maximizing only
+            # load power / accepted power can prefer a low-dissipation state
+            # with enough residual mismatch to reduce final radiated power.
+            score = np.where(eligible, -load_power, np.inf)
             if not np.any(eligible):
                 score = swrs
         else:
@@ -493,11 +489,13 @@ def solve_switched_l_network(
             0,
             objective=objective,
         )
-        if best is None or (
-            objective == "best_swr" and bypass.input_swr < best[0]
+        bypass_score = bypass.input_swr
+        if (
+            objective == "lowest_loss_under_target"
+            and bypass.input_swr <= target_swr
         ):
-            return bypass
-        if objective == "lowest_loss_under_target" and bypass.input_swr <= target_swr:
+            bypass_score = -bypass.transducer_efficiency
+        if best is None or bypass_score < best[0]:
             return bypass
 
     if best is None:
@@ -732,17 +730,29 @@ def evaluate_profile_rows(
     for antenna in direct_rows:
         load = complex(antenna["resistance_ohm"], antenna["reactance_ohm"])
         for loss in LOSS_ENVELOPES:
-            for objective in ("best_swr", "lowest_loss_under_target"):
+            objectives = (
+                ("best_swr", "best_swr", 1.5),
+                ("lowest_loss_swr_1p5", "lowest_loss_under_target", 1.5),
+                ("lowest_loss_swr_2p5", "lowest_loss_under_target", 2.5),
+            )
+            for label, objective, target_swr in objectives:
                 solution = solve_switched_l_network(
                     profile,
                     load,
                     antenna["frequency_hz"],
                     loss,
                     objective=objective,
+                    target_swr=target_swr,
                 )
                 row = asdict(solution)
                 row.update(
                     {
+                        "objective": label,
+                        "target_swr": (
+                            target_swr
+                            if objective == "lowest_loss_under_target"
+                            else None
+                        ),
                         "band": antenna["band"],
                         "deployment": antenna["deployment"],
                         "ground": antenna["ground"],
@@ -807,7 +817,8 @@ def summarize_atu_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 }
             )
             continue
-        matched = [row["input_swr"] <= 1.5 for row in subset]
+        matched_1p5 = [row["input_swr"] <= 1.5 for row in subset]
+        matched_2p5 = [row["input_swr"] <= 2.5 for row in subset]
         summaries.append(
             {
                 "profile": profile,
@@ -815,7 +826,11 @@ def summarize_atu_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "objective": objective,
                 "supported": True,
                 "sample_count": len(subset),
-                "match_fraction_swr_1p5": float(np.mean(matched)),
+                "match_fraction_swr_1p5": float(np.mean(matched_1p5)),
+                "match_fraction_swr_2p5": float(np.mean(matched_2p5)),
+                "likely_power_rollback_fraction": float(
+                    np.mean([row["input_swr"] > 2.5 for row in subset])
+                ),
                 "input_swr_p50": _quantile([row["input_swr"] for row in subset], 0.5),
                 "input_swr_p90": _quantile([row["input_swr"] for row in subset], 0.9),
                 "tuner_efficiency_p10": _quantile([row["tuner_efficiency"] for row in subset], 0.1),
@@ -1156,19 +1171,38 @@ def _atu_report(summary: dict[str, Any]) -> str:
         "",
         "## Results by tuner and band",
         "",
-        "The table uses the low-loss state among matches at or below 1.5:1. `system p10` is NEC antenna efficiency multiplied by tuner transducer efficiency; it includes mismatch and tuner dissipation, but not unmodeled operator/common-mode effects.",
+        "The table shows the maximum-transducer-efficiency state under both "
+        "1.5:1 and 2.5:1 residual-SWR limits. `system p10` is NEC antenna "
+        "efficiency multiplied by tuner transducer efficiency; it includes "
+        "mismatch and tuner dissipation, but not unmodeled operator/common-mode "
+        "effects.",
         "",
-        "| tuner | band | match fraction | SWR p90 | tuner eff p10 | tuner loss p90 | system p10 |",
-        "|---|---|---:|---:|---:|---:|---:|",
+        "| tuner | state objective | band | match <=1.5 | match <=2.5 | "
+        "rollback likely | SWR p90 | tuner eff p10 | tuner loss p90 | system p10 |",
+        "|---|---|---|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for row in summary["summary_by_band"]:
-        if row["objective"] not in {"lowest_loss_under_target", "manual"}:
+        if row["objective"] not in {
+            "lowest_loss_swr_1p5",
+            "lowest_loss_swr_2p5",
+            "manual",
+        }:
             continue
         if not row["supported"]:
-            lines.append(f"| {row['profile']} | {row['band']} | unsupported | | | | |")
+            lines.append(
+                f"| {row['profile']} | {row['objective']} | {row['band']} | "
+                "unsupported | | | | | | |"
+            )
             continue
         lines.append(
-            f"| {row['profile']} | {row['band']} | {row['match_fraction_swr_1p5'] * 100:.1f}% | {row['input_swr_p90']:.2f} | {row['tuner_efficiency_p10'] * 100:.1f}% | {row['tuner_loss_db_p90']:.2f} dB | {row['system_efficiency_p10'] * 100:.1f}% |"
+            f"| {row['profile']} | {row['objective']} | {row['band']} | "
+            f"{row['match_fraction_swr_1p5'] * 100:.1f}% | "
+            f"{row['match_fraction_swr_2p5'] * 100:.1f}% | "
+            f"{row['likely_power_rollback_fraction'] * 100:.1f}% | "
+            f"{row['input_swr_p90']:.2f} | "
+            f"{row['tuner_efficiency_p10'] * 100:.1f}% | "
+            f"{row['tuner_loss_db_p90']:.2f} dB | "
+            f"{row['system_efficiency_p10'] * 100:.1f}% |"
         )
     lines += ["", "## Limitations", ""]
     lines.extend(f"- {item}" for item in summary["limitations"])

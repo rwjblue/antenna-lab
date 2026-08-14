@@ -32,11 +32,16 @@ efficiency. Two search objectives are retained:
 
 - `best_swr`: closest match, similar to a tuner firmware search that minimizes
   measured reflected power;
-- `lowest_loss_under_target`: highest tuner efficiency among states at or below
-  the requested SWR threshold, default 1.5:1.
+- `lowest_loss_under_target`: highest transducer efficiency (load power divided
+  by source available power) among states at or below the requested SWR
+  threshold. The study retains separate 1.5:1 and 2.5:1 selections.
 
 Comparing these objectives shows when the very best SWR is not the lowest-loss
 usable state.
+
+The 2.5:1 result is also the rollback boundary used in result summaries. A
+higher residual SWR is flagged as likely to make the KH1 reduce RF output; the
+flag is a conservative modeling rule, not a published Elecraft trip point.
 
 ## Loss sensitivity envelopes
 

@@ -5,8 +5,11 @@ import pytest
 from antenna_lab.atu import (
     LOSS_ENVELOPES,
     PROFILES,
+    _solution_for_state,
+    evaluate_profile_rows,
     solve_switched_l_network,
     solve_zm2,
+    summarize_atu_rows,
 )
 
 
@@ -50,6 +53,67 @@ def test_kxat2_finds_a_passive_match_for_measured_40m_load() -> None:
         rel_tol=1e-9,
         abs_tol=1e-9,
     )
+
+
+def test_low_loss_objective_maximizes_pre_atu_transducer_efficiency() -> None:
+    profile = PROFILES["khatu1"]
+    loss = LOSS_ENVELOPES[1]
+    load = 20 + 25j
+    frequency_hz = 18_080_000
+
+    selected = solve_switched_l_network(
+        profile,
+        load,
+        frequency_hz,
+        loss,
+        objective="lowest_loss_under_target",
+        target_swr=1.5,
+    )
+    eligible = []
+    for topology in ("load_shunt", "source_shunt"):
+        for l_mask in range(1 << len(profile.inductors_uH)):
+            for c_mask in range(1 << len(profile.capacitors_pF)):
+                candidate = _solution_for_state(
+                    profile,
+                    load,
+                    frequency_hz,
+                    loss,
+                    topology,
+                    l_mask,
+                    c_mask,
+                    objective="lowest_loss_under_target",
+                )
+                if candidate.input_swr <= 1.5:
+                    eligible.append(candidate)
+
+    assert eligible
+    assert selected.transducer_efficiency == pytest.approx(
+        max(candidate.transducer_efficiency for candidate in eligible)
+    )
+    assert selected.transducer_efficiency > 0.99
+
+
+def test_profile_results_retain_both_swr_thresholds_and_rollback_flag() -> None:
+    antenna = {
+        "band": "17m",
+        "frequency_hz": 18_080_000,
+        "resistance_ohm": 20.0,
+        "reactance_ohm": 25.0,
+        "deployment": "test",
+        "ground": "test",
+        "conductivity": "copper",
+        "nec_efficiency": 0.9,
+    }
+
+    rows = evaluate_profile_rows(PROFILES["khatu1"], [antenna])
+    assert {row["objective"] for row in rows} == {
+        "best_swr",
+        "lowest_loss_swr_1p5",
+        "lowest_loss_swr_2p5",
+    }
+    summary = summarize_atu_rows(rows)
+    assert all("match_fraction_swr_2p5" in row for row in summary)
+    assert all("likely_power_rollback_fraction" in row for row in summary)
 
 
 def test_unsupported_profile_returns_explicit_result() -> None:
