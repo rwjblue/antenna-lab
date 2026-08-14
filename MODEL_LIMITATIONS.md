@@ -73,7 +73,7 @@ single SWR trip threshold. Treat the flag as a comparison aid, not firmware
 reverse engineering.
 
 Transformer and choke dB envelopes are source-backed but are not measurements
-of the proposed 44/14 hardware. Dividing antenna impedance by turns ratio and
+of proposed hardware. Dividing antenna impedance by turns ratio and
 applying empirical dissipative loss is a screening approximation; leakage,
 magnetizing current, parasitic capacitance, common mode, flux, and load-dependent
 core loss require a measured equivalent circuit.
@@ -84,3 +84,9 @@ ground power ledger. Nearby people, wet foliage, support loss, wire sag, and
 unintended counterpoises are not represented. The radial vertical, near-end-fed,
 fan, and trap geometries are screening sentinels, not construction-optimized
 commercial antenna replicas.
+
+The linked-counterpoise composition assumes a zero-resistance closed contact
+and a perfect open at 14 ft. It reuses independently solved 41/28 and 41/14 NEC
+cases, so it does not model contact loss or capacitive/inductive coupling to the
+disconnected outer 14 ft. The open tail should be physically separated in the
+prototype, and folded/adjacent-tail layouts must be measured as distinct cases.

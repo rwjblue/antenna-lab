@@ -2,6 +2,12 @@
   "schema_version": 1,
   "study_id": "kh1-portable-final-v1",
   "objective": "lowest_loss_swr_2p5",
+  "recommended_candidate_id": "direct-41r-28c-linked14",
+  "operator_profile": {
+    "band_weights": {"40m": 5, "30m": 3, "20m": 5, "17m": 2, "15m": 2},
+    "must_bands": ["40m", "20m"],
+    "must_match_swr": 2.5
+  },
   "useful_efficiency_threshold": 0.45,
   "match_safe_all_band_fraction": 0.9,
   "match_safe_rollback_fraction": 0.05,
@@ -33,6 +39,24 @@
       "weight_class": "low",
       "tangle_risk": "medium",
       "notes": "Absolute efficiency reference; eight links must be changed at the antenna."
+    },
+    {
+      "candidate_id": "direct-41r-28c-linked14",
+      "label": "41/28 ft direct wire with a 14 ft 17 m counterpoise link",
+      "source": "linked_counterpoise",
+      "representative": {"profile": "khatu1", "tuner_loss_envelope": "nominal", "component_loss_envelope": "1", "deployment": "table_side_30", "ground": "average", "conductor": "copper"},
+      "weight_class": "very_low",
+      "tangle_risk": "low",
+      "notes": "Operator-priority recommendation: disconnect the outer 14 ft of counterpoise only on 17 m; assumes a clean open and separated tail."
+    },
+    {
+      "candidate_id": "direct-41r-28c-z1",
+      "label": "41/28 ft direct wire without the 17 m link",
+      "source": "portable",
+      "representative": {"profile": "khatu1", "tuner_loss_envelope": "nominal", "component_loss_envelope": "1", "deployment": "table_side_30", "ground": "average", "conductor": "copper"},
+      "weight_class": "very_low",
+      "tangle_risk": "low",
+      "notes": "No-transformer control; strong on priority bands but the full counterpoise is a poor 17 m state."
     },
     {
       "candidate_id": "direct-52r-28c-z4",

@@ -79,9 +79,16 @@ def run_comparative_study(
     )
     reference_system = _reference_system(linked)
     reference_rows = _evaluate_reference(reference_system, linked)
+    linked_counterpoise_system = _linked_counterpoise_system()
+    linked_counterpoise_rows = compose_linked_counterpoise_rows(
+        _read_selected_portable_rows(
+            portable_study_dir / "system_band_scenarios.csv",
+            {"direct-41r-28c-z1", "direct-41r-14c-z1"},
+        )
+    )
     comparison_aggregates = _aggregate_systems(
-        doublet_systems + (reference_system,),
-        doublet_rows + reference_rows,
+        doublet_systems + (reference_system, linked_counterpoise_system),
+        doublet_rows + reference_rows + linked_counterpoise_rows,
     )
     portable_aggregates = _read_typed_csv(portable_study_dir / "system_candidates.csv")
     all_aggregates = sorted(
@@ -98,6 +105,10 @@ def run_comparative_study(
     output_dir.mkdir(parents=True, exist_ok=True)
     _write_csv(output_dir / "doublet_band_scenarios.csv", doublet_rows)
     _write_csv(output_dir / "linked_reference_band_scenarios.csv", reference_rows)
+    _write_csv(
+        output_dir / "linked_counterpoise_band_scenarios.csv",
+        linked_counterpoise_rows,
+    )
     _write_csv(output_dir / "candidate_aggregates.csv", all_aggregates)
     _write_csv(output_dir / "doublet_shortlist.csv", shortlist)
     summary = {
@@ -108,16 +119,25 @@ def run_comparative_study(
         "doublet_shortlist_count": len(doublet_systems),
         "doublet_scenario_band_row_count": len(doublet_rows),
         "linked_reference_scenario_band_row_count": len(reference_rows),
+        "linked_counterpoise_scenario_band_row_count": len(linked_counterpoise_rows),
         "candidate_aggregate_count": len(all_aggregates),
         "ranking_by_objective": {
             label: [row for row in all_aggregates if row["objective"] == label][:20]
             for label, _, _ in OBJECTIVES
         },
         "warnings": [
-            "Doublet loads are anchored to one measured 58/28-foot deployment and displaced with NEC; this is not a direct measurement of every candidate.",
-            "Scenario dimensions and loss envelopes are equal-weight sensitivities, not probability distributions.",
-            "The linked-dipole reference uses independently resonated NEC elements as an efficiency ceiling for a field-linked implementation.",
-            "KHATU1 component banks are inferred sensitivity profiles, not Elecraft-published values.",
+            "Doublet loads are anchored to one measured 58/28-foot deployment "
+            "and displaced with NEC; this is not a direct measurement of every "
+            "candidate.",
+            "Scenario dimensions and loss envelopes are equal-weight "
+            "sensitivities, not probability distributions.",
+            "The linked-dipole reference uses independently resonated NEC "
+            "elements as an efficiency ceiling for a field-linked implementation.",
+            "The linked-counterpoise candidate assumes a perfect closed contact "
+            "at 28 ft and a true open at 14 ft on 17 m; connector loss and coupling "
+            "to the disconnected tail are not modeled.",
+            "KHATU1 component banks are inferred sensitivity profiles, not "
+            "Elecraft-published values.",
         ],
     }
     (output_dir / "summary.json").write_text(
@@ -160,6 +180,55 @@ def _reference_system(linked: list[dict[str, Any]]) -> SystemCandidate:
         band_changes_touch_antenna=True,
         packed_complexity="medium",
     )
+
+
+def _linked_counterpoise_system() -> SystemCandidate:
+    return SystemCandidate(
+        id="direct-41r-28c-linked14",
+        design_id="direct-41r-28c-linked14",
+        family="linked_counterpoise",
+        transformer_ratio=1.0,
+        choke_required=False,
+        total_wire_ft=69.0,
+        component_count=1,
+        support_count=1,
+        band_changes_touch_antenna=True,
+        packed_complexity="low",
+    )
+
+
+def compose_linked_counterpoise_rows(
+    source_rows: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Use 41/28 on four bands and a true 41/14 open-link state on 17 m."""
+
+    selected = []
+    for row in source_rows:
+        use_short = row["band"] == "17m"
+        expected = "direct-41r-14c-z1" if use_short else "direct-41r-28c-z1"
+        if row["candidate_id"] != expected:
+            continue
+        selected.append(
+            {
+                **row,
+                "candidate_id": "direct-41r-28c-linked14",
+                "design_id": "direct-41r-28c-linked14",
+                "family": "linked_counterpoise",
+                "link_state": "open_14ft" if use_short else "closed_28ft",
+            }
+        )
+    return selected
+
+
+def _read_selected_portable_rows(
+    path: Path, candidate_ids: set[str]
+) -> list[dict[str, Any]]:
+    rows = []
+    with path.open(newline="", encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            if row["candidate_id"] in candidate_ids:
+                rows.append({key: _coerce(value) for key, value in row.items()})
+    return rows
 
 
 def _evaluate_doublets(

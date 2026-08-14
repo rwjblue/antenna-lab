@@ -12,12 +12,14 @@ This project keeps observations separate from assumptions:
 - Line efficiency, SWR, and rankings are **derived/model outputs**, not measured
   radiation efficiency.
 
-The current complete-system result recommends a **44 ft radiator, 14 ft explicit
-counterpoise, compact 4:1 transformer, and separate choke** as the next KH1
-build. It reaches 54.7% p10 worst-band pre-ATU-to-radiated efficiency in the
-equal-weight model envelope, within 0.3 percentage point of the much longer
-52/28 ft non-reference winner. The five-band resonant linked dipole remains the
-absolute efficiency reference at 82.8%, but requires physical link changes.
+For the documented operator profile (40/20 must-have; 30 medium; 17/15 lower
+priority), the current complete-system result recommends a **41 ft radiator and
+28 ft direct counterpoise with a link at 14 ft**. Leave the link closed on
+40/30/20/15 m and disconnect the outer 14 ft on 17 m. It reaches 69.1% p10
+worst-band pre-ATU-to-radiated efficiency and 100% modeled all-band success at
+2.5:1, without transformer/choke loss. The five-band resonant linked dipole
+remains the absolute efficiency reference at 82.8%, but requires more physical
+link changes.
 See the [final decision report](results/kh1-portable-final-v1/REPORT.md) and
 [evidence classification](docs/kh1-portable-system-evidence.md).
 

@@ -14,13 +14,14 @@
     }
   ],
   "config": "configs/kh1-portable-final-v1.json",
-  "config_sha256": "b4e186da4d0fc5e983280de81078bc02f8363b28e0d8ae872da5c44e033170c9",
+  "config_sha256": "3eb947248e15d6126c2c1a7bd8eb6025731b4460d0f51d17e79659d595aaafed",
   "input_sha256": {
-    "candidate_aggregates": "b3912dbd91b015103ccfb3a3f55c5dda77937196c598ba5c96437392d17c7b17",
+    "candidate_aggregates": "e7e75da30791cad63cf1f077c718e6f000a75f1520ddc7b0df95584652f6b54d",
     "doublet_scenarios": "de2f4cd6009ab5fd14c5ed814727bd4fb33292d1ecb705f9821d32e4b57c158a",
+    "linked_counterpoise_scenarios": "6505453304d63aaf3c7b838fd96c4045f0e7c165ffc58f43340c20d0dfbf65da",
     "linked_scenarios": "bf1496646ef777e1bc6a4aa73e6cdf15b9b0e9817e5d4e6d662f3d9f586cf3de",
     "portable_scenarios": "fc4dc37509ff5ee0e9df6e5f5be60e93815d675e76218cd3c69a1c47586a63b7"
   },
-  "source_sha256": "8d5369d2513e47459ab465f6da3b88b6bd3399b861d625b2fd773f77bf6e37f4",
+  "source_sha256": "ea0055f0aa199a9b46b68948d960a48e64f9b5485d3610add5d2b493b02a314c",
   "study_id": "kh1-portable-final-v1"
 }
