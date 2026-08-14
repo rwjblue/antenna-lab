@@ -96,6 +96,59 @@ class PowerFlow:
                 raise AssertionError("A network stage generated real power")
 
 
+@dataclass(frozen=True)
+class RadiatedPowerFlow:
+    """Close the cascade power budget with a radiator-efficiency partition."""
+
+    network: PowerFlow
+    radiation_efficiency: float
+
+    def __post_init__(self) -> None:
+        if not 0 <= self.radiation_efficiency <= 1:
+            raise ValueError("Radiation efficiency must be between zero and one")
+
+    @property
+    def source_mismatch_loss_w(self) -> float:
+        return (
+            self.network.source_available_power_w
+            - self.network.source_delivered_power_w
+        )
+
+    @property
+    def radiator_loss_w(self) -> float:
+        return self.network.load_power_w * (1.0 - self.radiation_efficiency)
+
+    @property
+    def radiated_power_w(self) -> float:
+        return self.network.load_power_w * self.radiation_efficiency
+
+    @property
+    def final_efficiency(self) -> float:
+        return self.radiated_power_w / self.network.source_available_power_w
+
+    @property
+    def total_loss_db(self) -> float:
+        if self.final_efficiency <= 0:
+            return math.inf
+        return -10.0 * math.log10(self.final_efficiency)
+
+    def assert_energy_balance(self, tolerance_w: float = 1e-9) -> None:
+        self.network.assert_passive(tolerance_w)
+        accounted = (
+            self.source_mismatch_loss_w
+            + sum(self.network.stage_loss_w)
+            + self.radiator_loss_w
+            + self.radiated_power_w
+        )
+        if not math.isclose(
+            accounted,
+            self.network.source_available_power_w,
+            rel_tol=0.0,
+            abs_tol=tolerance_w,
+        ):
+            raise AssertionError("End-to-end RF power budget does not close")
+
+
 def identity() -> Matrix:
     """Return a through connection."""
 
@@ -131,6 +184,49 @@ def ideal_transformer(turns_ratio_primary_to_secondary: float) -> Matrix:
     if ratio <= 0:
         raise ValueError("Transformer turns ratio must be positive")
     return np.asarray([[ratio, 0.0], [0.0, 1.0 / ratio]], dtype=np.complex128)
+
+
+def matched_attenuator(loss_db: float, reference_ohm: float = 50.0) -> Matrix:
+    """Return a reciprocal pad with the requested matched power loss."""
+
+    if loss_db < 0 or reference_ohm <= 0:
+        raise ValueError("Pad loss must be non-negative and impedance positive")
+    attenuation_np = loss_db / 8.685889638
+    return np.asarray(
+        [
+            [
+                math.cosh(attenuation_np),
+                reference_ohm * math.sinh(attenuation_np),
+            ],
+            [
+                math.sinh(attenuation_np) / reference_ohm,
+                math.cosh(attenuation_np),
+            ],
+        ],
+        dtype=np.complex128,
+    )
+
+
+def transformer_equivalent(
+    turns_ratio_primary_to_secondary: float,
+    *,
+    primary_series_impedance_ohm: complex = 0j,
+    secondary_series_impedance_ohm: complex = 0j,
+    magnetizing_admittance_s: complex = 0j,
+) -> Matrix:
+    """Return a passive transformer equivalent circuit.
+
+    The circuit is primary series impedance, shunt magnetizing branch, ideal
+    transformer, then secondary series impedance. It can represent winding and
+    core loss without collapsing mismatch and dissipation into one fixed dB.
+    """
+
+    return cascade(
+        series_impedance(primary_series_impedance_ohm),
+        shunt_admittance(magnetizing_admittance_s),
+        ideal_transformer(turns_ratio_primary_to_secondary),
+        series_impedance(secondary_series_impedance_ohm),
+    )
 
 
 def transmission_line(
