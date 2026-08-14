@@ -19,6 +19,7 @@ from antenna_lab.atu import (
     solve_switched_l_network,
     solve_zm2,
 )
+from antenna_lab.comparative_systems import run_comparative_study
 from antenna_lab.kh1_nec import run_study
 from antenna_lab.kh1_pipeline import (
     assemble_study,
@@ -187,6 +188,17 @@ def build_parser() -> argparse.ArgumentParser:
     coarse_systems.add_argument("--nec2c", type=Path)
     coarse_systems.add_argument("--jobs", type=int, default=6)
 
+    comparative = subparsers.add_parser(
+        "run-kh1-comparative-study",
+        help="Compare refined portable candidates, doublets, and linked reference",
+    )
+    comparative.add_argument("--nec-artifact", type=Path, required=True)
+    comparative.add_argument("--portable-study", type=Path, required=True)
+    comparative.add_argument("--output", type=Path, required=True)
+    comparative.add_argument(
+        "--measurements", type=Path, default=DEFAULT_MEASUREMENTS
+    )
+
     verify = subparsers.add_parser(
         "verify-results", help="Verify a generated SHA256SUMS manifest"
     )
@@ -326,6 +338,15 @@ def main(argv: Sequence[str] | None = None) -> int:
             args.output,
             nec2c=args.nec2c,
             jobs=args.jobs,
+        )
+        print(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False))
+        return 0
+    if args.command == "run-kh1-comparative-study":
+        summary = run_comparative_study(
+            args.nec_artifact,
+            args.portable_study,
+            args.output,
+            measurement_path=args.measurements,
         )
         print(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False))
         return 0

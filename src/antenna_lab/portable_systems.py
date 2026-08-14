@@ -512,9 +512,10 @@ def _aggregate_systems(systems, rows):
                 row["profile"],
                 row["tuner_loss_envelope"],
                 str(row["component_loss_envelope"]),
-                row["deployment"],
-                row["ground"],
-                row["conductor"],
+                row.get(
+                    "antenna_scenario",
+                    "|".join((row["deployment"], row["ground"], row["conductor"])),
+                ),
             )
             scenario_groups.setdefault(key, []).append(row)
         worst = [min(row["final_efficiency"] for row in value) for value in scenario_groups.values()]
