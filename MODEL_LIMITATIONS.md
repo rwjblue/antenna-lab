@@ -44,3 +44,22 @@ electromagnetic solution.
 
 The next reversible measurement described in `NEXT_EXPERIMENT.md` is required
 before promoting provisional length-response conclusions to calibrated ones.
+
+## Extended bands
+
+The 80 m, 60 m, and 6 m additions are exploratory. They have no measured
+58/28-doublet station-end anchor in this repository. Direct-fed-wire and linked-
+dipole values on those bands are native NEC results; doublet values are radiator
+feedpoint and pattern results only. The 6 m case also exceeds the transmit range
+of the KH1 and KX2, but is retained for KX3/external-tuner comparison.
+
+## ATU-loss model
+
+The ATU study closes the earlier missing-system-model gap, but it does not make
+insertion loss a directly measured quantity. KXAT2 and KXAT3 L/C banks come from
+published schematics; their in-circuit component Q, relay resistance, stray
+reactance, PCB loss, and current dependence remain sensitivity inputs. KHATU1
+bank values are inferred pending `ATU PARAM` observations. Z-11Pro II bank
+values are range-fit because public service data were not found. The ZM-2 model
+is an uncalibrated coupled-resonator equivalent. Treat predicted loss as an
+explicit uncertainty interval and design the next bench measurement from it.

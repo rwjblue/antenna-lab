@@ -1,0 +1,248 @@
+name: ATU loss study
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/atu-loss-model
+  pull_request:
+    paths:
+      - ".github/workflows/atu-loss-study.yml"
+      - "data/measured/atu_states_template.csv"
+      - "data/reference/atu_profiles.json"
+      - "docs/atu-loss-model.md"
+      - "src/antenna_lab/atu.py"
+      - "src/antenna_lab/cli.py"
+      - "src/antenna_lab/kh1_nec.py"
+      - "src/antenna_lab/nec.py"
+      - "tests/test_atu.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: atu-loss-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  UV_VERSION: "0.12.3"
+  PYTHON_VERSION: "3.12"
+  ARTIFACT_RETENTION_DAYS: "90"
+
+jobs:
+  quality:
+    name: Source checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+
+      - name: Install Python and dependencies
+        run: |
+          uv python install "$PYTHON_VERSION"
+          uv sync --frozen --no-editable --group dev
+
+      - name: Critical lint
+        run: uv run ruff check --select E4,E7,E9,F src tests
+
+      - name: Compile Python sources
+        run: uv run python -m compileall -q src tests
+
+      - name: Run tests
+        run: uv run pytest
+
+      - name: Upload exact source snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: atu-loss-source-${{ github.run_id }}
+          path: |
+            .github/workflows/atu-loss-study.yml
+            data/measured/atu_states_template.csv
+            data/reference/atu_profiles.json
+            docs/atu-loss-model.md
+            src
+            tests
+            README.md
+            MODEL_LIMITATIONS.md
+            NEXT_EXPERIMENT.md
+            pyproject.toml
+            uv.lock
+          if-no-files-found: error
+          retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
+
+  direct-nec:
+    name: Generate shared 41/17 NEC loads
+    needs: quality
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install NEC-2 solver
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes nec2c
+          nec2c -v
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+
+      - name: Install Python dependencies
+        run: |
+          uv python install "$PYTHON_VERSION"
+          uv sync --frozen --no-editable
+
+      - name: Generate NEC load ensemble
+        shell: bash
+        run: |
+          output=/tmp/atu-direct-nec
+          set +e
+          uv run antenna-lab run-atu-direct-nec \
+            --output "$output" \
+            --jobs 6 2>&1 | tee /tmp/atu-direct-nec.log
+          status=${PIPESTATUS[0]}
+          set -e
+          mkdir -p "$output"
+          cp /tmp/atu-direct-nec.log "$output/runner.log"
+          exit "$status"
+
+      - name: Upload shared NEC loads
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atu-direct-nec-${{ github.run_id }}
+          path: /tmp/atu-direct-nec
+          if-no-files-found: warn
+          retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
+
+  profile:
+    name: Model ${{ matrix.profile }} loss
+    needs: [quality, direct-nec]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [kxat2, kxat3, khatu1, z11pro2, zm2]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download shared NEC loads
+        uses: actions/download-artifact@v4
+        with:
+          name: atu-direct-nec-${{ github.run_id }}
+          path: /tmp/atu-input
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+
+      - name: Install Python dependencies
+        run: |
+          uv python install "$PYTHON_VERSION"
+          uv sync --frozen --no-editable
+
+      - name: Evaluate tuner profile
+        shell: bash
+        run: |
+          output=/tmp/atu-profile-${{ matrix.profile }}
+          set +e
+          uv run antenna-lab run-atu-profile-study \
+            --direct-nec-csv /tmp/atu-input/atu-direct-nec.csv \
+            --profile "${{ matrix.profile }}" \
+            --output "$output" 2>&1 | tee /tmp/atu-profile.log
+          status=${PIPESTATUS[0]}
+          set -e
+          mkdir -p "$output"
+          cp /tmp/atu-profile.log "$output/runner.log"
+          exit "$status"
+
+      - name: Upload tuner-profile result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atu-profile-${{ matrix.profile }}-${{ github.run_id }}
+          path: /tmp/atu-profile-${{ matrix.profile }}
+          if-no-files-found: warn
+          retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
+
+  assemble:
+    name: Assemble and verify ATU result package
+    needs: [quality, direct-nec, profile]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download shared NEC loads
+        uses: actions/download-artifact@v4
+        with:
+          name: atu-direct-nec-${{ github.run_id }}
+          path: /tmp/atu-input
+
+      - name: Download tuner-profile artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: atu-profile-*-${{ github.run_id }}
+          path: /tmp/atu-input
+          merge-multiple: true
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+
+      - name: Install Python dependencies
+        run: |
+          uv python install "$PYTHON_VERSION"
+          uv sync --frozen --no-editable
+
+      - name: Assemble canonical package
+        shell: bash
+        run: |
+          mkdir -p /tmp/atu-assembly
+          set +e
+          uv run antenna-lab assemble-atu-loss-study \
+            --input /tmp/atu-input \
+            --output /tmp/atu-loss 2>&1 | tee /tmp/atu-assembly/runner.log
+          status=${PIPESTATUS[0]}
+          set -e
+          exit "$status"
+
+      - name: Verify generated manifest
+        run: uv run antenna-lab verify-results /tmp/atu-loss
+
+      - name: Add report to workflow summary
+        run: cat /tmp/atu-loss/REPORT.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload complete result set
+        uses: actions/upload-artifact@v4
+        with:
+          name: atu-loss-${{ github.run_id }}
+          path: /tmp/atu-loss
+          if-no-files-found: error
+          retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}
+          compression-level: 6
+
+      - name: Upload assembly diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atu-loss-assembly-diagnostics-${{ github.run_id }}
+          path: |
+            /tmp/atu-assembly
+            /tmp/atu-loss
+          if-no-files-found: warn
+          retention-days: ${{ env.ARTIFACT_RETENTION_DAYS }}

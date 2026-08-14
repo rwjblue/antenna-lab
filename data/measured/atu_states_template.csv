@@ -1,0 +1,6 @@
+date_utc,radio,tuner,antenna_id,band,frequency_hz,load_resistance_ohm,load_reactance_ohm,post_tune_swr,inductance_uH,capacitance_pF,capacitor_side,rf_power_w,notes
+,KH1,KHATU1,41r-17c,40,7050000,,,,,,,,"Read L/C/Z with ATU PARAM immediately after tune"
+,KX2,KXAT2,41r-17c,40,7050000,,,,,,,,"Record radio-end R+jX with tuner bypassed, then tuner state if available"
+,KX3,KXAT3,41r-17c,40,7050000,,,,,,,,"Record radio-end R+jX with tuner bypassed, then tuner state if available"
+,Z-11Pro II,Z-11Pro II,41r-17c,40,7050000,,,,,,,,"External power-through loss measurement preferred"
+,KX2,EMTECH ZM-2 BNC prebuilt,41r-17c,40,7050000,,,,,,,,"Bypass the KX2 ATU; tune with the ZM-2 bridge engaged, then bypass the bridge for the loss measurement"
