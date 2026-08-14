@@ -1,0 +1,11 @@
+candidate_id,family,total_wire_ft,component_count,support_count,band_changes_touch_antenna,packed_complexity,label,weight_class,tangle_risk,notes
+linked-dipole-five-band,linked_dipole_reference,67.41432180184988,8,1,True,medium,Five-band resonant linked dipole,low,medium,Absolute efficiency reference; eight links must be changed at the antenna.
+direct-52r-28c-z4,direct_counterpoise,80,2,1,False,low,52/28 ft direct wire with 4:1 transformer,low,low,Best non-reference lower-tail and worst-band result.
+direct-44r-14c-z4,direct_counterpoise,58,2,1,False,low,44/14 ft direct wire with 4:1 transformer,low,low,Recommended compromise: almost the robust efficiency of 52/28 with 22 ft less wire.
+direct-44r-12c-z4,direct_counterpoise,56,2,1,False,low,44/12 ft direct wire with 4:1 transformer,low,low,Smallest match-safe candidate above the 45% robust threshold.
+direct-41r-12c-z4,direct_counterpoise,53,2,1,False,low,41/12 ft direct wire with 4:1 transformer,very_low,low,Smallest modeled candidate above 45% robust efficiency; 93.8% all-band success makes it less dependable than 44/12.
+direct-42r-24c-z4,direct_counterpoise,66,2,1,False,low,42/24 ft direct wire with 4:1 transformer,low,low,Highest median efficiency among match-safe non-reference systems.
+ocfd-68ft-f0.36-z4,ocfd,68,3,1,False,medium,68 ft OCFD at 36% with 4:1 transformer,low,medium,Best refined OCFD; competitive but dominated by the direct/counterpoise candidates.
+vertical-32r-4x12-z1,radial_vertical,80,0,1,False,high,32 ft vertical with four 12 ft radials,low,high,"Strong median radiation efficiency, but 30% rollback flag rate and radial complexity."
+doublet-58r-32l,balanced_doublet,122.0,1,1,False,medium,58 ft doublet with 32 ft balanced line,medium,high,Best discrete-tuner doublet shortlist result; severe mismatch-enhanced line-loss tail.
+direct-41r-17c-z1,direct_counterpoise,58,0,1,False,low,Legacy 41/17 ft direct wire,very_low,low,Rejected legacy recommendation; retained as an explicit rollback sentinel.

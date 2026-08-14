@@ -1,0 +1,8 @@
+rank,category,candidate_id,family,worst_band_final_efficiency_p10,worst_band_final_efficiency_p50,median_final_efficiency,total_wire_ft,all_band_target_fraction,rollback_fraction,reason
+1,best_worst_band_non_reference,direct-52r-28c-z4,direct_counterpoise,0.5503831894236103,0.6961693515020895,0.7273407532729697,80,1.0,0.0,maximize median-case worst band among match-safe non-reference systems
+2,best_robust_lower_tail,direct-52r-28c-z4,direct_counterpoise,0.5503831894236103,0.6961693515020895,0.7273407532729697,80,1.0,0.0,maximize p10 worst-band efficiency among match-safe non-reference systems
+3,best_median,direct-42r-24c-z4,direct_counterpoise,0.5440245269096777,0.6907584609873232,0.7350898438102307,66,1.0,0.0,maximize five-band median among match-safe non-reference systems
+4,best_no_band_switching,direct-52r-28c-z4,direct_counterpoise,0.5503831894236103,0.6961693515020895,0.7273407532729697,80,1.0,0.0,maximize robust efficiency without touching the antenna on band changes
+5,smallest_above_threshold,direct-41r-12c-z4,direct_counterpoise,0.5083147254074014,0.6422343238881205,0.6968985366176673,53,0.9375,0.0125,minimum wire with p10 >= 45% and match-safe
+6,absolute_efficiency_winner,linked-dipole-five-band,linked_dipole_reference,0.828470568177316,0.828470568177316,0.88005820851098,67.41432180184988,1.0,0.0,include the resonant linked-dipole reference and physical band changes
+7,recommended_overall,direct-44r-14c-z4,direct_counterpoise,0.5469766562660159,0.6881228861638011,0.721395462500445,58,1.0,0.0,near-best robustness with 22 ft less wire than the non-reference winner

@@ -1,0 +1,26 @@
+{
+  "artifacts": [
+    {
+      "actions_run": "https://github.com/rwjblue/antenna-lab/actions/runs/31750551947",
+      "artifact_id": 9200832590,
+      "kind": "NEC source ensemble",
+      "manifest_verified": true
+    },
+    {
+      "actions_run": "https://github.com/rwjblue/antenna-lab/actions/runs/31750551951",
+      "artifact_id": 9200811407,
+      "kind": "legacy 41/17 ATU cross-check",
+      "manifest_verified": true
+    }
+  ],
+  "config": "configs/kh1-portable-final-v1.json",
+  "config_sha256": "b4e186da4d0fc5e983280de81078bc02f8363b28e0d8ae872da5c44e033170c9",
+  "input_sha256": {
+    "candidate_aggregates": "b3912dbd91b015103ccfb3a3f55c5dda77937196c598ba5c96437392d17c7b17",
+    "doublet_scenarios": "de2f4cd6009ab5fd14c5ed814727bd4fb33292d1ecb705f9821d32e4b57c158a",
+    "linked_scenarios": "bf1496646ef777e1bc6a4aa73e6cdf15b9b0e9817e5d4e6d662f3d9f586cf3de",
+    "portable_scenarios": "fc4dc37509ff5ee0e9df6e5f5be60e93815d675e76218cd3c69a1c47586a63b7"
+  },
+  "source_sha256": "6947a47eb8b5fbcd3756498d31d91f18ed7bc9013ad2c8aeca632c388136dd3f",
+  "study_id": "kh1-portable-final-v1"
+}

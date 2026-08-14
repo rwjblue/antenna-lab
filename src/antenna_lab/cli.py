@@ -20,6 +20,7 @@ from antenna_lab.atu import (
     solve_zm2,
 )
 from antenna_lab.comparative_systems import run_comparative_study
+from antenna_lab.decision_report import run_final_decision
 from antenna_lab.kh1_nec import run_study
 from antenna_lab.kh1_pipeline import (
     assemble_study,
@@ -199,6 +200,15 @@ def build_parser() -> argparse.ArgumentParser:
         "--measurements", type=Path, default=DEFAULT_MEASUREMENTS
     )
 
+    final_decision = subparsers.add_parser(
+        "run-kh1-final-decision",
+        help="Generate the durable seven-ranking KH1 decision package",
+    )
+    final_decision.add_argument(
+        "--config", type=Path, default=Path("configs/kh1-portable-final-v1.json")
+    )
+    final_decision.add_argument("--output", type=Path, required=True)
+
     verify = subparsers.add_parser(
         "verify-results", help="Verify a generated SHA256SUMS manifest"
     )
@@ -348,6 +358,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             args.output,
             measurement_path=args.measurements,
         )
+        print(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False))
+        return 0
+    if args.command == "run-kh1-final-decision":
+        summary = run_final_decision(args.config, args.output)
         print(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False))
         return 0
     if args.command == "verify-results":

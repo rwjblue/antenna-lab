@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "study_id": "kh1-portable-final-v1",
+  "objective": "lowest_loss_swr_2p5",
+  "useful_efficiency_threshold": 0.45,
+  "match_safe_all_band_fraction": 0.9,
+  "match_safe_rollback_fraction": 0.05,
+  "inputs": {
+    "comparative": "build/kh1-portable-comparative-v1",
+    "portable": "build/kh1-portable-refine-v1",
+    "coarse": "build/kh1-portable-coarse-v1"
+  },
+  "artifacts": [
+    {
+      "kind": "NEC source ensemble",
+      "actions_run": "https://github.com/rwjblue/antenna-lab/actions/runs/31750551947",
+      "artifact_id": 9200832590,
+      "manifest_verified": true
+    },
+    {
+      "kind": "legacy 41/17 ATU cross-check",
+      "actions_run": "https://github.com/rwjblue/antenna-lab/actions/runs/31750551951",
+      "artifact_id": 9200811407,
+      "manifest_verified": true
+    }
+  ],
+  "finalists": [
+    {
+      "candidate_id": "linked-dipole-five-band",
+      "label": "Five-band resonant linked dipole",
+      "source": "linked_reference",
+      "representative": {"profile": "khatu1", "tuner_loss_envelope": "nominal", "component_loss_envelope": "0"},
+      "weight_class": "low",
+      "tangle_risk": "medium",
+      "notes": "Absolute efficiency reference; eight links must be changed at the antenna."
+    },
+    {
+      "candidate_id": "direct-52r-28c-z4",
+      "label": "52/28 ft direct wire with 4:1 transformer",
+      "source": "portable",
+      "representative": {"profile": "khatu1", "tuner_loss_envelope": "nominal", "component_loss_envelope": "1", "deployment": "table_side_30", "ground": "average", "conductor": "copper"},
+      "weight_class": "low",
+      "tangle_risk": "low",
+      "notes": "Best non-reference lower-tail and worst-band result."
+    },
+    {
+      "candidate_id": "direct-44r-14c-z4",
+      "label": "44/14 ft direct wire with 4:1 transformer",
+      "source": "portable",
+      "representative": {"profile": "khatu1", "tuner_loss_envelope": "nominal", "component_loss_envelope": "1", "deployment": "table_side_30", "ground": "average", "conductor": "copper"},
+      "weight_class": "low",
+      "tangle_risk": "low",
+      "notes": "Recommended compromise: almost the robust efficiency of 52/28 with 22 ft less wire."
+    },
+    {
+      "candidate_id": "direct-44r-12c-z4",
+      "label": "44/12 ft direct wire with 4:1 transformer",
+      "source": "portable",
+      "representative": {"profile": "khatu1", "tuner_loss_envelope": "nominal", "component_loss_envelope": "1", "deployment": "table_side_30", "ground": "average", "conductor": "copper"},
+      "weight_class": "low",
+      "tangle_risk": "low",
+      "notes": "Smallest match-safe candidate above the 45% robust threshold."
+    },
+    {
+      "candidate_id": "direct-41r-12c-z4",
+      "label": "41/12 ft direct wire with 4:1 transformer",
+      "source": "portable",
+      "representative": {"profile": "khatu1", "tuner_loss_envelope": "nominal", "component_loss_envelope": "1", "deployment": "table_side_30", "ground": "average", "conductor": "copper"},
+      "weight_class": "very_low",
+      "tangle_risk": "low",
+      "notes": "Smallest modeled candidate above 45% robust efficiency; 93.8% all-band success makes it less dependable than 44/12."
+    },
+    {
+      "candidate_id": "direct-42r-24c-z4",
+      "label": "42/24 ft direct wire with 4:1 transformer",
+      "source": "portable",
+      "representative": {"profile": "khatu1", "tuner_loss_envelope": "nominal", "component_loss_envelope": "1", "deployment": "table_side_30", "ground": "average", "conductor": "copper"},
+      "weight_class": "low",
+      "tangle_risk": "low",
+      "notes": "Highest median efficiency among match-safe non-reference systems."
+    },
+    {
+      "candidate_id": "ocfd-68ft-f0.36-z4",
+      "label": "68 ft OCFD at 36% with 4:1 transformer",
+      "source": "portable",
+      "representative": {"profile": "khatu1", "tuner_loss_envelope": "nominal", "component_loss_envelope": "1", "deployment": "30ft_140", "ground": "average", "conductor": "copper"},
+      "weight_class": "low",
+      "tangle_risk": "medium",
+      "notes": "Best refined OCFD; competitive but dominated by the direct/counterpoise candidates."
+    },
+    {
+      "candidate_id": "vertical-32r-4x12-z1",
+      "label": "32 ft vertical with four 12 ft radials",
+      "source": "portable",
+      "representative": {"profile": "khatu1", "tuner_loss_envelope": "nominal", "component_loss_envelope": "1", "deployment": "table_feed", "ground": "average", "conductor": "copper"},
+      "weight_class": "low",
+      "tangle_risk": "high",
+      "notes": "Strong median radiation efficiency, but 30% rollback flag rate and radial complexity."
+    },
+    {
+      "candidate_id": "doublet-58r-32l",
+      "label": "58 ft doublet with 32 ft balanced line",
+      "source": "doublet",
+      "representative": {"profile": "khatu1", "tuner_loss_envelope": "nominal", "component_loss_envelope": "1", "deployment": "pulaski_30_10", "ground": "vf0.95-scale1.00-loss0.20-coax3", "conductor": "impedance_delta"},
+      "weight_class": "medium",
+      "tangle_risk": "high",
+      "notes": "Best discrete-tuner doublet shortlist result; severe mismatch-enhanced line-loss tail."
+    },
+    {
+      "candidate_id": "direct-41r-17c-z1",
+      "label": "Legacy 41/17 ft direct wire",
+      "source": "portable",
+      "representative": {"profile": "khatu1", "tuner_loss_envelope": "nominal", "component_loss_envelope": "1", "deployment": "table_side_30", "ground": "average", "conductor": "copper"},
+      "weight_class": "very_low",
+      "tangle_risk": "low",
+      "notes": "Rejected legacy recommendation; retained as an explicit rollback sentinel."
+    }
+  ]
+}
