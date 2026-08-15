@@ -66,6 +66,27 @@ mise run check
 mise run reference
 ```
 
+Run the complete 53 ft / 9:1 EFRW study (explicit dedicated-counterpoise and
+coax-return cases, five portable shapes, RG-316 loss, and KXAT2/KXAT3/KHATU1
+tuner models):
+
+```bash
+NEC2C_PATH=/path/to/nec2c mise run efrw
+```
+
+The generated comparison is in
+[`results/53ft-efrw-v1/REPORT.md`](results/53ft-efrw-v1/REPORT.md).
+
+Run the counterpoise-length/direction, elevated-feed, 20-to-40 ft sloper, and
+carbon-fiber-mast extension:
+
+```bash
+NEC2C_PATH=/path/to/nec2c mise run efrw-elevated
+```
+
+Its generated addendum is in
+[`results/53ft-efrw-elevated-v1/REPORT.md`](results/53ft-efrw-elevated-v1/REPORT.md).
+
 ## Sharded NEC-2 study
 
 The full KH1 study can still be run locally as one command:

@@ -1,0 +1,21 @@
+{
+  "canonical_case": {
+    "ground": "average",
+    "hardware_loss_envelope": "best",
+    "tuner_loss_envelope": "nominal",
+    "tuner_objective": "lowest-loss state meeting 2.5:1"
+  },
+  "comparison_bands": [
+    "40m",
+    "30m",
+    "20m",
+    "17m",
+    "15m",
+    "12m",
+    "10m"
+  ],
+  "geometry_case_count": 218,
+  "nec_case_count": 2398,
+  "study_id": "53ft-efrw-elevated-v1",
+  "system_row_count": 6540
+}

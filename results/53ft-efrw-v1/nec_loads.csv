@@ -1,0 +1,221 @@
+deployment,deployment_label,return_path,return_label,choke_position,ground,band,frequency_hz,antenna_resistance_ohm,antenna_reactance_ohm,antenna_raw_swr_50ohm,nec_radiation_efficiency,cache_hit
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,160m,1850000,12.995,-2642.7,10752.646555745572,0.8787999999999999,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,80m,3550000,21.819,-1160.2,1236.5729194961677,0.8805,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,60m,5357000,44.448,-454.82,95.08346110240701,0.8912,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,40m,7050000,133.02,200.02,8.939759594360087,0.8978,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,30m,10120000,257.52,-1292.8,135.1392599338518,0.8905,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,20m,14050000,89.464,79.578,3.476180528153441,0.9227,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,17m,18080000,3379.4,-39.132,67.59706461897744,0.9124,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,15m,21050000,202.33,78.62,4.691564924269905,0.9401,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,12m,24910000,1366.7,1438.9,57.65152248069606,0.9803000000000001,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,10m,28050000,1641.5,-1778.6,71.38946732378245,0.9703,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,6m,50100000,254.13,263.51,10.650178920412102,0.9434,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,160m,1850000,34.74,-2655.8,4062.7404030272974,0.9547,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,80m,3550000,36.161,-1174.2,764.6640819770678,0.9281,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,60m,5357000,59.501,-467.82,75.58076633112321,0.9190999999999999,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,40m,7050000,166.0,177.01,7.258438980814709,0.9195,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,30m,10120000,312.11,-1285.8,112.33573891960565,0.909,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,20m,14050000,99.657,65.292,3.0191897825402627,0.9314,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,17m,18080000,3057.2,262.14,61.59366394626271,0.9190999999999999,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,15m,21050000,212.75,55.238,4.55743364830778,0.943,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,12m,24910000,1237.5,1355.1,54.44954968833288,0.98,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,10m,28050000,1775.0,-1749.4,69.99726708006658,0.9678,True
+horizontal_10,10 ft low horizontal,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,6m,50100000,258.01,247.72,10.01090764760214,0.9447,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,160m,1850000,11.8,-2690.8,12276.345477864186,0.8319,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,80m,3550000,20.093,-1199.6,1435.2691869565977,0.8414,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,60m,5357000,41.208,-495.48,121.18109445341527,0.8645999999999999,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,40m,7050000,124.1,144.42,6.081819916252493,0.8833,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,30m,10120000,247.03,-1255.2,132.69301523120507,0.8811,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,20m,14050000,81.573,69.31,3.0995954987265693,0.8935,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,17m,18080000,3217.6,64.09,64.37753779102327,0.9057,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,15m,21050000,178.17,106.83,4.921956188301988,0.9029,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,12m,24910000,1098.1,1579.1,67.4085403690877,0.9487000000000001,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,10m,28050000,2220.6,-1828.5,74.53379221939679,0.9504,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,6m,50100000,225.72,299.58,12.608772256460469,0.9031,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,160m,1850000,30.51,-2701.9,4787.737890182297,0.9351,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,80m,3550000,32.714,-1211.4,899.3448352555491,0.903,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,60m,5357000,54.925,-506.53,95.4248948010368,0.899,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,40m,7050000,154.92,124.03,5.21539223213713,0.9079999999999999,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,30m,10120000,299.37,-1248.0,110.19745221305095,0.9012,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,20m,14050000,91.091,56.893,2.7127718984331013,0.9057,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,17m,18080000,2901.3,336.45,58.80655896204589,0.9128000000000001,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,15m,21050000,188.9,87.238,4.632595529734653,0.909,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,12m,24910000,1016.9,1488.0,63.918460879374244,0.9494,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,10m,28050000,2346.1,-1745.6,72.90563549974601,0.9490999999999999,True
+horizontal_10,10 ft low horizontal,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,6m,50100000,229.94,286.56,11.874473852330324,0.9057999999999999,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,160m,1850000,18.622,-2634.1,7454.9774073571725,0.9159999999999999,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,80m,3550000,30.437,-1151.9,874.1323257781785,0.9151,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,60m,5357000,59.54,-448.87,69.69653166049356,0.9206,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,40m,7050000,158.65,177.91,7.3421217574276065,0.9216,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,30m,10120000,386.95,-1539.5,130.36010526914288,0.8962,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,20m,14050000,94.35,16.734,1.968230196881784,0.9301999999999999,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,17m,18080000,1798.0,1047.2,48.16535431768118,0.9416,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,15m,21050000,267.33,-46.525,5.514225981627223,0.9475,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,12m,24910000,999.97,1416.3,60.152094354505884,0.9769,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,10m,28050000,2309.7,-2145.5,86.06349293711854,0.9632,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,6m,50100000,349.56,183.72,8.95372440485778,0.9589,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,160m,1850000,54.424,-2659.7,2601.5967278419016,0.9712999999999999,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,80m,3550000,48.906,-1181.9,573.2528283559986,0.9477,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,60m,5357000,66.557,-478.8,70.95643564021152,0.9301999999999999,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,40m,7050000,152.97,141.97,5.850557695212815,0.9211,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,30m,10120000,372.54,-1565.2,139.0993278626427,0.8887999999999999,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,20m,14050000,95.229,17.376,1.9907062397165032,0.9309999999999999,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,17m,18080000,1829.0,1026.4,48.106473137538,0.9422,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,15m,21050000,276.98,-48.582,5.715582794729575,0.9490000000000001,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,12m,24910000,1095.3,1365.6,55.985889840207356,0.9787,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,10m,28050000,2172.7,-2002.8,80.38828877952334,0.9619,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,6m,50100000,371.32,167.96,8.969034417169889,0.961,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,160m,1850000,16.657,-2685.2,8660.714894026181,0.8814,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,80m,3550000,27.937,-1193.3,1021.7589568426934,0.8867,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,60m,5357000,55.394,-491.4,89.18344911909287,0.9013,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,40m,7050000,148.59,121.1,5.085578064223572,0.9102,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,30m,10120000,369.32,-1487.5,127.33718703814866,0.8879,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,20m,14050000,86.903,9.3342,1.767786616010525,0.9039,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,17m,18080000,1664.4,1020.9,45.820090556820816,0.9355,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,15m,21050000,240.74,-5.8638,4.817785230393219,0.9212,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,12m,24910000,789.25,1487.0,71.86659372315012,0.9375,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,10m,28050000,2987.3,-2359.1,97.01251600643559,0.941,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,6m,50100000,313.68,233.11,9.795606253863033,0.9312,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,160m,1850000,47.257,-2707.0,3103.2784402922707,0.9582999999999999,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,80m,3550000,43.912,-1219.2,679.0279059474169,0.9285,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,60m,5357000,61.384,-517.86,89.40852575052868,0.9123,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,40m,7050000,142.89,88.539,4.058555719584541,0.9093000000000001,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,30m,10120000,355.71,-1511.2,135.6511727010538,0.88,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,20m,14050000,87.441,10.275,1.7843555755592846,0.9048,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,17m,18080000,1690.3,1005.9,45.78599100420931,0.9359999999999999,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,15m,21050000,248.93,-6.819,4.982492822180551,0.9235,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,12m,24910000,871.91,1471.2,67.12864988361116,0.9429000000000001,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,10m,28050000,2741.8,-2203.1,90.24799630538286,0.9444,True
+inverted_l_30,30 ft vertical / 26 ft horizontal inverted-L,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,6m,50100000,333.42,222.11,9.67419496960917,0.9351,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,160m,1850000,19.207,-2496.9,6494.901203714463,0.9164,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,80m,3550000,28.163,-1084.4,837.4213209088966,0.9055,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,60m,5357000,51.357,-403.59,65.41783067137705,0.9035,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,40m,7050000,141.74,243.96,11.498570867319698,0.9009,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,30m,10120000,274.36,-1295.3,127.96823889236266,0.8943000000000001,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,20m,14050000,99.751,41.612,2.432312985092738,0.9348000000000001,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,17m,18080000,2065.1,1068.7,52.36827263468467,0.9299,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,15m,21050000,246.44,8.4601,4.934857627620903,0.9462,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,12m,24910000,1017.7,1378.0,57.70296641947689,0.9773999999999999,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,10m,28050000,2248.5,-2037.5,81.9060341606163,0.9616,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,6m,50100000,334.19,204.81,9.23551431346672,0.955,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,160m,1850000,58.064,-2523.3,2195.1339885421808,0.9725,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,80m,3550000,49.92,-1113.1,498.38886548974085,0.9472,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,60m,5357000,66.705,-430.72,57.69026681053801,0.9269,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,40m,7050000,161.61,201.9,8.468186827906637,0.9168999999999999,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,30m,10120000,310.89,-1336.7,121.3156646679028,0.8987,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,20m,14050000,106.91,41.107,2.5261350868041377,0.9386,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,17m,18080000,2033.8,950.19,49.55896919152666,0.9345,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,15m,21050000,263.57,9.7693,5.278911990692523,0.9495999999999999,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,12m,24910000,1118.8,1283.3,51.84113807978779,0.9803000000000001,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,10m,28050000,2180.7,-1887.6,76.30171277052102,0.9595,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,6m,50100000,353.3,192.11,9.187914391723643,0.9575,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,160m,1850000,17.231,-2563.3,7629.625308389161,0.8829,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,80m,3550000,25.794,-1132.4,996.7386186833,0.8742,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,60m,5357000,47.707,-448.97,86.4956677499012,0.8804000000000001,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,40m,7050000,133.08,186.35,8.133225625435701,0.8876999999999999,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,30m,10120000,262.48,-1262.2,126.82422345257041,0.8851,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,20m,14050000,91.633,32.823,2.1478850931393425,0.9097,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,17m,18080000,1935.4,1053.8,50.1895164627789,0.9239,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,15m,21050000,220.17,41.279,4.566286373225382,0.9164,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,12m,24910000,813.3,1466.0,69.16328374603192,0.9390999999999999,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,10m,28050000,2918.0,-2161.3,90.38264182307519,0.9416,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,6m,50100000,299.43,249.19,10.205185364481594,0.9243000000000001,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,160m,1850000,50.868,-2586.0,2631.313433527934,0.9605,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,80m,3550000,44.958,-1157.3,597.8294193074875,0.9284,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,60m,5357000,61.581,-473.09,74.71952698316629,0.9087999999999999,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,40m,7050000,151.41,147.48,6.066633248886921,0.9054000000000001,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,30m,10120000,297.73,-1300.5,119.72720693792775,0.8903,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,20m,14050000,97.93,32.749,2.2422145051884494,0.9148999999999999,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,17m,18080000,1906.6,946.19,47.528514977551616,0.9286,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,15m,21050000,234.87,43.54,4.866213286815363,0.9214,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,12m,24910000,909.62,1412.7,62.11159798385576,0.9466,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,10m,28050000,2747.8,-2009.2,84.34500746089233,0.9453,True
+inverted_v_20,"20 ft apex inverted-V, 3 ft ends",dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,6m,50100000,315.88,240.63,10.042436712137228,0.9283,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,160m,1850000,20.079,-2478.9,6123.6597562538755,0.9211,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,80m,3550000,30.082,-1078.2,775.1600467725032,0.9127,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,60m,5357000,55.834,-405.07,60.77057065651603,0.9123,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,40m,7050000,159.47,232.14,10.163052981102634,0.9124,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,30m,10120000,289.44,-1164.9,99.71824175561802,0.9147,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,20m,14050000,106.19,79.807,3.5092723682798153,0.9375,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,17m,18080000,2835.5,392.97,57.79956125981154,0.9183,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,15m,21050000,230.58,78.539,5.170054089116308,0.9495,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,12m,24910000,1047.1,1419.6,59.46523043726812,0.9771,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,10m,28050000,1977.4,-2044.0,81.8179260150779,0.961,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,6m,50100000,285.7,258.56,10.473492768455676,0.9501999999999999,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,160m,1850000,58.907,-2504.5,2131.661399471346,0.9732,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,80m,3550000,51.596,-1104.2,474.6159980091107,0.9493,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,60m,5357000,72.102,-425.71,52.386587132251435,0.9326000000000001,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,40m,7050000,187.46,205.99,8.424251639272937,0.9272,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,30m,10120000,327.28,-1192.2,93.54547222146688,0.9209,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,20m,14050000,113.43,74.119,3.3823886945407167,0.9412999999999999,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,17m,18080000,2700.1,432.63,55.388847249072455,0.9231999999999999,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,15m,21050000,246.27,72.815,5.372896118543551,0.9521,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,12m,24910000,1153.4,1315.3,53.09102483731926,0.98,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,10m,28050000,1891.5,-1897.7,75.92166902677472,0.9606,True
+sloper_20,3-to-20 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,6m,50100000,309.64,246.79,10.190086155966924,0.9544,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,160m,1850000,18.04,-2547.9,7200.243599031464,0.8893000000000001,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,80m,3550000,27.604,-1127.2,922.9389402809056,0.8837,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,60m,5357000,51.995,-450.48,80.04740178621842,0.8915000000000001,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,40m,7050000,150.21,175.74,7.312497764860744,0.9011,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,30m,10120000,276.56,-1138.8,99.48740823951994,0.9065000000000001,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,20m,14050000,97.41,69.252,3.126298066260923,0.9136,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,17m,18080000,2688.9,428.53,55.14435728710546,0.9126000000000001,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,15m,21050000,203.56,106.6,5.242564077087547,0.9168999999999999,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,12m,24910000,839.48,1509.7,71.1352432759952,0.9395,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,10m,28050000,2660.2,-2105.6,86.54370715522838,0.9388,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,6m,50100000,250.95,299.31,12.276573823514749,0.9120999999999999,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,160m,1850000,51.623,-2569.9,2560.699663383416,0.9614,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,80m,3550000,46.539,-1149.6,569.9486262208242,0.9312999999999999,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,60m,5357000,66.751,-468.5,67.83381346734984,0.9161,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,40m,7050000,176.21,151.73,6.261257773316913,0.9175,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,30m,10120000,313.01,-1163.3,92.87713763383316,0.9136,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,20m,14050000,103.87,64.34,3.0253059869653143,0.9188,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,17m,18080000,2558.7,469.08,52.894540632245075,0.9176000000000001,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,15m,21050000,216.77,102.41,5.346670821846942,0.9213,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,12m,24910000,942.44,1449.0,63.442795419301966,0.9472,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,10m,28050000,2475.0,-1959.1,80.52251291084077,0.9442,True
+sloper_20,3-to-20 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,6m,50100000,271.7,291.9,11.805355249418763,0.9192,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,160m,1850000,19.636,-2496.6,6351.494171846411,0.9194,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,80m,3550000,30.733,-1084.1,767.0681833937645,0.9144,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,60m,5357000,60.38,-403.44,55.93097076841819,0.9185,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,40m,7050000,183.07,241.29,10.196954058607338,0.9229,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,30m,10120000,334.5,-1168.3,88.43802837202303,0.9268000000000001,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,20m,14050000,104.55,68.808,3.1583143568550787,0.9361,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,17m,18080000,2947.6,490.41,60.584306452153974,0.9156,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,15m,21050000,218.0,69.976,4.831621002483038,0.9464,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,12m,24910000,1054.6,1441.9,60.55160141275768,0.9765,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,10m,28050000,1945.8,-1992.1,79.71918636197834,0.9639,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,average,6m,50100000,280.63,254.17,10.297759171101225,0.9490000000000001,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,160m,1850000,57.251,-2521.9,2223.8060469761654,0.9723999999999999,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,80m,3550000,51.346,-1111.1,482.870839003328,0.9490999999999999,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,60m,5357000,73.86,-427.48,51.617358326740046,0.9342,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,40m,7050000,197.26,208.27,8.478619229901193,0.9308,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,30m,10120000,351.72,-1204.3,89.63660049019889,0.9261,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,20m,14050000,108.61,65.797,3.1080242766917334,0.9384,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,17m,18080000,2849.4,516.12,58.85828352997318,0.9194,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,15m,21050000,232.33,65.636,5.0340218793745155,0.9490000000000001,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,12m,24910000,1157.7,1342.6,54.3193989566635,0.9793999999999999,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,10m,28050000,1843.1,-1875.8,75.05740824125499,0.9618000000000001,True
+sloper_30,3-to-30 ft sloper,coax_common_mode,17 ft coax exterior as counterpoise; choke at radio,radio,poor,6m,50100000,303.21,243.62,10.044368941672825,0.9531000000000001,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,160m,1850000,17.643,-2563.9,7454.961590569749,0.8869,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,80m,3550000,28.258,-1132.4,909.920533506259,0.8863,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,60m,5357000,56.361,-448.87,73.49851763857733,0.8994,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,40m,7050000,172.64,184.12,7.537009048394342,0.9131,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,30m,10120000,319.65,-1141.1,88.00899306993958,0.9198000000000001,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,20m,14050000,96.034,58.824,2.8055219151812847,0.9118999999999999,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,17m,18080000,2790.0,526.18,57.78531386523821,0.9097,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,15m,21050000,192.22,98.75,4.915714558778146,0.9118999999999999,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,12m,24910000,843.24,1529.4,72.38830262869186,0.9387000000000001,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,10m,28050000,2625.4,-2053.9,84.65132670046242,0.9407,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,average,6m,50100000,246.71,294.87,12.102867310830261,0.9105,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,160m,1850000,50.112,-2585.5,2669.9475271783385,0.9603,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,80m,3550000,46.354,-1155.8,578.3830202829832,0.9311,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,60m,5357000,68.482,-470.11,66.62825423122415,0.9181999999999999,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,40m,7050000,185.55,153.63,6.367443627680413,0.9216,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,30m,10120000,336.31,-1174.0,88.8282306528657,0.9192,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,20m,14050000,99.513,56.444,2.77229873322295,0.915,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,17m,18080000,2695.5,554.24,56.18997342239378,0.9135,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,15m,21050000,204.17,95.773,5.027917210817763,0.9163,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,12m,24910000,942.01,1473.2,64.95633740497904,0.9460999999999999,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,10m,28050000,2420.5,-1936.5,79.40366309427674,0.9449,True
+sloper_30,3-to-30 ft sloper,dedicated_counterpoise,17 ft dedicated 26-AWG counterpoise; choke at feedpoint,feedpoint,poor,6m,50100000,266.16,288.49,11.679303743198258,0.9173,True

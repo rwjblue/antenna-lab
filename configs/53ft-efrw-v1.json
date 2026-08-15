@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "study_id": "53ft-efrw-v1",
+  "bands": {
+    "160m": 1850000,
+    "80m": 3550000,
+    "60m": 5357000,
+    "40m": 7050000,
+    "30m": 10120000,
+    "20m": 14050000,
+    "17m": 18080000,
+    "15m": 21050000,
+    "12m": 24910000,
+    "10m": 28050000,
+    "6m": 50100000
+  },
+  "radiator": {
+    "length_ft": 53.0,
+    "description": "26 AWG tinned-copper antenna wire with a nonconductive Kevlar strength member",
+    "radius_m": 0.000202,
+    "conductivity_s_m": 58000000.0
+  },
+  "grounds": {
+    "poor": {"epsilon_r": 5.0, "conductivity_s_m": 0.001},
+    "average": {"epsilon_r": 13.0, "conductivity_s_m": 0.005}
+  },
+  "canonical_ground": "average",
+  "feed_system": {
+    "transformer_impedance_ratio": 9.0,
+    "coax": {
+      "type": "RG-316/U",
+      "length_ft": 17.0,
+      "characteristic_impedance_ohm": 50.0,
+      "velocity_factor": 0.695,
+      "loss_db_per_100ft_at_10mhz": 2.7,
+      "outside_radius_m": 0.00125
+    },
+    "return_length_ft": 17.0,
+    "return_end_height_ft": 0.5,
+    "return_azimuth_deg": 135.0,
+    "hardware_loss_db": {
+      "best": {"transformer": 0.25, "choke": 0.10},
+      "nominal": {"transformer": 0.60, "choke": 0.20},
+      "conservative": {"transformer": 1.20, "choke": 0.50}
+    }
+  },
+  "returns": {
+    "dedicated_counterpoise": {
+      "label": "17 ft dedicated 26-AWG counterpoise; choke at feedpoint",
+      "radius_m": 0.000202,
+      "choke_position": "feedpoint"
+    },
+    "coax_common_mode": {
+      "label": "17 ft coax exterior as counterpoise; choke at radio",
+      "radius_m": 0.00125,
+      "choke_position": "radio"
+    }
+  },
+  "deployments": {
+    "horizontal_10": {
+      "label": "10 ft low horizontal",
+      "kind": "horizontal",
+      "height_ft": 10.0
+    },
+    "sloper_20": {
+      "label": "3-to-20 ft sloper",
+      "kind": "sloper",
+      "feed_height_ft": 3.0,
+      "support_height_ft": 20.0
+    },
+    "sloper_30": {
+      "label": "3-to-30 ft sloper",
+      "kind": "sloper",
+      "feed_height_ft": 3.0,
+      "support_height_ft": 30.0
+    },
+    "inverted_v_20": {
+      "label": "20 ft apex inverted-V, 3 ft ends",
+      "kind": "inverted_v",
+      "feed_height_ft": 3.0,
+      "apex_height_ft": 20.0,
+      "end_height_ft": 3.0
+    },
+    "inverted_l_30": {
+      "label": "30 ft vertical / 26 ft horizontal inverted-L",
+      "kind": "inverted_l",
+      "feed_height_ft": 3.0,
+      "support_height_ft": 30.0
+    }
+  },
+  "devices": {
+    "kx2": {
+      "label": "KX2 / KXAT2",
+      "profiles": ["kxat2"],
+      "published_typical_raw_swr_max": 20.0,
+      "bands": ["80m", "60m", "40m", "30m", "20m", "17m", "15m", "12m", "10m"]
+    },
+    "kx3": {
+      "label": "KX3 / KXAT3",
+      "profiles": ["kxat3"],
+      "published_typical_raw_swr_max": 20.0,
+      "bands": ["160m", "80m", "60m", "40m", "30m", "20m", "17m", "15m", "12m", "10m", "6m"]
+    },
+    "kh1": {
+      "label": "KH1 / KHATU1",
+      "profiles": ["khatu1", "khatu1_wide_sensitivity"],
+      "bands": ["40m", "30m", "20m", "17m", "15m"]
+    }
+  },
+  "sources": {
+    "antenna": "https://www.relianceantennas.com/product/efrw-9-to-1-bugout-mini-160-6m-53-ft-wire-antenna/",
+    "kx2": "https://ftp.elecraft.com/KX2/Manuals%20Downloads/KX2%20owner%27s%20man%20B2.pdf",
+    "kx3": "https://ftp.elecraft.com/KX3/Manuals%20Downloads/E740163%20KX3%20Owner%27s%20man%20Rev%20C5.pdf",
+    "kh1": "https://ftp.elecraft.com/KH1/Manuals%20Downloads/KH1%20Owner%27s%20Manual,%20rev%20B7.pdf",
+    "coax": "https://www.belden.com/products/cable/coax-triax-cable/50-ohm-coax-cable/84316",
+    "solver": "https://github.com/KJ7LNW/nec2c"
+  }
+}

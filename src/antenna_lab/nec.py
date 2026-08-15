@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
+import hashlib
 import math
 import re
 import shutil
 import subprocess
-import hashlib
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -212,6 +212,7 @@ def wire_network_deck(
     epsilon_r: float,
     ground_conductivity_s_m: float,
     loads: tuple[SeriesLoad, ...] = (),
+    wire_conductivity_s_m: dict[int, float] | None = None,
     pattern: bool = False,
 ) -> str:
     """Create a NEC deck for an arbitrary connected passive wire network."""
@@ -228,6 +229,11 @@ def wire_network_deck(
             raise ValueError("Load must reference an existing wire segment")
         if load.impedance_ohm.real < 0:
             raise ValueError("A passive series load cannot have negative resistance")
+    for tag, override in (wire_conductivity_s_m or {}).items():
+        if tag not in tags:
+            raise ValueError("Conductivity override must reference an existing wire")
+        if override <= 0:
+            raise ValueError("Wire conductivity must be positive")
 
     cards = _header(title)
     cards += [
@@ -244,6 +250,10 @@ def wire_network_deck(
         "GE 0",
         "EK 0",
         f"LD 5 0 0 0 {conductivity_s_m:.9e} 0 0",
+    ]
+    cards += [
+        f"LD 5 {tag} 0 0 {override:.9e} 0 0"
+        for tag, override in sorted((wire_conductivity_s_m or {}).items())
     ]
     cards += [
         "LD 4 "

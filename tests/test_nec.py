@@ -129,6 +129,26 @@ def test_generic_wire_deck_emits_lumped_series_load() -> None:
     assert "EX 0 1 1 0 1.0 0.0" in deck
 
 
+def test_generic_wire_deck_supports_per_wire_conductivity() -> None:
+    deck = wire_network_deck(
+        title="carbon parasitic",
+        wires=(
+            Wire(1, 3, (0, 0, 1), (1, 0, 1), 0.001),
+            Wire(2, 3, (0, 0.1, 0.1), (0, 0.1, 2), 0.006),
+        ),
+        source_tag=1,
+        source_segment=1,
+        frequency_mhz=14.05,
+        conductivity_s_m=58e6,
+        epsilon_r=13.0,
+        ground_conductivity_s_m=0.005,
+        wire_conductivity_s_m={2: 5e4},
+    )
+
+    assert "LD 5 0 0 0 5.800000000e+07 0 0" in deck
+    assert "LD 5 2 0 0 5.000000000e+04 0 0" in deck
+
+
 def test_asymmetric_deck_moves_feedpoint_without_changing_total_wire() -> None:
     deck = asymmetric_inverted_v_deck(
         title="ocfd",

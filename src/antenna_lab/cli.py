@@ -21,6 +21,8 @@ from antenna_lab.atu import (
 )
 from antenna_lab.comparative_systems import run_comparative_study
 from antenna_lab.decision_report import run_final_decision
+from antenna_lab.efrw_elevated_study import run_efrw_elevated_study
+from antenna_lab.efrw_study import run_efrw_study
 from antenna_lab.kh1_nec import run_study
 from antenna_lab.kh1_pipeline import (
     assemble_study,
@@ -209,6 +211,34 @@ def build_parser() -> argparse.ArgumentParser:
     )
     final_decision.add_argument("--output", type=Path, required=True)
 
+    efrw_study = subparsers.add_parser(
+        "run-efrw-study",
+        help="Model the complete 53 ft 9:1 EFRW and Elecraft tuner systems",
+    )
+    efrw_study.add_argument(
+        "--config", type=Path, default=Path("configs/53ft-efrw-v1.json")
+    )
+    efrw_study.add_argument("--output", type=Path, required=True)
+    efrw_study.add_argument("--nec2c", type=Path)
+    efrw_study.add_argument(
+        "--cache", type=Path, default=Path("build/53ft-efrw-nec-cache")
+    )
+    efrw_study.add_argument("--jobs", type=int)
+
+    efrw_elevated = subparsers.add_parser(
+        "run-efrw-elevated-study",
+        help="Sweep counterpoises, elevated feeds, and a carbon mast for the EFRW",
+    )
+    efrw_elevated.add_argument(
+        "--config", type=Path, default=Path("configs/53ft-efrw-elevated-v1.json")
+    )
+    efrw_elevated.add_argument("--output", type=Path, required=True)
+    efrw_elevated.add_argument("--nec2c", type=Path)
+    efrw_elevated.add_argument(
+        "--cache", type=Path, default=Path("build/53ft-efrw-elevated-nec-cache")
+    )
+    efrw_elevated.add_argument("--jobs", type=int)
+
     verify = subparsers.add_parser(
         "verify-results", help="Verify a generated SHA256SUMS manifest"
     )
@@ -362,6 +392,26 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 0
     if args.command == "run-kh1-final-decision":
         summary = run_final_decision(args.config, args.output)
+        print(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False))
+        return 0
+    if args.command == "run-efrw-study":
+        summary = run_efrw_study(
+            args.config,
+            args.output,
+            nec2c=args.nec2c,
+            cache_dir=args.cache,
+            jobs=args.jobs,
+        )
+        print(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False))
+        return 0
+    if args.command == "run-efrw-elevated-study":
+        summary = run_efrw_elevated_study(
+            args.config,
+            args.output,
+            nec2c=args.nec2c,
+            cache_dir=args.cache,
+            jobs=args.jobs,
+        )
         print(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False))
         return 0
     if args.command == "verify-results":

@@ -1,0 +1,29 @@
+{
+  "base_config_sha256": "0b45a254adb7866126b1420d5d21b34aea456a44aac0bfb5a7cd2c4083990c0c",
+  "cache_directory": "build/53ft-efrw-elevated-nec-cache",
+  "canonical_case": {
+    "ground": "average",
+    "hardware_loss_envelope": "best",
+    "tuner_loss_envelope": "nominal",
+    "tuner_objective": "lowest-loss state meeting 2.5:1"
+  },
+  "comparison_bands": [
+    "40m",
+    "30m",
+    "20m",
+    "17m",
+    "15m",
+    "12m",
+    "10m"
+  ],
+  "config": "configs/53ft-efrw-elevated-v1.json",
+  "config_sha256": "72373662f1a8546c0ea2c7c8c25370693e6f85e0cdd536b7c87a82573f5d7d29",
+  "geometry_case_count": 218,
+  "nec_case_count": 2398,
+  "nec_source_sha256": "385c7bf7640ea0c879a797f375f97235171418e1185e34a5a1701d00738fd8f7",
+  "solver": "nec2c 1.3",
+  "solver_sha256": "fd48ccb4523172ace54ca1ace6c9e0201e3dc52e53fa9a0d7310483ac48b86d8",
+  "source_sha256": "46ac7dcbc74333752ee72b16f22ef77f0cde0c699eb5a05bd9d68c6baa32ba24",
+  "study_id": "53ft-efrw-elevated-v1",
+  "system_row_count": 6540
+}

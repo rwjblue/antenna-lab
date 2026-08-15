@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Run the 53 ft 9:1 EFRW complete-system study"
+set -euo pipefail
+
+NEC2C_PATH="${NEC2C_PATH:-nec2c}"
+PYTHONPATH=src uv run antenna-lab run-efrw-study \
+  --config configs/53ft-efrw-v1.json \
+  --output results/53ft-efrw-v1 \
+  --nec2c "$NEC2C_PATH"
+PYTHONPATH=src uv run antenna-lab verify-results results/53ft-efrw-v1

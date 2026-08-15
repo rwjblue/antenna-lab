@@ -1,0 +1,11 @@
+{
+  "cache_directory": "build/53ft-efrw-nec-cache",
+  "config": "configs/53ft-efrw-v1.json",
+  "config_sha256": "0b45a254adb7866126b1420d5d21b34aea456a44aac0bfb5a7cd2c4083990c0c",
+  "nec_case_count": 220,
+  "solver": "nec2c 1.3",
+  "solver_sha256": "fd48ccb4523172ace54ca1ace6c9e0201e3dc52e53fa9a0d7310483ac48b86d8",
+  "source_sha256": "0659e9f16ca19433d9586d462ce3bbfb8c8c0b4e68ee914df1790be31bf127fb",
+  "study_id": "53ft-efrw-v1",
+  "system_row_count": 5400
+}
