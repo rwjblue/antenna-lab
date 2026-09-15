@@ -38,7 +38,9 @@ score, then the geometric mean of the seven band medians. Unmatched
 samples score zero. These equally weighted scenario fractions and
 percentiles describe this grid; **they are not tuning probabilities**.
 
-![Two panels compare coarse line-length scores for 17- and 25-foot arms; two panels compare nominal antenna-port power by band.](optimization_comparison.png)
+[![Two panels compare coarse line-length scores for 17- and 25-foot arms; two panels compare nominal antenna-port power by band.](optimization_comparison.png)](optimization_comparison.png)
+
+[Download PNG](optimization_comparison.png) · [Download SVG](optimization_comparison.svg)
 
 ## Practical 30 ft line: both fixed ratios
 
@@ -149,6 +151,32 @@ Assumptions and provenance: [config.json](config.json), [summary.json](summary.j
 
 ## Radiation pattern comparison
 
-![Modeled radiation patterns compare 17- and 25-foot arms.](pattern_comparison.png)
+[![Modeled radiation patterns compare 17- and 25-foot arms.](pattern_comparison.png)](pattern_comparison.png)
+
+[Download PNG](pattern_comparison.png) · [Download SVG](pattern_comparison.svg)
 
 Numerical solver checks: [17ft csv](numerical/17ft/numerical_validation.csv), [17ft json](numerical/17ft/numerical_validation.json), [25ft csv](numerical/25ft/numerical_validation.csv), [25ft json](numerical/25ft/numerical_validation.json).
+
+## Saved artifacts
+
+- [Coarse rankings](coarse_rankings.csv) · [Validated rankings](validated_rankings.csv) · [Winners](winners.json)
+- [Validated band detail](validated_by_band.csv) · [Nominal power and matching](nominal_by_band.csv) · [Wet stress](wet_stress.csv)
+- [Absolute pattern samples](pattern_samples.csv) · [Pattern cases](pattern_cases.csv) · [NEC loads and input hashes](nec_loads.csv)
+- [Configuration](config.json) · [Numerical-run summary](summary.json) · [Presentation provenance](presentation_metadata.json)
+- [Package integrity manifest](SHA256SUMS)
+
+The original numerical-run hashes remain in `summary.json`. Presentation
+metadata identifies the saved inputs and source used to render this README
+and its charts. Full scenario arrays and reusable solver caches remain
+under `build/`; this maintained package retains the useful compact results.
+
+## Reproduce
+
+```bash
+NEC2C_PATH=/path/to/nec2c mise run rigid-doublet-optimize
+uv run antenna-lab verify-results build/rigid-v-line-optimization-v2
+```
+
+See the [design and measurement notes](../../docs/case-studies/rigid-v-line-optimization.md) for the compact
+generation command, original video, assumptions and practical interpretation.
+

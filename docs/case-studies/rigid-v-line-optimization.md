@@ -6,7 +6,7 @@ is using longer arms: they ease the 40 m load substantially, while shifting the
 upper-band impedance peaks and radiation lobes. They are not a uniform upgrade
 across 40–10 m.
 
-See the [generated comparison](../../results/rigid-v-line-optimization-v2/REPORT.md)
+See the [generated comparison](../../results/rigid-v-line-optimization-v2/README.md)
 and [configuration](../../configs/rigid-v-line-optimization-v2.json). This round
 adds generic tuner dissipation to the first study's line-loss and ideal L/C
 screens. Its recommendations supersede the earlier line-ranking interpretation;

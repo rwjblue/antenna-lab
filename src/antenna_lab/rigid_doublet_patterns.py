@@ -193,6 +193,8 @@ def plot_comparison(
     )
     figure_path = output / "pattern_comparison.png"
     figure.savefig(figure_path, dpi=180)
+    with matplotlib.rc_context({"svg.hashsalt": "rigid-doublet"}):
+        figure.savefig(figure_path.with_suffix(".svg"), metadata={"Date": None})
     plt.close(figure)
     samples_path = output / "pattern_samples.csv"
     cases_path = output / "pattern_cases.csv"

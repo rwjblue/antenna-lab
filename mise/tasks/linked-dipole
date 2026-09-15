@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE description="Tune and compare the physical linked 20/30/40m dipole"
+set -euo pipefail
+
+PYTHONPATH=src uv run antenna-lab run-linked-dipole-study \
+  --config configs/linked-dipole-v1.json \
+  --output build/linked-dipole-v1 \
+  --compact-output results/linked-dipole-v1 \
+  --nec2c "${NEC2C_PATH:-nec2c}"
+PYTHONPATH=src uv run antenna-lab verify-results build/linked-dipole-v1
+PYTHONPATH=src uv run antenna-lab verify-results results/linked-dipole-v1

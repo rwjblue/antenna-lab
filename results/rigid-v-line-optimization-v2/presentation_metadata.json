@@ -1,0 +1,20 @@
+{
+  "inputs_sha256": {
+    "coarse_rankings.csv": "42f7b9b73d99dc7b285a239c2793d54f2d57b7aa54fc0108783e0e7b89f2e901",
+    "config.json": "17b87b444e12a3cf58a526dd56d23f86937a289c7a1ab7859857dda5630955c5",
+    "nec_loads.csv": "db9a428e9d9a832669c4a755f482d8e439d09269403abef2a2292ff62d009955",
+    "nominal_by_band.csv": "58698961ca37049bf745ee118f96c3780f0f31b20b232fd032e1dccde3798030",
+    "pattern_cases.csv": "e91997ca062e6b60700669b4f27d19f020488d6aafaba30911842fd0a2ae161a",
+    "pattern_samples.csv": "649c584b70883684854d7e7327b4bdefeb77a7ebba8ddd74933e6aba15928762",
+    "summary.json": "bc6ac321b88dfd86df08e94a1a2d7a9f0bf2c326ca2a593e6a49a3d8f7ff2020",
+    "validated_by_band.csv": "79bb87f2f6035afb53d16ff5ddf20778921b58c868c12a85f458e7c4db0dfa4b",
+    "validated_rankings.csv": "37e05e2c29f14a0a49da422843df7c84af0a36621617a7b4d2dba8c67a9ca7cf",
+    "wet_stress.csv": "80ab574fb9ee752f9d0145b7285615f29dd5d181700203aeee84fdcd667573d6",
+    "winners.json": "c2a4c018bd2de1493726ae333432d457bb2bbc0b24eb58243e3d137a96dbe0f6"
+  },
+  "operation": "render_saved_results_without_reoptimizing",
+  "rendering_source_sha256": {
+    "rigid_doublet_optimization_report.py": "803e525df72968f19b3cb3a0a6051c589ebee831e2b84b7496169f1d9d5c7f7c",
+    "rigid_doublet_patterns.py": "20d36631e8c4f96900d51459c52a7e357aad3237b5e9ed8f3207609dac4f9bcc"
+  }
+}

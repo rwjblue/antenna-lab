@@ -1,0 +1,2879 @@
+[
+  {
+    "kind": "mesh_and_free_space",
+    "band": "20m",
+    "end_height_ft": 5,
+    "max_segment_length_m": 0.18,
+    "average_gain_error_db": 0.004318283961112743,
+    "reactive_average_gain_error_db": 0.004075593261012145,
+    "r_ohm": 33.654,
+    "x_ohm": -20.517,
+    "peak_gain_dbi": 4.43,
+    "passed": true,
+    "nec_deck_sha256": "adb50ad0cad1bbce84378309ef0b02108a8547950efbc85dd8be9604191d8d72",
+    "free_space_deck_sha256": "8f34d9627445aa0bdc99027737e495e5f76e5c2121c02e40932d4f6c7faf8d34",
+    "reactive_free_space_deck_sha256": "875b44a450b5c02256a4e43e3b4c4993899f5c8dff15c5dd548be118b603220a"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "20m",
+    "end_height_ft": 5,
+    "max_segment_length_m": 0.12,
+    "average_gain_error_db": 0.0026609561844017048,
+    "reactive_average_gain_error_db": 0.002682336828874847,
+    "r_ohm": 33.676,
+    "x_ohm": -20.411,
+    "peak_gain_dbi": 4.43,
+    "passed": true,
+    "nec_deck_sha256": "6e7697f20ff202d98a092ffe6b90b7bc27efdcb37b5ae250ef6aba2a2c6cb5b9",
+    "free_space_deck_sha256": "f09cd2abe4593f5ea89a876d6d6e144d6d224c23fd52c54f14849b3eb034736d",
+    "reactive_free_space_deck_sha256": "288a87173ef726d7e704ad736308dccd53a94674c2743db00fd6e72891b82c85"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "20m",
+    "end_height_ft": 5,
+    "max_segment_length_m": 0.08,
+    "average_gain_error_db": 0.0008339671467834333,
+    "reactive_average_gain_error_db": 0.0013350300906458902,
+    "r_ohm": 33.694,
+    "x_ohm": -20.34,
+    "peak_gain_dbi": 4.43,
+    "passed": true,
+    "nec_deck_sha256": "3ed309d41ea7d61a31641f97c6022c10bf5675a5b0102546025275753004e041",
+    "free_space_deck_sha256": "fe0dc0133097aa6171c2c7336db82df1a8bab6e6f09c1cdb0ebfd82aee30acb6",
+    "reactive_free_space_deck_sha256": "531997f458b2a407202e920a315f8e6e02a4ce60bdc54e2c4741c08a6ca50b1d"
+  },
+  {
+    "kind": "mesh_convergence",
+    "band": "20m",
+    "end_height_ft": 5,
+    "impedance_change_ohm": 0.07324616030892157,
+    "gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "angular_and_power",
+    "band": "20m",
+    "end_height_ft": 5,
+    "coarse_efficiency": 0.5332738173195821,
+    "fine_efficiency": 0.5332940321379066,
+    "field_efficiency": 0.5332699489193468,
+    "efficiency_change": 2.021481832448213e-05,
+    "field_gain_difference": 2.4083218559844966e-05,
+    "source_power_relative_error": 5.0758768172654654e-05,
+    "ground_residual_fraction": 0.22836169239586132,
+    "peak_gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "source_length",
+    "band": "20m",
+    "end_height_ft": 5,
+    "impedance_spread_ohm": 2.063363516203581,
+    "gain_spread_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "30m",
+    "end_height_ft": 5,
+    "max_segment_length_m": 0.18,
+    "average_gain_error_db": 0.004072193382432489,
+    "reactive_average_gain_error_db": 0.004072550335700363,
+    "r_ohm": 37.893,
+    "x_ohm": -24.526,
+    "peak_gain_dbi": 3.26,
+    "passed": true,
+    "nec_deck_sha256": "777f5680a033dbf9221f5503a6f973a8c126596b547eebad092615a80afb7076",
+    "free_space_deck_sha256": "e603eab0dc7b3119eaed25953bd6d7c94e5cbbd319cb1119c043bebc1cd16569",
+    "reactive_free_space_deck_sha256": "cf08b7245305c9bc2295942802decb74fe22fc6de06c6f1ce65c6fe379d71b3f"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "30m",
+    "end_height_ft": 5,
+    "max_segment_length_m": 0.12,
+    "average_gain_error_db": 0.002639535429276094,
+    "reactive_average_gain_error_db": 0.00234870016641023,
+    "r_ohm": 37.915,
+    "x_ohm": -24.439,
+    "peak_gain_dbi": 3.26,
+    "passed": true,
+    "nec_deck_sha256": "88d2b351f2011656314d49da085ef0a5bd892d6df88f39435a4590209dfb0fcd",
+    "free_space_deck_sha256": "8c76a248999e61e0521bdf8ec7f52d1de2d3d3e57ecdb8f076cce243f3fc906e",
+    "reactive_free_space_deck_sha256": "e567ccf7218173d071950508adacfb8e4b7a9441a39df4ce6c1ac795d5854602"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "30m",
+    "end_height_ft": 5,
+    "max_segment_length_m": 0.08,
+    "average_gain_error_db": 0.0006366416567152285,
+    "reactive_average_gain_error_db": 0.000834999482820952,
+    "r_ohm": 37.933,
+    "x_ohm": -24.388,
+    "peak_gain_dbi": 3.26,
+    "passed": true,
+    "nec_deck_sha256": "78798a2ab5afb2ed832791dd68139d7b4fe31062df10d371d03380d00fed13ce",
+    "free_space_deck_sha256": "298d23cd12c0dd21f73e68be18864b1db63511c8413070c866f8896521a8eeee",
+    "reactive_free_space_deck_sha256": "2ddd0c09d62ee13272fc3afc19228cc5a870e49485c5fcfd71805d49df76aa53"
+  },
+  {
+    "kind": "mesh_convergence",
+    "band": "30m",
+    "end_height_ft": 5,
+    "impedance_change_ohm": 0.05408326913195854,
+    "gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "angular_and_power",
+    "band": "30m",
+    "end_height_ft": 5,
+    "coarse_efficiency": 0.4979009612749927,
+    "fine_efficiency": 0.4978344311900741,
+    "field_efficiency": 0.4978330243747429,
+    "efficiency_change": 6.653008491863677e-05,
+    "field_gain_difference": 1.4068153311730391e-06,
+    "source_power_relative_error": 1.5284747097208542e-06,
+    "ground_residual_fraction": 0.25346756372339724,
+    "peak_gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "source_length",
+    "band": "30m",
+    "end_height_ft": 5,
+    "impedance_spread_ohm": 1.4650576780454754,
+    "gain_spread_db": 0.010000000000000231,
+    "passed": true
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "40m",
+    "end_height_ft": 5,
+    "max_segment_length_m": 0.18,
+    "average_gain_error_db": 0.004124428056564513,
+    "reactive_average_gain_error_db": 0.003623041852894907,
+    "r_ohm": 39.852,
+    "x_ohm": -22.453,
+    "peak_gain_dbi": 1.94,
+    "passed": true,
+    "nec_deck_sha256": "815f5aa3c6a6c39719fefd05d6180d7243f9e9f0383889507158b28e3957b81b",
+    "free_space_deck_sha256": "1b527837e7ee4d0b2542efc70fac82b62fcadd0c6e3238a4785d3a64d8d82359",
+    "reactive_free_space_deck_sha256": "154e5855a3c4381098f5539d725f85ba44c23a2afa17155560df131dcee74e01"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "40m",
+    "end_height_ft": 5,
+    "max_segment_length_m": 0.12,
+    "average_gain_error_db": 0.002202108480675647,
+    "reactive_average_gain_error_db": 0.0021557373371223296,
+    "r_ohm": 39.871,
+    "x_ohm": -22.396,
+    "peak_gain_dbi": 1.94,
+    "passed": true,
+    "nec_deck_sha256": "5865e2449ff24f75a633c17e88931677c53732a32e799fdddeadad1939e9f139",
+    "free_space_deck_sha256": "c18dbedf347428b46686b3a8a79917341521b128f22af534df53160775f3a8ce",
+    "reactive_free_space_deck_sha256": "bec546977edbfba0134dc1f7ffe13bdf17f13696f5c9c047ed241febb63a24f2"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "40m",
+    "end_height_ft": 5,
+    "max_segment_length_m": 0.08,
+    "average_gain_error_db": 0.0005020535758287847,
+    "reactive_average_gain_error_db": 0.0007574041186341961,
+    "r_ohm": 39.889,
+    "x_ohm": -22.353,
+    "peak_gain_dbi": 1.94,
+    "passed": true,
+    "nec_deck_sha256": "f56269d497ee5d8d5f6f0ffbb3a6cdbf9eec649aab76c52b8ad9042ad46c6131",
+    "free_space_deck_sha256": "c3406db082f42359d9919b69acc1c34faa50170d2b131665317d3622b50b8b12",
+    "reactive_free_space_deck_sha256": "b533d3e92bb35ed7f103917bca9f76c9bfeb4b1c7044e7a4067439158478a0d1"
+  },
+  {
+    "kind": "mesh_convergence",
+    "band": "40m",
+    "end_height_ft": 5,
+    "impedance_change_ohm": 0.04661544808322624,
+    "gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "angular_and_power",
+    "band": "40m",
+    "end_height_ft": 5,
+    "coarse_efficiency": 0.338579552258568,
+    "fine_efficiency": 0.33851488132319324,
+    "field_efficiency": 0.33850733208439193,
+    "efficiency_change": 6.467093537476654e-05,
+    "field_gain_difference": 7.549238801307645e-06,
+    "source_power_relative_error": 1.0340509433800777e-06,
+    "ground_residual_fraction": 0.37917092766842014,
+    "peak_gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "source_length",
+    "band": "40m",
+    "end_height_ft": 5,
+    "impedance_spread_ohm": 0.9474687329933367,
+    "gain_spread_db": 0.020000000000000018,
+    "passed": true
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "20m",
+    "end_height_ft": 10,
+    "max_segment_length_m": 0.18,
+    "average_gain_error_db": 0.0068343845001439096,
+    "reactive_average_gain_error_db": 0.00690183595069603,
+    "r_ohm": 52.895,
+    "x_ohm": -0.1346,
+    "peak_gain_dbi": 5.28,
+    "passed": true,
+    "nec_deck_sha256": "a89b179c123c74316706dea84d69e12b4bee2872afa57ed831f24bd66fdd7120",
+    "free_space_deck_sha256": "c84aa42098dcf5b8905411af94fb79086d5cd1d792b27d247f9d47311ee947db",
+    "reactive_free_space_deck_sha256": "6c856fe5ccf28889060d5d957dbf30bb1947f8d0af1fd13d96716fff4997dadf"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "20m",
+    "end_height_ft": 10,
+    "max_segment_length_m": 0.12,
+    "average_gain_error_db": 0.005319007895366323,
+    "reactive_average_gain_error_db": 0.0053510906154276856,
+    "r_ohm": 52.93,
+    "x_ohm": -0.017598,
+    "peak_gain_dbi": 5.27,
+    "passed": true,
+    "nec_deck_sha256": "f2fb40144d2e944604d9e61428871504b61324f5becd2f4e9a26d5680705f215",
+    "free_space_deck_sha256": "ec817bf3005e11f8a6eeb04efab93f40c663fd69d10e2dd1971071c88066c766",
+    "reactive_free_space_deck_sha256": "c5faea294e4764bef8652b8ab8252bb6b57e747fece7309aeaa556f09407d6ed"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "20m",
+    "end_height_ft": 10,
+    "max_segment_length_m": 0.08,
+    "average_gain_error_db": 0.003383584811544468,
+    "reactive_average_gain_error_db": 0.0032180122815769745,
+    "r_ohm": 52.961,
+    "x_ohm": 0.062539,
+    "peak_gain_dbi": 5.27,
+    "passed": true,
+    "nec_deck_sha256": "29040e55e33c90d87a8fba35fc18380c786e1442572d26e2b55984f65e410c37",
+    "free_space_deck_sha256": "6f99eb7e16aff0c9ba0900d83b86a45443876ef263f96c32f7d9e765bd820a0b",
+    "reactive_free_space_deck_sha256": "28bd1938ff51739efca9f208d4b94bcfebc3bbc4cc56964722098f17d6fb2bba"
+  },
+  {
+    "kind": "mesh_convergence",
+    "band": "20m",
+    "end_height_ft": 10,
+    "impedance_change_ohm": 0.08592402905474071,
+    "gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "angular_and_power",
+    "band": "20m",
+    "end_height_ft": 10,
+    "coarse_efficiency": 0.6083935347608929,
+    "fine_efficiency": 0.6084137472844099,
+    "field_efficiency": 0.6084117305135202,
+    "efficiency_change": 2.021252351702696e-05,
+    "field_gain_difference": 2.0167708897345094e-06,
+    "source_power_relative_error": 3.9854754767382635e-06,
+    "ground_residual_fraction": 0.2374313297377521,
+    "peak_gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "30m",
+    "end_height_ft": 10,
+    "max_segment_length_m": 0.18,
+    "average_gain_error_db": 0.006607636649361067,
+    "reactive_average_gain_error_db": 0.006724203173456907,
+    "r_ohm": 59.728,
+    "x_ohm": -0.11254,
+    "peak_gain_dbi": 4.22,
+    "passed": true,
+    "nec_deck_sha256": "97c6862d36b34302733bd8531225f22b9ccf98ed8d0562ce559e78882b411943",
+    "free_space_deck_sha256": "bd71853b30f1f45744bf1589877005b787398f00b4893c812ebfb64b651797cf",
+    "reactive_free_space_deck_sha256": "4200690c215b154273f5de7f3e04fae8d8987243e0037565a78610f9523ce48d"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "30m",
+    "end_height_ft": 10,
+    "max_segment_length_m": 0.12,
+    "average_gain_error_db": 0.005082576796245734,
+    "reactive_average_gain_error_db": 0.005267823522277285,
+    "r_ohm": 59.763,
+    "x_ohm": -0.01332,
+    "peak_gain_dbi": 4.22,
+    "passed": true,
+    "nec_deck_sha256": "232ed1753de6b0931062dedc91178a1c4a92d8ca044ee94b4b19415983504d35",
+    "free_space_deck_sha256": "d8756d2d313c61ed54246d27dc6fa2c6d04455a4dd57704f0f4158adfcc1c317",
+    "reactive_free_space_deck_sha256": "dc2e4eb03f3455677c376b05862b1c3f0e3ece34dbff5cdbe40bcac70e319cd7"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "30m",
+    "end_height_ft": 10,
+    "max_segment_length_m": 0.08,
+    "average_gain_error_db": 0.0032314679652704604,
+    "reactive_average_gain_error_db": 0.003512854438819911,
+    "r_ohm": 59.795,
+    "x_ohm": 0.048596,
+    "peak_gain_dbi": 4.22,
+    "passed": true,
+    "nec_deck_sha256": "9040a181d081a95fecec25d8e03a5a05f7f537c9d5494b84bb6b6c7f8c5972a1",
+    "free_space_deck_sha256": "5eccfb7286729855fec709721d4243150c6f234c0f864ff08018dae56cec03d8",
+    "reactive_free_space_deck_sha256": "a0d714d110f4e4cc53c5a5a483d688a7a48a68b24a7e757d3fccef11468ee2a6"
+  },
+  {
+    "kind": "mesh_convergence",
+    "band": "30m",
+    "end_height_ft": 10,
+    "impedance_change_ohm": 0.0696964206828459,
+    "gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "angular_and_power",
+    "band": "30m",
+    "end_height_ft": 10,
+    "coarse_efficiency": 0.5926185331304243,
+    "fine_efficiency": 0.5925352078320988,
+    "field_efficiency": 0.5925406772304951,
+    "efficiency_change": 8.332529832555391e-05,
+    "field_gain_difference": 5.469398396296121e-06,
+    "source_power_relative_error": 2.376070132545899e-06,
+    "ground_residual_fraction": 0.24666718115528993,
+    "peak_gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "40m",
+    "end_height_ft": 10,
+    "max_segment_length_m": 0.18,
+    "average_gain_error_db": 0.006919282753224676,
+    "reactive_average_gain_error_db": 0.006896939128398896,
+    "r_ohm": 57.239,
+    "x_ohm": -0.065479,
+    "peak_gain_dbi": 3.54,
+    "passed": true,
+    "nec_deck_sha256": "d4c0f5a9f4609f19bad4dde1ab47b663524c377b237159607a5198cc37eca627",
+    "free_space_deck_sha256": "51fee577c8bb9c945b07990dc5e1a215830409fcb9cfeaf6015c626d9ea8339d",
+    "reactive_free_space_deck_sha256": "266e86a53b20d3718c2034f8ba51b52460a955a7132ffdfedceb65a4e86ebcbc"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "40m",
+    "end_height_ft": 10,
+    "max_segment_length_m": 0.12,
+    "average_gain_error_db": 0.005203992363475593,
+    "reactive_average_gain_error_db": 0.005124789689541297,
+    "r_ohm": 57.266,
+    "x_ohm": -6.8862e-07,
+    "peak_gain_dbi": 3.53,
+    "passed": true,
+    "nec_deck_sha256": "ca616d89a4c8d3425ffb1a4db048f8b51c4439fc88dca77ac17d733cc7156108",
+    "free_space_deck_sha256": "f9d7818a1c499ef67ab0f7d02b8546a7dba6e7b1efb3a2d156be0e85e079549f",
+    "reactive_free_space_deck_sha256": "550dc658c938b6546f9e75859cfd2dd925ed7cb3bf8f144b2113ce4971885e64"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "40m",
+    "end_height_ft": 10,
+    "max_segment_length_m": 0.08,
+    "average_gain_error_db": 0.003265803733401857,
+    "reactive_average_gain_error_db": 0.0031682225135519146,
+    "r_ohm": 57.294,
+    "x_ohm": 0.051842,
+    "peak_gain_dbi": 3.53,
+    "passed": true,
+    "nec_deck_sha256": "1effb6fa67f3ef7dbd3457b06d2e66e0f047f63011b18d909cdabb6a0e09e242",
+    "free_space_deck_sha256": "7600aa89afee398d5265f4ce60d5777b20a1b06296aa0e39870449008b979c9a",
+    "reactive_free_space_deck_sha256": "e8dfb7243b5783e6b7f815349aa7801b77afdd1fc5ca76fe45fed183056c546d"
+  },
+  {
+    "kind": "mesh_convergence",
+    "band": "40m",
+    "end_height_ft": 10,
+    "impedance_change_ohm": 0.058920831319238906,
+    "gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "angular_and_power",
+    "band": "40m",
+    "end_height_ft": 10,
+    "coarse_efficiency": 0.45682033878361655,
+    "fine_efficiency": 0.4567136307906061,
+    "field_efficiency": 0.45671358308415533,
+    "efficiency_change": 0.00010670799301043532,
+    "field_gain_difference": 4.770645078977509e-08,
+    "source_power_relative_error": 1.798396765805617e-06,
+    "ground_residual_fraction": 0.343859980072898,
+    "peak_gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "20m",
+    "end_height_ft": 15,
+    "max_segment_length_m": 0.18,
+    "average_gain_error_db": 0.009061639206264963,
+    "reactive_average_gain_error_db": 0.00908545096121222,
+    "r_ohm": 66.096,
+    "x_ohm": 10.624,
+    "peak_gain_dbi": 5.74,
+    "passed": true,
+    "nec_deck_sha256": "d4055adae7797d3fcba8792797ef3eccd2d2b75811578f1a6a6f0925ccb9e7cd",
+    "free_space_deck_sha256": "678f82fbea74a1d8eea21ef1a5d2975c08381957fcf9f86f77548c368e534d65",
+    "reactive_free_space_deck_sha256": "e87ede2194dc51d94cd2cc01540bd46dea60e7469f27452fadc7461355ecb35c"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "20m",
+    "end_height_ft": 15,
+    "max_segment_length_m": 0.12,
+    "average_gain_error_db": 0.0074537362181562265,
+    "reactive_average_gain_error_db": 0.007391767193400209,
+    "r_ohm": 66.139,
+    "x_ohm": 10.746,
+    "peak_gain_dbi": 5.74,
+    "passed": true,
+    "nec_deck_sha256": "a90f0be76ca846e388a440d0080ad25187640924181df82b02fa79000b44ae08",
+    "free_space_deck_sha256": "e82db40c2784b032887b27f85874c4e7028cfb0a155b00e4cf258d46bfdf27dd",
+    "reactive_free_space_deck_sha256": "cb24d14f4ae9a8958281fb56ee217c9e9c5b5a29cc5d48b49aa2a72a97652faf"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "20m",
+    "end_height_ft": 15,
+    "max_segment_length_m": 0.08,
+    "average_gain_error_db": 0.005693634013931779,
+    "reactive_average_gain_error_db": 0.005736595602125513,
+    "r_ohm": 66.179,
+    "x_ohm": 10.832,
+    "peak_gain_dbi": 5.74,
+    "passed": true,
+    "nec_deck_sha256": "c0356c389707937cc0b02eeb91178893c0f79b4b03cc9418ca074d7bab9b3f4c",
+    "free_space_deck_sha256": "aaaef1627c6a0565ef3ee87ce7a633edd2b1efa258e76e00a9145827eb8d0864",
+    "reactive_free_space_deck_sha256": "e5c33d19d29fc0e65b05b2c12f9d43c123956ccf91b9a730c82bf088d9617fbd"
+  },
+  {
+    "kind": "mesh_convergence",
+    "band": "20m",
+    "end_height_ft": 15,
+    "impedance_change_ohm": 0.09484724561103791,
+    "gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "angular_and_power",
+    "band": "20m",
+    "end_height_ft": 15,
+    "coarse_efficiency": 0.6416949442559678,
+    "fine_efficiency": 0.6417278763473042,
+    "field_efficiency": 0.6417268425316303,
+    "efficiency_change": 3.293209133636843e-05,
+    "field_gain_difference": 1.0338156739564397e-06,
+    "source_power_relative_error": 1.2709477713385153e-07,
+    "ground_residual_fraction": 0.23402667303569316,
+    "peak_gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "30m",
+    "end_height_ft": 15,
+    "max_segment_length_m": 0.18,
+    "average_gain_error_db": 0.009016422593480794,
+    "reactive_average_gain_error_db": 0.008999238595417233,
+    "r_ohm": 75.548,
+    "x_ohm": 12.624,
+    "peak_gain_dbi": 4.75,
+    "passed": true,
+    "nec_deck_sha256": "18fa37f9595b005906ca8a01b13738c46119905b82f0c49475afe84ab64657bf",
+    "free_space_deck_sha256": "a09138b3e9f77e2af5b5de69d85601f96e95d839fa91b9e933cb288fcba2f80e",
+    "reactive_free_space_deck_sha256": "be88a92cfad079ebb4695b43b58df0a9c592c641ad956fb62d521a8aa1e9ca0f"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "30m",
+    "end_height_ft": 15,
+    "max_segment_length_m": 0.12,
+    "average_gain_error_db": 0.0073994277466290885,
+    "reactive_average_gain_error_db": 0.007373762843462193,
+    "r_ohm": 75.592,
+    "x_ohm": 12.73,
+    "peak_gain_dbi": 4.75,
+    "passed": true,
+    "nec_deck_sha256": "fab1f7054a67cddaa8abbddb881aa0288587ba1f690e3a71b2f301acf9624ea6",
+    "free_space_deck_sha256": "c11914e7bb2955590c70ccbb20c51fa87057aade70ae2aea5d5923ac37f5625d",
+    "reactive_free_space_deck_sha256": "57fbe9a4509232727dba2dbd33197dacc09671b266d6b7bd11a9cd73d7273536"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "30m",
+    "end_height_ft": 15,
+    "max_segment_length_m": 0.08,
+    "average_gain_error_db": 0.005648895780369575,
+    "reactive_average_gain_error_db": 0.005481654820171117,
+    "r_ohm": 75.633,
+    "x_ohm": 12.798,
+    "peak_gain_dbi": 4.75,
+    "passed": true,
+    "nec_deck_sha256": "4845a93df0d72aa0544b914cd92dde3b5f3110566bd4b3fca432ca866105eb3f",
+    "free_space_deck_sha256": "0477d01cffb21d9d0e86dc3c16c18718abe7f26a885dd136afc4842f1f62e8d7",
+    "reactive_free_space_deck_sha256": "13ce0b1f8f4d66ff7ca7de4e4e45c57409219c250e9a70b12e81841c28d69574"
+  },
+  {
+    "kind": "mesh_convergence",
+    "band": "30m",
+    "end_height_ft": 15,
+    "impedance_change_ohm": 0.0794040301244193,
+    "gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "angular_and_power",
+    "band": "30m",
+    "end_height_ft": 15,
+    "coarse_efficiency": 0.6432533768686213,
+    "fine_efficiency": 0.6431716746079151,
+    "field_efficiency": 0.6431720929143985,
+    "efficiency_change": 8.170226070614017e-05,
+    "field_gain_difference": 4.183064833407357e-07,
+    "source_power_relative_error": 6.878096625194265e-06,
+    "ground_residual_fraction": 0.2286216231313788,
+    "peak_gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "40m",
+    "end_height_ft": 15,
+    "max_segment_length_m": 0.18,
+    "average_gain_error_db": 0.009228566465907707,
+    "reactive_average_gain_error_db": 0.009303668677452442,
+    "r_ohm": 69.751,
+    "x_ohm": 12.699,
+    "peak_gain_dbi": 4.41,
+    "passed": true,
+    "nec_deck_sha256": "aaff0b4a5f06bc757af02ce2b3da7b084b275a7f40f1020282e8bbdfe2ff4c65",
+    "free_space_deck_sha256": "bf3426b4e19482798b7da4776603adc29c9e7b633c1bdf27426355c33cc559b2",
+    "reactive_free_space_deck_sha256": "ea68af7ab8bd4b82b9af4f9126aa94e784dc25d506f85499f696dfb9d4788abe"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "40m",
+    "end_height_ft": 15,
+    "max_segment_length_m": 0.12,
+    "average_gain_error_db": 0.007273486671976556,
+    "reactive_average_gain_error_db": 0.007199536600770301,
+    "r_ohm": 69.785,
+    "x_ohm": 12.77,
+    "peak_gain_dbi": 4.41,
+    "passed": true,
+    "nec_deck_sha256": "fe4556c80a73941f5f4b566a3b853bfba0199e23a3ffa33eebd26053603dc5c5",
+    "free_space_deck_sha256": "d06b58d1f5f971025a7692732a57a69983ba24116f4e817a19ce38d8674744e2",
+    "reactive_free_space_deck_sha256": "c1cb0ab5d2abfa17114a902df8eda335e15298ee92dc369aef8af9421696f834"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "40m",
+    "end_height_ft": 15,
+    "max_segment_length_m": 0.08,
+    "average_gain_error_db": 0.005208746638212534,
+    "reactive_average_gain_error_db": 0.005259263279576501,
+    "r_ohm": 69.819,
+    "x_ohm": 12.827,
+    "peak_gain_dbi": 4.41,
+    "passed": true,
+    "nec_deck_sha256": "060bb0140518c0c2c0f805f50c8ba181c6117ff8825b617e267b8555d072b770",
+    "free_space_deck_sha256": "0cdcf58f42df139bbf7e580616bd701da91ced11537d8623943c8bc9c70bac65",
+    "reactive_free_space_deck_sha256": "587661936fa7f59a719e84c910ad7b9ea901b03853ed2f1eb7650c74f2bdb098"
+  },
+  {
+    "kind": "mesh_convergence",
+    "band": "40m",
+    "end_height_ft": 15,
+    "impedance_change_ohm": 0.06637017402418388,
+    "gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "angular_and_power",
+    "band": "40m",
+    "end_height_ft": 15,
+    "coarse_efficiency": 0.5348035665807646,
+    "fine_efficiency": 0.5346769231145352,
+    "field_efficiency": 0.5346684407726312,
+    "efficiency_change": 0.00012664346622937028,
+    "field_gain_difference": 8.48234190398145e-06,
+    "source_power_relative_error": 1.1893239648277847e-05,
+    "ground_residual_fraction": 0.3004866480511302,
+    "peak_gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "20m",
+    "end_height_ft": 20,
+    "max_segment_length_m": 0.18,
+    "average_gain_error_db": 0.010824090302353345,
+    "reactive_average_gain_error_db": 0.010612169180805387,
+    "r_ohm": 74.535,
+    "x_ohm": 16.781,
+    "peak_gain_dbi": 6.11,
+    "passed": true,
+    "nec_deck_sha256": "ea82c3548354ae407d7a758fff158ce574c7233424be23c45e75a9792ce04f6d",
+    "free_space_deck_sha256": "369ce09b32be5fa0f929113f6d3d11ed4d549b735e5fe0e4c2be8bff14c65db1",
+    "reactive_free_space_deck_sha256": "1e19dcac8902383734e25f5f6ad9d21f87afadcb8743c92c8c9cbb57fe2dff40"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "20m",
+    "end_height_ft": 20,
+    "max_segment_length_m": 0.12,
+    "average_gain_error_db": 0.009152616476702676,
+    "reactive_average_gain_error_db": 0.00929905526748193,
+    "r_ohm": 74.584,
+    "x_ohm": 16.907,
+    "peak_gain_dbi": 6.11,
+    "passed": true,
+    "nec_deck_sha256": "a92e533c264e134c1e7c8e3eb90e8452d3838edae482987da85f8879400cd778",
+    "free_space_deck_sha256": "9939444baddc69185bea20b66643c67390063c3bfc73c6fd366b4c51ff1f476d",
+    "reactive_free_space_deck_sha256": "365f6455124e8ef1225bf20a27a84b1df9acfe052c8115a18259c37745fb8ea4"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "20m",
+    "end_height_ft": 20,
+    "max_segment_length_m": 0.08,
+    "average_gain_error_db": 0.007546249347436775,
+    "reactive_average_gain_error_db": 0.007342479495138143,
+    "r_ohm": 74.628,
+    "x_ohm": 16.996,
+    "peak_gain_dbi": 6.11,
+    "passed": true,
+    "nec_deck_sha256": "647553f9dc974146a5af9233890ba7b8fcfb33d9d1cd69f3b543f225a3f0f490",
+    "free_space_deck_sha256": "44732dfa1aeb27ef5afe21b4790d1f8bfaf1d6456d90fd2ae531fdf45d1818ac",
+    "reactive_free_space_deck_sha256": "940e1d1a56b6553a7ea1ba374707bd8638e7b1b91b10f157c34b20763d5d3da0"
+  },
+  {
+    "kind": "mesh_convergence",
+    "band": "20m",
+    "end_height_ft": 20,
+    "impedance_change_ohm": 0.09928242543370647,
+    "gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "angular_and_power",
+    "band": "20m",
+    "end_height_ft": 20,
+    "coarse_efficiency": 0.6596355783961434,
+    "fine_efficiency": 0.6596958139292599,
+    "field_efficiency": 0.6596945598718786,
+    "efficiency_change": 6.023553311651497e-05,
+    "field_gain_difference": 1.2540573812724887e-06,
+    "source_power_relative_error": 8.322697852134605e-07,
+    "ground_residual_fraction": 0.22975935902740044,
+    "peak_gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "30m",
+    "end_height_ft": 20,
+    "max_segment_length_m": 0.18,
+    "average_gain_error_db": 0.0106568681677565,
+    "reactive_average_gain_error_db": 0.010650406668949314,
+    "r_ohm": 86.469,
+    "x_ohm": 19.208,
+    "peak_gain_dbi": 5.09,
+    "passed": true,
+    "nec_deck_sha256": "a69eb3a4374303e78d9d78e71f5e3dbee60a8b9c81ad1ddfb55ac5c66db294fb",
+    "free_space_deck_sha256": "15f536f18819a07eddf2de4c80f18ff7b636f701201cbad1ae84b109330ff26b",
+    "reactive_free_space_deck_sha256": "305e71d90def84288cff29ea4c1b907d0b0d28e74a4666b2afd435e00f4e3f19"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "30m",
+    "end_height_ft": 20,
+    "max_segment_length_m": 0.12,
+    "average_gain_error_db": 0.009122162517207636,
+    "reactive_average_gain_error_db": 0.009045372253027342,
+    "r_ohm": 86.519,
+    "x_ohm": 19.316,
+    "peak_gain_dbi": 5.08,
+    "passed": true,
+    "nec_deck_sha256": "d12e1fd42b93258a983ed3a6dcbb16099683c08fcecb5ff3400bd3cb0d428fa7",
+    "free_space_deck_sha256": "636f2064cde3176459ec61fbe18d3ddb290a77734de48baf3491657f3e92131d",
+    "reactive_free_space_deck_sha256": "07421fc6bf3cb18b86fa182e27808b26dbce8478f44e14c2296d7d6da2e159cc"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "30m",
+    "end_height_ft": 20,
+    "max_segment_length_m": 0.08,
+    "average_gain_error_db": 0.007331797011680967,
+    "reactive_average_gain_error_db": 0.007399802038610561,
+    "r_ohm": 86.566,
+    "x_ohm": 19.387,
+    "peak_gain_dbi": 5.08,
+    "passed": true,
+    "nec_deck_sha256": "8fcd393353a241951565d41acf418b7b2718aa82f41d63220be5389350c25763",
+    "free_space_deck_sha256": "926fc0b56e72b0c9da3ad880c1448a4f8634d7321d38a881e044780bad9e73a2",
+    "reactive_free_space_deck_sha256": "0c1b0a830e8b3d914d552696a76ba316c41a26139e2c1e1755f288dedb2a7439"
+  },
+  {
+    "kind": "mesh_convergence",
+    "band": "30m",
+    "end_height_ft": 20,
+    "impedance_change_ohm": 0.08514693182963164,
+    "gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "angular_and_power",
+    "band": "30m",
+    "end_height_ft": 20,
+    "coarse_efficiency": 0.6751122349200303,
+    "fine_efficiency": 0.675028309873141,
+    "field_efficiency": 0.6750295602760925,
+    "efficiency_change": 8.392504688925495e-05,
+    "field_gain_difference": 1.250402951513685e-06,
+    "source_power_relative_error": 3.623247095090163e-07,
+    "ground_residual_fraction": 0.21253286835535257,
+    "peak_gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "40m",
+    "end_height_ft": 20,
+    "max_segment_length_m": 0.18,
+    "average_gain_error_db": 0.010517760915379317,
+    "reactive_average_gain_error_db": 0.010505293284087693,
+    "r_ohm": 79.048,
+    "x_ohm": 20.271,
+    "peak_gain_dbi": 4.94,
+    "passed": true,
+    "nec_deck_sha256": "5a0c9344cf4adfc88cdf77133a005befa1c865c201ddeb0aac317b18d099aa33",
+    "free_space_deck_sha256": "279fd998ddfe771dadf76979701184057a897da430eb8a6e4ae79238bf1e02a1",
+    "reactive_free_space_deck_sha256": "c6b919b878861fff28f30f34a1db24c59cdf76950f5be8ff69eab5149510dd29"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "40m",
+    "end_height_ft": 20,
+    "max_segment_length_m": 0.12,
+    "average_gain_error_db": 0.009005994186880223,
+    "reactive_average_gain_error_db": 0.008997462680569139,
+    "r_ohm": 79.087,
+    "x_ohm": 20.346,
+    "peak_gain_dbi": 4.94,
+    "passed": true,
+    "nec_deck_sha256": "1d0a51a0cf6e4c5ad5eb66f18176099b59bc25f1a4c7e26f31cf270a7bc25a5d",
+    "free_space_deck_sha256": "a9d652cbc36ad125ee0922d96e78747d4cfe0366b7189de708e845e9300849e6",
+    "reactive_free_space_deck_sha256": "93bf991bc983a06272cf8f2d8d2de630bd8cf54bbef195d2d3f081dcc03ce72b"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "40m",
+    "end_height_ft": 20,
+    "max_segment_length_m": 0.08,
+    "average_gain_error_db": 0.007138287177079553,
+    "reactive_average_gain_error_db": 0.007146404387185506,
+    "r_ohm": 79.126,
+    "x_ohm": 20.407,
+    "peak_gain_dbi": 4.93,
+    "passed": true,
+    "nec_deck_sha256": "eb20f2364f54b2219f309f9acbf1dfd915e9fc54a74c2f9532cf516a2d665503",
+    "free_space_deck_sha256": "80a9ef15716bddfbaad618a2eb055f0166fa83abee078e6a279f7eefd78f4e37",
+    "reactive_free_space_deck_sha256": "41147ed1b7859cd8ed80854bbe6b8825b052ef0adf77f89ff2aadaa3f5554f11"
+  },
+  {
+    "kind": "mesh_convergence",
+    "band": "40m",
+    "end_height_ft": 20,
+    "impedance_change_ohm": 0.07240165743959256,
+    "gain_change_db": 0.010000000000000675,
+    "passed": true
+  },
+  {
+    "kind": "angular_and_power",
+    "band": "40m",
+    "end_height_ft": 20,
+    "coarse_efficiency": 0.5906688625255646,
+    "fine_efficiency": 0.5905264653041946,
+    "field_efficiency": 0.590535922663593,
+    "efficiency_change": 0.00014239722136999422,
+    "field_gain_difference": 9.45735939839043e-06,
+    "source_power_relative_error": 7.797478610165082e-07,
+    "ground_residual_fraction": 0.263443487171722,
+    "peak_gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "20m",
+    "end_height_ft": 33,
+    "max_segment_length_m": 0.18,
+    "average_gain_error_db": 0.01265749449951041,
+    "reactive_average_gain_error_db": 0.012543073888639945,
+    "r_ohm": 80.115,
+    "x_ohm": 23.216,
+    "peak_gain_dbi": 6.67,
+    "passed": true,
+    "nec_deck_sha256": "6633d03bcd1d69d152bfe3dffcbaa1c2cacd04e8a774448ddcb27db2ba5efd1e",
+    "free_space_deck_sha256": "d7bf1dbc9a30bf1f0f5716153118fc6b147b57b97129e96b49385b54f35fb66b",
+    "reactive_free_space_deck_sha256": "86aa17adb029cba4617e56e02c92fefc8b35c14165b16fe9b9cb40b180d63039"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "20m",
+    "end_height_ft": 33,
+    "max_segment_length_m": 0.12,
+    "average_gain_error_db": 0.010756366739965108,
+    "reactive_average_gain_error_db": 0.011024114533950179,
+    "r_ohm": 80.166,
+    "x_ohm": 23.346,
+    "peak_gain_dbi": 6.67,
+    "passed": true,
+    "nec_deck_sha256": "4af8d43096ea499d0948ce3877be598333342b3330c8d57267013aa4a8fbdf16",
+    "free_space_deck_sha256": "39c277b23919cf45b6cb1db055a7ef5aa0692a77d78be05dcb289fe8d587d93e",
+    "reactive_free_space_deck_sha256": "1fa2b4cf446ea8e67542b7a316da0031d01decc24b5a0137d55b23af9ae17b5e"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "20m",
+    "end_height_ft": 33,
+    "max_segment_length_m": 0.08,
+    "average_gain_error_db": 0.009063594951133404,
+    "reactive_average_gain_error_db": 0.009061121774418857,
+    "r_ohm": 80.217,
+    "x_ohm": 23.439,
+    "peak_gain_dbi": 6.67,
+    "passed": true,
+    "nec_deck_sha256": "49cf708018481b199b6099c30b2c482c43f52b0056ccf5236c35e6be81d9d652",
+    "free_space_deck_sha256": "dce93d917fcdb4d24c20cad0d24cf42e334cf6d0ae25858c59aee81b78ef3a93",
+    "reactive_free_space_deck_sha256": "fd45a36a26d25b582d6bb3705030d261213ebf0ae060ff68046a8a27602e67b6"
+  },
+  {
+    "kind": "mesh_convergence",
+    "band": "20m",
+    "end_height_ft": 33,
+    "impedance_change_ohm": 0.10606601717798303,
+    "gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "angular_and_power",
+    "band": "20m",
+    "end_height_ft": 33,
+    "coarse_efficiency": 0.6724485426918679,
+    "fine_efficiency": 0.6725290938631148,
+    "field_efficiency": 0.6725319621940955,
+    "efficiency_change": 8.055117124683431e-05,
+    "field_gain_difference": 2.8683309807320256e-06,
+    "source_power_relative_error": 8.710999793834822e-06,
+    "ground_residual_fraction": 0.22428850813082662,
+    "peak_gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "source_length",
+    "band": "20m",
+    "end_height_ft": 33,
+    "impedance_spread_ohm": 0.6630422309325386,
+    "gain_spread_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "30m",
+    "end_height_ft": 33,
+    "max_segment_length_m": 0.18,
+    "average_gain_error_db": 0.012728149741712182,
+    "reactive_average_gain_error_db": 0.01256318250740068,
+    "r_ohm": 95.867,
+    "x_ohm": 21.7,
+    "peak_gain_dbi": 5.55,
+    "passed": true,
+    "nec_deck_sha256": "637d1c1a8b60672c4f4558d3fa8371b004bfec9ebfc2e1338110c06c70d6cea8",
+    "free_space_deck_sha256": "6da750d94e8134bc018277efdb65df4545804b91d5aec6c353bd4a71fd19ac6a",
+    "reactive_free_space_deck_sha256": "0e1298723cd05e1137d90e1690c1fb4184daaccbee47e0dfbb6f1e12d12c19a9"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "30m",
+    "end_height_ft": 33,
+    "max_segment_length_m": 0.12,
+    "average_gain_error_db": 0.011291519359031877,
+    "reactive_average_gain_error_db": 0.0109079966027611,
+    "r_ohm": 95.923,
+    "x_ohm": 21.809,
+    "peak_gain_dbi": 5.55,
+    "passed": true,
+    "nec_deck_sha256": "9f4aaa6e2ad47f53558a250e13460cdace41ee7352aa3732c77dc2bc34325756",
+    "free_space_deck_sha256": "542328494dc2a510b1ea10d1eaf5ed6e0e13c4627efbc95bfd0560c9956e43e5",
+    "reactive_free_space_deck_sha256": "03cc58443eeaf6f29fd732771ce8c5a19b33df0165f42b7ec98e61d622c2d033"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "30m",
+    "end_height_ft": 33,
+    "max_segment_length_m": 0.08,
+    "average_gain_error_db": 0.009291744838514932,
+    "reactive_average_gain_error_db": 0.009291625937431438,
+    "r_ohm": 95.975,
+    "x_ohm": 21.881,
+    "peak_gain_dbi": 5.55,
+    "passed": true,
+    "nec_deck_sha256": "bd35773adf1657d1b287a251df407b336bf3a51d058d988c259758770ef15fab",
+    "free_space_deck_sha256": "c240a4e639074eebd90cff4d45fb020860485cc0b14adcb9d7ba4e659a5b3d9a",
+    "reactive_free_space_deck_sha256": "334f3a389b0942f43742b2ee9d16031a08796b9b65c85e10317ce8d3a01d52c6"
+  },
+  {
+    "kind": "mesh_convergence",
+    "band": "30m",
+    "end_height_ft": 33,
+    "impedance_change_ohm": 0.08881441324469301,
+    "gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "angular_and_power",
+    "band": "30m",
+    "end_height_ft": 33,
+    "coarse_efficiency": 0.7097114910456869,
+    "fine_efficiency": 0.7096464860511079,
+    "field_efficiency": 0.7096595843560373,
+    "efficiency_change": 6.500499457895437e-05,
+    "field_gain_difference": 1.3098304929348714e-05,
+    "source_power_relative_error": 2.22027987920549e-06,
+    "ground_residual_fraction": 0.18893265882417576,
+    "peak_gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "source_length",
+    "band": "30m",
+    "end_height_ft": 33,
+    "impedance_spread_ohm": 0.4672226449991479,
+    "gain_spread_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "40m",
+    "end_height_ft": 33,
+    "max_segment_length_m": 0.18,
+    "average_gain_error_db": 0.012865122304212917,
+    "reactive_average_gain_error_db": 0.013035284069114526,
+    "r_ohm": 90.337,
+    "x_ohm": 24.255,
+    "peak_gain_dbi": 5.42,
+    "passed": true,
+    "nec_deck_sha256": "27b26e4655ec551a6f2cd2d20c6bd4b4168271c2378937fee7e9ffe47d76729b",
+    "free_space_deck_sha256": "98101b5d91a8a4d0b1324363bd0937c2125c22717845e75f2e2e06c209bfbc7b",
+    "reactive_free_space_deck_sha256": "e74aaa3080bb64a0a42d2579d6573062578a9bac42edaa4d874e1762e62d8c7f"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "40m",
+    "end_height_ft": 33,
+    "max_segment_length_m": 0.12,
+    "average_gain_error_db": 0.01105078039468755,
+    "reactive_average_gain_error_db": 0.010654843984179421,
+    "r_ohm": 90.38,
+    "x_ohm": 24.331,
+    "peak_gain_dbi": 5.42,
+    "passed": true,
+    "nec_deck_sha256": "f3234065cc1a4641a2fd8ef2752bfc2ccf748e696f22504861526187122506bf",
+    "free_space_deck_sha256": "bc94eda5a5cf72462c260190529a59980f0d811591aebb40a5c41b152b72037e",
+    "reactive_free_space_deck_sha256": "e0fee22e8a0b16a510527d688529572c4033aae20be9f70264387d8c9cccea9c"
+  },
+  {
+    "kind": "mesh_and_free_space",
+    "band": "40m",
+    "end_height_ft": 33,
+    "max_segment_length_m": 0.08,
+    "average_gain_error_db": 0.008822175246426067,
+    "reactive_average_gain_error_db": 0.008965758926963248,
+    "r_ohm": 90.426,
+    "x_ohm": 24.393,
+    "peak_gain_dbi": 5.42,
+    "passed": true,
+    "nec_deck_sha256": "ee24d789294dec9755e5a8be8380c2abcba64e8be8695fc1d929b0a898822546",
+    "free_space_deck_sha256": "8e515321587a9417b8f23c757d6779b9f08a4a3fa68aeeaf6e9fb963977432c1",
+    "reactive_free_space_deck_sha256": "18181e71ebd1933dd7d30cdd8083b90d02b10939c3f5ce80a5fad4954c64709c"
+  },
+  {
+    "kind": "mesh_convergence",
+    "band": "40m",
+    "end_height_ft": 33,
+    "impedance_change_ohm": 0.07720103626247993,
+    "gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "angular_and_power",
+    "band": "40m",
+    "end_height_ft": 33,
+    "coarse_efficiency": 0.6693321276340383,
+    "fine_efficiency": 0.6691759898387276,
+    "field_efficiency": 0.6691754944029877,
+    "efficiency_change": 0.0001561377953106513,
+    "field_gain_difference": 4.954357398778697e-07,
+    "source_power_relative_error": 1.098490875501978e-05,
+    "ground_residual_fraction": 0.20286219995450833,
+    "peak_gain_change_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "source_length",
+    "band": "40m",
+    "end_height_ft": 33,
+    "impedance_spread_ohm": 0.32575143898377223,
+    "gain_spread_db": 0.0,
+    "passed": true
+  },
+  {
+    "kind": "open_connectivity",
+    "band": "20m",
+    "open_gap_m": 0.01,
+    "passed": true,
+    "errors": [],
+    "segment_count": 177,
+    "open_link_endpoint_count": 8,
+    "closed_link_count": 0,
+    "endpoint_checks": [
+      {
+        "tag": 1,
+        "endpoint": "start",
+        "segment": 1,
+        "expected_connection": -4,
+        "actual_connection": -4,
+        "passed": true
+      },
+      {
+        "tag": 1,
+        "endpoint": "end",
+        "segment": 3,
+        "expected_connection": 91,
+        "actual_connection": 91,
+        "passed": true
+      },
+      {
+        "tag": 1000,
+        "endpoint": "start",
+        "segment": 4,
+        "expected_connection": -1,
+        "actual_connection": -1,
+        "passed": true
+      },
+      {
+        "tag": 1000,
+        "endpoint": "end",
+        "segment": 4,
+        "expected_connection": 5,
+        "actual_connection": 5,
+        "passed": true
+      },
+      {
+        "tag": 1001,
+        "endpoint": "start",
+        "segment": 5,
+        "expected_connection": 4,
+        "actual_connection": 4,
+        "passed": true
+      },
+      {
+        "tag": 1001,
+        "endpoint": "end",
+        "segment": 5,
+        "expected_connection": 6,
+        "actual_connection": 6,
+        "passed": true
+      },
+      {
+        "tag": 1002,
+        "endpoint": "start",
+        "segment": 6,
+        "expected_connection": 5,
+        "actual_connection": 5,
+        "passed": true
+      },
+      {
+        "tag": 1002,
+        "endpoint": "end",
+        "segment": 6,
+        "expected_connection": 7,
+        "actual_connection": 7,
+        "passed": true
+      },
+      {
+        "tag": 1003,
+        "endpoint": "start",
+        "segment": 7,
+        "expected_connection": 6,
+        "actual_connection": 6,
+        "passed": true
+      },
+      {
+        "tag": 1003,
+        "endpoint": "end",
+        "segment": 7,
+        "expected_connection": 8,
+        "actual_connection": 8,
+        "passed": true
+      },
+      {
+        "tag": 10,
+        "endpoint": "start",
+        "segment": 8,
+        "expected_connection": 7,
+        "actual_connection": 7,
+        "passed": true
+      },
+      {
+        "tag": 10,
+        "endpoint": "end",
+        "segment": 48,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 11,
+        "endpoint": "start",
+        "segment": 49,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 11,
+        "endpoint": "end",
+        "segment": 65,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 12,
+        "endpoint": "start",
+        "segment": 66,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 12,
+        "endpoint": "end",
+        "segment": 90,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 2000,
+        "endpoint": "start",
+        "segment": 91,
+        "expected_connection": 3,
+        "actual_connection": 3,
+        "passed": true
+      },
+      {
+        "tag": 2000,
+        "endpoint": "end",
+        "segment": 91,
+        "expected_connection": 92,
+        "actual_connection": 92,
+        "passed": true
+      },
+      {
+        "tag": 2001,
+        "endpoint": "start",
+        "segment": 92,
+        "expected_connection": 91,
+        "actual_connection": 91,
+        "passed": true
+      },
+      {
+        "tag": 2001,
+        "endpoint": "end",
+        "segment": 92,
+        "expected_connection": 93,
+        "actual_connection": 93,
+        "passed": true
+      },
+      {
+        "tag": 2002,
+        "endpoint": "start",
+        "segment": 93,
+        "expected_connection": 92,
+        "actual_connection": 92,
+        "passed": true
+      },
+      {
+        "tag": 2002,
+        "endpoint": "end",
+        "segment": 93,
+        "expected_connection": 94,
+        "actual_connection": 94,
+        "passed": true
+      },
+      {
+        "tag": 2003,
+        "endpoint": "start",
+        "segment": 94,
+        "expected_connection": 93,
+        "actual_connection": 93,
+        "passed": true
+      },
+      {
+        "tag": 2003,
+        "endpoint": "end",
+        "segment": 94,
+        "expected_connection": 95,
+        "actual_connection": 95,
+        "passed": true
+      },
+      {
+        "tag": 20,
+        "endpoint": "start",
+        "segment": 95,
+        "expected_connection": 94,
+        "actual_connection": 94,
+        "passed": true
+      },
+      {
+        "tag": 20,
+        "endpoint": "end",
+        "segment": 135,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 21,
+        "endpoint": "start",
+        "segment": 136,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 21,
+        "endpoint": "end",
+        "segment": 152,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 22,
+        "endpoint": "start",
+        "segment": 153,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 22,
+        "endpoint": "end",
+        "segment": 177,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      }
+    ]
+  },
+  {
+    "kind": "open_connectivity",
+    "band": "20m",
+    "open_gap_m": 0.038,
+    "passed": true,
+    "errors": [],
+    "segment_count": 177,
+    "open_link_endpoint_count": 8,
+    "closed_link_count": 0,
+    "endpoint_checks": [
+      {
+        "tag": 1,
+        "endpoint": "start",
+        "segment": 1,
+        "expected_connection": -4,
+        "actual_connection": -4,
+        "passed": true
+      },
+      {
+        "tag": 1,
+        "endpoint": "end",
+        "segment": 3,
+        "expected_connection": 91,
+        "actual_connection": 91,
+        "passed": true
+      },
+      {
+        "tag": 1000,
+        "endpoint": "start",
+        "segment": 4,
+        "expected_connection": -1,
+        "actual_connection": -1,
+        "passed": true
+      },
+      {
+        "tag": 1000,
+        "endpoint": "end",
+        "segment": 4,
+        "expected_connection": 5,
+        "actual_connection": 5,
+        "passed": true
+      },
+      {
+        "tag": 1001,
+        "endpoint": "start",
+        "segment": 5,
+        "expected_connection": 4,
+        "actual_connection": 4,
+        "passed": true
+      },
+      {
+        "tag": 1001,
+        "endpoint": "end",
+        "segment": 5,
+        "expected_connection": 6,
+        "actual_connection": 6,
+        "passed": true
+      },
+      {
+        "tag": 1002,
+        "endpoint": "start",
+        "segment": 6,
+        "expected_connection": 5,
+        "actual_connection": 5,
+        "passed": true
+      },
+      {
+        "tag": 1002,
+        "endpoint": "end",
+        "segment": 6,
+        "expected_connection": 7,
+        "actual_connection": 7,
+        "passed": true
+      },
+      {
+        "tag": 1003,
+        "endpoint": "start",
+        "segment": 7,
+        "expected_connection": 6,
+        "actual_connection": 6,
+        "passed": true
+      },
+      {
+        "tag": 1003,
+        "endpoint": "end",
+        "segment": 7,
+        "expected_connection": 8,
+        "actual_connection": 8,
+        "passed": true
+      },
+      {
+        "tag": 10,
+        "endpoint": "start",
+        "segment": 8,
+        "expected_connection": 7,
+        "actual_connection": 7,
+        "passed": true
+      },
+      {
+        "tag": 10,
+        "endpoint": "end",
+        "segment": 48,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 11,
+        "endpoint": "start",
+        "segment": 49,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 11,
+        "endpoint": "end",
+        "segment": 65,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 12,
+        "endpoint": "start",
+        "segment": 66,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 12,
+        "endpoint": "end",
+        "segment": 90,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 2000,
+        "endpoint": "start",
+        "segment": 91,
+        "expected_connection": 3,
+        "actual_connection": 3,
+        "passed": true
+      },
+      {
+        "tag": 2000,
+        "endpoint": "end",
+        "segment": 91,
+        "expected_connection": 92,
+        "actual_connection": 92,
+        "passed": true
+      },
+      {
+        "tag": 2001,
+        "endpoint": "start",
+        "segment": 92,
+        "expected_connection": 91,
+        "actual_connection": 91,
+        "passed": true
+      },
+      {
+        "tag": 2001,
+        "endpoint": "end",
+        "segment": 92,
+        "expected_connection": 93,
+        "actual_connection": 93,
+        "passed": true
+      },
+      {
+        "tag": 2002,
+        "endpoint": "start",
+        "segment": 93,
+        "expected_connection": 92,
+        "actual_connection": 92,
+        "passed": true
+      },
+      {
+        "tag": 2002,
+        "endpoint": "end",
+        "segment": 93,
+        "expected_connection": 94,
+        "actual_connection": 94,
+        "passed": true
+      },
+      {
+        "tag": 2003,
+        "endpoint": "start",
+        "segment": 94,
+        "expected_connection": 93,
+        "actual_connection": 93,
+        "passed": true
+      },
+      {
+        "tag": 2003,
+        "endpoint": "end",
+        "segment": 94,
+        "expected_connection": 95,
+        "actual_connection": 95,
+        "passed": true
+      },
+      {
+        "tag": 20,
+        "endpoint": "start",
+        "segment": 95,
+        "expected_connection": 94,
+        "actual_connection": 94,
+        "passed": true
+      },
+      {
+        "tag": 20,
+        "endpoint": "end",
+        "segment": 135,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 21,
+        "endpoint": "start",
+        "segment": 136,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 21,
+        "endpoint": "end",
+        "segment": 152,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 22,
+        "endpoint": "start",
+        "segment": 153,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 22,
+        "endpoint": "end",
+        "segment": 177,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      }
+    ]
+  },
+  {
+    "kind": "open_connectivity",
+    "band": "30m",
+    "open_gap_m": 0.01,
+    "passed": true,
+    "errors": [],
+    "segment_count": 179,
+    "open_link_endpoint_count": 4,
+    "closed_link_count": 2,
+    "endpoint_checks": [
+      {
+        "tag": 1,
+        "endpoint": "start",
+        "segment": 1,
+        "expected_connection": -4,
+        "actual_connection": -4,
+        "passed": true
+      },
+      {
+        "tag": 1,
+        "endpoint": "end",
+        "segment": 3,
+        "expected_connection": 92,
+        "actual_connection": 92,
+        "passed": true
+      },
+      {
+        "tag": 1000,
+        "endpoint": "start",
+        "segment": 4,
+        "expected_connection": -1,
+        "actual_connection": -1,
+        "passed": true
+      },
+      {
+        "tag": 1000,
+        "endpoint": "end",
+        "segment": 4,
+        "expected_connection": 5,
+        "actual_connection": 5,
+        "passed": true
+      },
+      {
+        "tag": 1001,
+        "endpoint": "start",
+        "segment": 5,
+        "expected_connection": 4,
+        "actual_connection": 4,
+        "passed": true
+      },
+      {
+        "tag": 1001,
+        "endpoint": "end",
+        "segment": 5,
+        "expected_connection": 6,
+        "actual_connection": 6,
+        "passed": true
+      },
+      {
+        "tag": 1002,
+        "endpoint": "start",
+        "segment": 6,
+        "expected_connection": 5,
+        "actual_connection": 5,
+        "passed": true
+      },
+      {
+        "tag": 1002,
+        "endpoint": "end",
+        "segment": 6,
+        "expected_connection": 7,
+        "actual_connection": 7,
+        "passed": true
+      },
+      {
+        "tag": 1003,
+        "endpoint": "start",
+        "segment": 7,
+        "expected_connection": 6,
+        "actual_connection": 6,
+        "passed": true
+      },
+      {
+        "tag": 1003,
+        "endpoint": "end",
+        "segment": 7,
+        "expected_connection": 8,
+        "actual_connection": 8,
+        "passed": true
+      },
+      {
+        "tag": 10,
+        "endpoint": "start",
+        "segment": 8,
+        "expected_connection": 7,
+        "actual_connection": 7,
+        "passed": true
+      },
+      {
+        "tag": 10,
+        "endpoint": "end",
+        "segment": 48,
+        "expected_connection": 91,
+        "actual_connection": 91,
+        "passed": true
+      },
+      {
+        "tag": 11,
+        "endpoint": "start",
+        "segment": 49,
+        "expected_connection": 91,
+        "actual_connection": 91,
+        "passed": true
+      },
+      {
+        "tag": 11,
+        "endpoint": "end",
+        "segment": 65,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 12,
+        "endpoint": "start",
+        "segment": 66,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 12,
+        "endpoint": "end",
+        "segment": 90,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 13,
+        "endpoint": "start",
+        "segment": 91,
+        "expected_connection": 48,
+        "actual_connection": 48,
+        "passed": true
+      },
+      {
+        "tag": 13,
+        "endpoint": "end",
+        "segment": 91,
+        "expected_connection": 49,
+        "actual_connection": 49,
+        "passed": true
+      },
+      {
+        "tag": 2000,
+        "endpoint": "start",
+        "segment": 92,
+        "expected_connection": 3,
+        "actual_connection": 3,
+        "passed": true
+      },
+      {
+        "tag": 2000,
+        "endpoint": "end",
+        "segment": 92,
+        "expected_connection": 93,
+        "actual_connection": 93,
+        "passed": true
+      },
+      {
+        "tag": 2001,
+        "endpoint": "start",
+        "segment": 93,
+        "expected_connection": 92,
+        "actual_connection": 92,
+        "passed": true
+      },
+      {
+        "tag": 2001,
+        "endpoint": "end",
+        "segment": 93,
+        "expected_connection": 94,
+        "actual_connection": 94,
+        "passed": true
+      },
+      {
+        "tag": 2002,
+        "endpoint": "start",
+        "segment": 94,
+        "expected_connection": 93,
+        "actual_connection": 93,
+        "passed": true
+      },
+      {
+        "tag": 2002,
+        "endpoint": "end",
+        "segment": 94,
+        "expected_connection": 95,
+        "actual_connection": 95,
+        "passed": true
+      },
+      {
+        "tag": 2003,
+        "endpoint": "start",
+        "segment": 95,
+        "expected_connection": 94,
+        "actual_connection": 94,
+        "passed": true
+      },
+      {
+        "tag": 2003,
+        "endpoint": "end",
+        "segment": 95,
+        "expected_connection": 96,
+        "actual_connection": 96,
+        "passed": true
+      },
+      {
+        "tag": 20,
+        "endpoint": "start",
+        "segment": 96,
+        "expected_connection": 95,
+        "actual_connection": 95,
+        "passed": true
+      },
+      {
+        "tag": 20,
+        "endpoint": "end",
+        "segment": 136,
+        "expected_connection": 179,
+        "actual_connection": 179,
+        "passed": true
+      },
+      {
+        "tag": 21,
+        "endpoint": "start",
+        "segment": 137,
+        "expected_connection": 179,
+        "actual_connection": 179,
+        "passed": true
+      },
+      {
+        "tag": 21,
+        "endpoint": "end",
+        "segment": 153,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 22,
+        "endpoint": "start",
+        "segment": 154,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 22,
+        "endpoint": "end",
+        "segment": 178,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 23,
+        "endpoint": "start",
+        "segment": 179,
+        "expected_connection": 136,
+        "actual_connection": 136,
+        "passed": true
+      },
+      {
+        "tag": 23,
+        "endpoint": "end",
+        "segment": 179,
+        "expected_connection": 137,
+        "actual_connection": 137,
+        "passed": true
+      }
+    ]
+  },
+  {
+    "kind": "open_connectivity",
+    "band": "30m",
+    "open_gap_m": 0.038,
+    "passed": true,
+    "errors": [],
+    "segment_count": 179,
+    "open_link_endpoint_count": 4,
+    "closed_link_count": 2,
+    "endpoint_checks": [
+      {
+        "tag": 1,
+        "endpoint": "start",
+        "segment": 1,
+        "expected_connection": -4,
+        "actual_connection": -4,
+        "passed": true
+      },
+      {
+        "tag": 1,
+        "endpoint": "end",
+        "segment": 3,
+        "expected_connection": 92,
+        "actual_connection": 92,
+        "passed": true
+      },
+      {
+        "tag": 1000,
+        "endpoint": "start",
+        "segment": 4,
+        "expected_connection": -1,
+        "actual_connection": -1,
+        "passed": true
+      },
+      {
+        "tag": 1000,
+        "endpoint": "end",
+        "segment": 4,
+        "expected_connection": 5,
+        "actual_connection": 5,
+        "passed": true
+      },
+      {
+        "tag": 1001,
+        "endpoint": "start",
+        "segment": 5,
+        "expected_connection": 4,
+        "actual_connection": 4,
+        "passed": true
+      },
+      {
+        "tag": 1001,
+        "endpoint": "end",
+        "segment": 5,
+        "expected_connection": 6,
+        "actual_connection": 6,
+        "passed": true
+      },
+      {
+        "tag": 1002,
+        "endpoint": "start",
+        "segment": 6,
+        "expected_connection": 5,
+        "actual_connection": 5,
+        "passed": true
+      },
+      {
+        "tag": 1002,
+        "endpoint": "end",
+        "segment": 6,
+        "expected_connection": 7,
+        "actual_connection": 7,
+        "passed": true
+      },
+      {
+        "tag": 1003,
+        "endpoint": "start",
+        "segment": 7,
+        "expected_connection": 6,
+        "actual_connection": 6,
+        "passed": true
+      },
+      {
+        "tag": 1003,
+        "endpoint": "end",
+        "segment": 7,
+        "expected_connection": 8,
+        "actual_connection": 8,
+        "passed": true
+      },
+      {
+        "tag": 10,
+        "endpoint": "start",
+        "segment": 8,
+        "expected_connection": 7,
+        "actual_connection": 7,
+        "passed": true
+      },
+      {
+        "tag": 10,
+        "endpoint": "end",
+        "segment": 48,
+        "expected_connection": 91,
+        "actual_connection": 91,
+        "passed": true
+      },
+      {
+        "tag": 11,
+        "endpoint": "start",
+        "segment": 49,
+        "expected_connection": 91,
+        "actual_connection": 91,
+        "passed": true
+      },
+      {
+        "tag": 11,
+        "endpoint": "end",
+        "segment": 65,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 12,
+        "endpoint": "start",
+        "segment": 66,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 12,
+        "endpoint": "end",
+        "segment": 90,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 13,
+        "endpoint": "start",
+        "segment": 91,
+        "expected_connection": 48,
+        "actual_connection": 48,
+        "passed": true
+      },
+      {
+        "tag": 13,
+        "endpoint": "end",
+        "segment": 91,
+        "expected_connection": 49,
+        "actual_connection": 49,
+        "passed": true
+      },
+      {
+        "tag": 2000,
+        "endpoint": "start",
+        "segment": 92,
+        "expected_connection": 3,
+        "actual_connection": 3,
+        "passed": true
+      },
+      {
+        "tag": 2000,
+        "endpoint": "end",
+        "segment": 92,
+        "expected_connection": 93,
+        "actual_connection": 93,
+        "passed": true
+      },
+      {
+        "tag": 2001,
+        "endpoint": "start",
+        "segment": 93,
+        "expected_connection": 92,
+        "actual_connection": 92,
+        "passed": true
+      },
+      {
+        "tag": 2001,
+        "endpoint": "end",
+        "segment": 93,
+        "expected_connection": 94,
+        "actual_connection": 94,
+        "passed": true
+      },
+      {
+        "tag": 2002,
+        "endpoint": "start",
+        "segment": 94,
+        "expected_connection": 93,
+        "actual_connection": 93,
+        "passed": true
+      },
+      {
+        "tag": 2002,
+        "endpoint": "end",
+        "segment": 94,
+        "expected_connection": 95,
+        "actual_connection": 95,
+        "passed": true
+      },
+      {
+        "tag": 2003,
+        "endpoint": "start",
+        "segment": 95,
+        "expected_connection": 94,
+        "actual_connection": 94,
+        "passed": true
+      },
+      {
+        "tag": 2003,
+        "endpoint": "end",
+        "segment": 95,
+        "expected_connection": 96,
+        "actual_connection": 96,
+        "passed": true
+      },
+      {
+        "tag": 20,
+        "endpoint": "start",
+        "segment": 96,
+        "expected_connection": 95,
+        "actual_connection": 95,
+        "passed": true
+      },
+      {
+        "tag": 20,
+        "endpoint": "end",
+        "segment": 136,
+        "expected_connection": 179,
+        "actual_connection": 179,
+        "passed": true
+      },
+      {
+        "tag": 21,
+        "endpoint": "start",
+        "segment": 137,
+        "expected_connection": 179,
+        "actual_connection": 179,
+        "passed": true
+      },
+      {
+        "tag": 21,
+        "endpoint": "end",
+        "segment": 153,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 22,
+        "endpoint": "start",
+        "segment": 154,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 22,
+        "endpoint": "end",
+        "segment": 178,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 23,
+        "endpoint": "start",
+        "segment": 179,
+        "expected_connection": 136,
+        "actual_connection": 136,
+        "passed": true
+      },
+      {
+        "tag": 23,
+        "endpoint": "end",
+        "segment": 179,
+        "expected_connection": 137,
+        "actual_connection": 137,
+        "passed": true
+      }
+    ]
+  },
+  {
+    "kind": "open_connectivity",
+    "band": "40m",
+    "open_gap_m": 0.01,
+    "passed": true,
+    "errors": [],
+    "segment_count": 181,
+    "open_link_endpoint_count": 0,
+    "closed_link_count": 4,
+    "endpoint_checks": [
+      {
+        "tag": 1,
+        "endpoint": "start",
+        "segment": 1,
+        "expected_connection": -4,
+        "actual_connection": -4,
+        "passed": true
+      },
+      {
+        "tag": 1,
+        "endpoint": "end",
+        "segment": 3,
+        "expected_connection": 93,
+        "actual_connection": 93,
+        "passed": true
+      },
+      {
+        "tag": 1000,
+        "endpoint": "start",
+        "segment": 4,
+        "expected_connection": -1,
+        "actual_connection": -1,
+        "passed": true
+      },
+      {
+        "tag": 1000,
+        "endpoint": "end",
+        "segment": 4,
+        "expected_connection": 5,
+        "actual_connection": 5,
+        "passed": true
+      },
+      {
+        "tag": 1001,
+        "endpoint": "start",
+        "segment": 5,
+        "expected_connection": 4,
+        "actual_connection": 4,
+        "passed": true
+      },
+      {
+        "tag": 1001,
+        "endpoint": "end",
+        "segment": 5,
+        "expected_connection": 6,
+        "actual_connection": 6,
+        "passed": true
+      },
+      {
+        "tag": 1002,
+        "endpoint": "start",
+        "segment": 6,
+        "expected_connection": 5,
+        "actual_connection": 5,
+        "passed": true
+      },
+      {
+        "tag": 1002,
+        "endpoint": "end",
+        "segment": 6,
+        "expected_connection": 7,
+        "actual_connection": 7,
+        "passed": true
+      },
+      {
+        "tag": 1003,
+        "endpoint": "start",
+        "segment": 7,
+        "expected_connection": 6,
+        "actual_connection": 6,
+        "passed": true
+      },
+      {
+        "tag": 1003,
+        "endpoint": "end",
+        "segment": 7,
+        "expected_connection": 8,
+        "actual_connection": 8,
+        "passed": true
+      },
+      {
+        "tag": 10,
+        "endpoint": "start",
+        "segment": 8,
+        "expected_connection": 7,
+        "actual_connection": 7,
+        "passed": true
+      },
+      {
+        "tag": 10,
+        "endpoint": "end",
+        "segment": 48,
+        "expected_connection": 91,
+        "actual_connection": 91,
+        "passed": true
+      },
+      {
+        "tag": 11,
+        "endpoint": "start",
+        "segment": 49,
+        "expected_connection": 91,
+        "actual_connection": 91,
+        "passed": true
+      },
+      {
+        "tag": 11,
+        "endpoint": "end",
+        "segment": 65,
+        "expected_connection": 92,
+        "actual_connection": 92,
+        "passed": true
+      },
+      {
+        "tag": 12,
+        "endpoint": "start",
+        "segment": 66,
+        "expected_connection": 92,
+        "actual_connection": 92,
+        "passed": true
+      },
+      {
+        "tag": 12,
+        "endpoint": "end",
+        "segment": 90,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 13,
+        "endpoint": "start",
+        "segment": 91,
+        "expected_connection": 48,
+        "actual_connection": 48,
+        "passed": true
+      },
+      {
+        "tag": 13,
+        "endpoint": "end",
+        "segment": 91,
+        "expected_connection": 49,
+        "actual_connection": 49,
+        "passed": true
+      },
+      {
+        "tag": 14,
+        "endpoint": "start",
+        "segment": 92,
+        "expected_connection": 65,
+        "actual_connection": 65,
+        "passed": true
+      },
+      {
+        "tag": 14,
+        "endpoint": "end",
+        "segment": 92,
+        "expected_connection": 66,
+        "actual_connection": 66,
+        "passed": true
+      },
+      {
+        "tag": 2000,
+        "endpoint": "start",
+        "segment": 93,
+        "expected_connection": 3,
+        "actual_connection": 3,
+        "passed": true
+      },
+      {
+        "tag": 2000,
+        "endpoint": "end",
+        "segment": 93,
+        "expected_connection": 94,
+        "actual_connection": 94,
+        "passed": true
+      },
+      {
+        "tag": 2001,
+        "endpoint": "start",
+        "segment": 94,
+        "expected_connection": 93,
+        "actual_connection": 93,
+        "passed": true
+      },
+      {
+        "tag": 2001,
+        "endpoint": "end",
+        "segment": 94,
+        "expected_connection": 95,
+        "actual_connection": 95,
+        "passed": true
+      },
+      {
+        "tag": 2002,
+        "endpoint": "start",
+        "segment": 95,
+        "expected_connection": 94,
+        "actual_connection": 94,
+        "passed": true
+      },
+      {
+        "tag": 2002,
+        "endpoint": "end",
+        "segment": 95,
+        "expected_connection": 96,
+        "actual_connection": 96,
+        "passed": true
+      },
+      {
+        "tag": 2003,
+        "endpoint": "start",
+        "segment": 96,
+        "expected_connection": 95,
+        "actual_connection": 95,
+        "passed": true
+      },
+      {
+        "tag": 2003,
+        "endpoint": "end",
+        "segment": 96,
+        "expected_connection": 97,
+        "actual_connection": 97,
+        "passed": true
+      },
+      {
+        "tag": 20,
+        "endpoint": "start",
+        "segment": 97,
+        "expected_connection": 96,
+        "actual_connection": 96,
+        "passed": true
+      },
+      {
+        "tag": 20,
+        "endpoint": "end",
+        "segment": 137,
+        "expected_connection": 180,
+        "actual_connection": 180,
+        "passed": true
+      },
+      {
+        "tag": 21,
+        "endpoint": "start",
+        "segment": 138,
+        "expected_connection": 180,
+        "actual_connection": 180,
+        "passed": true
+      },
+      {
+        "tag": 21,
+        "endpoint": "end",
+        "segment": 154,
+        "expected_connection": 181,
+        "actual_connection": 181,
+        "passed": true
+      },
+      {
+        "tag": 22,
+        "endpoint": "start",
+        "segment": 155,
+        "expected_connection": 181,
+        "actual_connection": 181,
+        "passed": true
+      },
+      {
+        "tag": 22,
+        "endpoint": "end",
+        "segment": 179,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 23,
+        "endpoint": "start",
+        "segment": 180,
+        "expected_connection": 137,
+        "actual_connection": 137,
+        "passed": true
+      },
+      {
+        "tag": 23,
+        "endpoint": "end",
+        "segment": 180,
+        "expected_connection": 138,
+        "actual_connection": 138,
+        "passed": true
+      },
+      {
+        "tag": 24,
+        "endpoint": "start",
+        "segment": 181,
+        "expected_connection": 154,
+        "actual_connection": 154,
+        "passed": true
+      },
+      {
+        "tag": 24,
+        "endpoint": "end",
+        "segment": 181,
+        "expected_connection": 155,
+        "actual_connection": 155,
+        "passed": true
+      }
+    ]
+  },
+  {
+    "kind": "open_connectivity",
+    "band": "40m",
+    "open_gap_m": 0.038,
+    "passed": true,
+    "errors": [],
+    "segment_count": 181,
+    "open_link_endpoint_count": 0,
+    "closed_link_count": 4,
+    "endpoint_checks": [
+      {
+        "tag": 1,
+        "endpoint": "start",
+        "segment": 1,
+        "expected_connection": -4,
+        "actual_connection": -4,
+        "passed": true
+      },
+      {
+        "tag": 1,
+        "endpoint": "end",
+        "segment": 3,
+        "expected_connection": 93,
+        "actual_connection": 93,
+        "passed": true
+      },
+      {
+        "tag": 1000,
+        "endpoint": "start",
+        "segment": 4,
+        "expected_connection": -1,
+        "actual_connection": -1,
+        "passed": true
+      },
+      {
+        "tag": 1000,
+        "endpoint": "end",
+        "segment": 4,
+        "expected_connection": 5,
+        "actual_connection": 5,
+        "passed": true
+      },
+      {
+        "tag": 1001,
+        "endpoint": "start",
+        "segment": 5,
+        "expected_connection": 4,
+        "actual_connection": 4,
+        "passed": true
+      },
+      {
+        "tag": 1001,
+        "endpoint": "end",
+        "segment": 5,
+        "expected_connection": 6,
+        "actual_connection": 6,
+        "passed": true
+      },
+      {
+        "tag": 1002,
+        "endpoint": "start",
+        "segment": 6,
+        "expected_connection": 5,
+        "actual_connection": 5,
+        "passed": true
+      },
+      {
+        "tag": 1002,
+        "endpoint": "end",
+        "segment": 6,
+        "expected_connection": 7,
+        "actual_connection": 7,
+        "passed": true
+      },
+      {
+        "tag": 1003,
+        "endpoint": "start",
+        "segment": 7,
+        "expected_connection": 6,
+        "actual_connection": 6,
+        "passed": true
+      },
+      {
+        "tag": 1003,
+        "endpoint": "end",
+        "segment": 7,
+        "expected_connection": 8,
+        "actual_connection": 8,
+        "passed": true
+      },
+      {
+        "tag": 10,
+        "endpoint": "start",
+        "segment": 8,
+        "expected_connection": 7,
+        "actual_connection": 7,
+        "passed": true
+      },
+      {
+        "tag": 10,
+        "endpoint": "end",
+        "segment": 48,
+        "expected_connection": 91,
+        "actual_connection": 91,
+        "passed": true
+      },
+      {
+        "tag": 11,
+        "endpoint": "start",
+        "segment": 49,
+        "expected_connection": 91,
+        "actual_connection": 91,
+        "passed": true
+      },
+      {
+        "tag": 11,
+        "endpoint": "end",
+        "segment": 65,
+        "expected_connection": 92,
+        "actual_connection": 92,
+        "passed": true
+      },
+      {
+        "tag": 12,
+        "endpoint": "start",
+        "segment": 66,
+        "expected_connection": 92,
+        "actual_connection": 92,
+        "passed": true
+      },
+      {
+        "tag": 12,
+        "endpoint": "end",
+        "segment": 90,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 13,
+        "endpoint": "start",
+        "segment": 91,
+        "expected_connection": 48,
+        "actual_connection": 48,
+        "passed": true
+      },
+      {
+        "tag": 13,
+        "endpoint": "end",
+        "segment": 91,
+        "expected_connection": 49,
+        "actual_connection": 49,
+        "passed": true
+      },
+      {
+        "tag": 14,
+        "endpoint": "start",
+        "segment": 92,
+        "expected_connection": 65,
+        "actual_connection": 65,
+        "passed": true
+      },
+      {
+        "tag": 14,
+        "endpoint": "end",
+        "segment": 92,
+        "expected_connection": 66,
+        "actual_connection": 66,
+        "passed": true
+      },
+      {
+        "tag": 2000,
+        "endpoint": "start",
+        "segment": 93,
+        "expected_connection": 3,
+        "actual_connection": 3,
+        "passed": true
+      },
+      {
+        "tag": 2000,
+        "endpoint": "end",
+        "segment": 93,
+        "expected_connection": 94,
+        "actual_connection": 94,
+        "passed": true
+      },
+      {
+        "tag": 2001,
+        "endpoint": "start",
+        "segment": 94,
+        "expected_connection": 93,
+        "actual_connection": 93,
+        "passed": true
+      },
+      {
+        "tag": 2001,
+        "endpoint": "end",
+        "segment": 94,
+        "expected_connection": 95,
+        "actual_connection": 95,
+        "passed": true
+      },
+      {
+        "tag": 2002,
+        "endpoint": "start",
+        "segment": 95,
+        "expected_connection": 94,
+        "actual_connection": 94,
+        "passed": true
+      },
+      {
+        "tag": 2002,
+        "endpoint": "end",
+        "segment": 95,
+        "expected_connection": 96,
+        "actual_connection": 96,
+        "passed": true
+      },
+      {
+        "tag": 2003,
+        "endpoint": "start",
+        "segment": 96,
+        "expected_connection": 95,
+        "actual_connection": 95,
+        "passed": true
+      },
+      {
+        "tag": 2003,
+        "endpoint": "end",
+        "segment": 96,
+        "expected_connection": 97,
+        "actual_connection": 97,
+        "passed": true
+      },
+      {
+        "tag": 20,
+        "endpoint": "start",
+        "segment": 97,
+        "expected_connection": 96,
+        "actual_connection": 96,
+        "passed": true
+      },
+      {
+        "tag": 20,
+        "endpoint": "end",
+        "segment": 137,
+        "expected_connection": 180,
+        "actual_connection": 180,
+        "passed": true
+      },
+      {
+        "tag": 21,
+        "endpoint": "start",
+        "segment": 138,
+        "expected_connection": 180,
+        "actual_connection": 180,
+        "passed": true
+      },
+      {
+        "tag": 21,
+        "endpoint": "end",
+        "segment": 154,
+        "expected_connection": 181,
+        "actual_connection": 181,
+        "passed": true
+      },
+      {
+        "tag": 22,
+        "endpoint": "start",
+        "segment": 155,
+        "expected_connection": 181,
+        "actual_connection": 181,
+        "passed": true
+      },
+      {
+        "tag": 22,
+        "endpoint": "end",
+        "segment": 179,
+        "expected_connection": 0,
+        "actual_connection": 0,
+        "passed": true
+      },
+      {
+        "tag": 23,
+        "endpoint": "start",
+        "segment": 180,
+        "expected_connection": 137,
+        "actual_connection": 137,
+        "passed": true
+      },
+      {
+        "tag": 23,
+        "endpoint": "end",
+        "segment": 180,
+        "expected_connection": 138,
+        "actual_connection": 138,
+        "passed": true
+      },
+      {
+        "tag": 24,
+        "endpoint": "start",
+        "segment": 181,
+        "expected_connection": 154,
+        "actual_connection": 154,
+        "passed": true
+      },
+      {
+        "tag": 24,
+        "endpoint": "end",
+        "segment": 181,
+        "expected_connection": 155,
+        "actual_connection": 155,
+        "passed": true
+      }
+    ]
+  },
+  {
+    "kind": "gap_mesh",
+    "band": "20m",
+    "end_height_ft": 5,
+    "open_gap_m": 0.01,
+    "impedance_change_ohm": 0.13041855696180646,
+    "gain_change_db": 0.009999999999999787,
+    "average_gain_error_db": 0.0028488432638857325,
+    "passed": true
+  },
+  {
+    "kind": "gap_mesh",
+    "band": "20m",
+    "end_height_ft": 33,
+    "open_gap_m": 0.01,
+    "impedance_change_ohm": 0.1619876538505294,
+    "gain_change_db": 0.0,
+    "average_gain_error_db": 0.011128502957235708,
+    "passed": true
+  },
+  {
+    "kind": "gap_mesh",
+    "band": "20m",
+    "end_height_ft": 5,
+    "open_gap_m": 0.1,
+    "impedance_change_ohm": 0.06772001181334882,
+    "gain_change_db": 0.0,
+    "average_gain_error_db": 0.002824094629188417,
+    "passed": true
+  },
+  {
+    "kind": "gap_mesh",
+    "band": "20m",
+    "end_height_ft": 33,
+    "open_gap_m": 0.1,
+    "impedance_change_ohm": 0.10187246929371872,
+    "gain_change_db": 0.009999999999999787,
+    "average_gain_error_db": 0.010916045188275368,
+    "passed": true
+  },
+  {
+    "kind": "gap_mesh",
+    "band": "30m",
+    "end_height_ft": 5,
+    "open_gap_m": 0.01,
+    "impedance_change_ohm": 0.09968951800465321,
+    "gain_change_db": 0.0,
+    "average_gain_error_db": 0.0022195507750305907,
+    "passed": true
+  },
+  {
+    "kind": "gap_mesh",
+    "band": "30m",
+    "end_height_ft": 33,
+    "open_gap_m": 0.01,
+    "impedance_change_ohm": 0.13507035203922416,
+    "gain_change_db": 0.0,
+    "average_gain_error_db": 0.01086313934893297,
+    "passed": true
+  },
+  {
+    "kind": "gap_mesh",
+    "band": "30m",
+    "end_height_ft": 5,
+    "open_gap_m": 0.1,
+    "impedance_change_ohm": 0.050695167422542944,
+    "gain_change_db": 0.0,
+    "average_gain_error_db": 0.002925986956001772,
+    "passed": true
+  },
+  {
+    "kind": "gap_mesh",
+    "band": "30m",
+    "end_height_ft": 33,
+    "open_gap_m": 0.1,
+    "impedance_change_ohm": 0.08605230967266506,
+    "gain_change_db": 0.0,
+    "average_gain_error_db": 0.011579874200095663,
+    "passed": true
+  },
+  {
+    "kind": "gap_mesh",
+    "band": "40m",
+    "end_height_ft": 5,
+    "open_gap_m": 0.01,
+    "impedance_change_ohm": 0.042544094772364593,
+    "gain_change_db": 0.0,
+    "average_gain_error_db": 0.0021557373371223296,
+    "passed": true
+  },
+  {
+    "kind": "gap_mesh",
+    "band": "40m",
+    "end_height_ft": 33,
+    "open_gap_m": 0.01,
+    "impedance_change_ohm": 0.0736002717386278,
+    "gain_change_db": 0.0,
+    "average_gain_error_db": 0.010599777635286856,
+    "passed": true
+  },
+  {
+    "kind": "gap_mesh",
+    "band": "40m",
+    "end_height_ft": 5,
+    "open_gap_m": 0.1,
+    "impedance_change_ohm": 0.04884669896727691,
+    "gain_change_db": 0.0,
+    "average_gain_error_db": 0.002257210490875825,
+    "passed": true
+  },
+  {
+    "kind": "gap_mesh",
+    "band": "40m",
+    "end_height_ft": 33,
+    "open_gap_m": 0.1,
+    "impedance_change_ohm": 0.08280096617794383,
+    "gain_change_db": 0.0,
+    "average_gain_error_db": 0.010922492679980899,
+    "passed": true
+  }
+]

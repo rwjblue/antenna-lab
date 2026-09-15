@@ -30,6 +30,7 @@ from antenna_lab.kh1_pipeline import (
     run_doublet_grid_shard,
     run_doublet_nec_shard,
 )
+from antenna_lab.linked_dipole_study import run_linked_dipole_study
 from antenna_lab.measurements import load_impedance_measurements
 from antenna_lab.optimization import (
     compare_candidate,
@@ -285,6 +286,19 @@ def build_parser() -> argparse.ArgumentParser:
     )
     rigid_opt.add_argument("--compact", action="store_true")
 
+    linked = subparsers.add_parser(
+        "run-linked-dipole-study",
+        help="Compare the same physical 20/30/40m linked dipole",
+    )
+    linked.add_argument(
+        "--config", type=Path, default=Path("configs/linked-dipole-v1.json")
+    )
+    linked.add_argument("--output", type=Path, default=Path("build/linked-dipole-v1"))
+    linked.add_argument("--nec2c", type=Path)
+    linked.add_argument("--cache", type=Path, default=Path("build/linked-nec-cache"))
+    linked.add_argument("--jobs", type=int, default=6)
+    linked.add_argument("--compact-output", type=Path)
+
     verify = subparsers.add_parser(
         "verify-results", help="Verify a generated SHA256SUMS manifest"
     )
@@ -294,6 +308,17 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.command == "run-linked-dipole-study":
+        summary = run_linked_dipole_study(
+            args.config,
+            args.output,
+            args.nec2c,
+            args.cache,
+            args.jobs,
+            args.compact_output,
+        )
+        print(json.dumps(summary, indent=2))
+        return 0 if summary["validation_passed"] else 1
     if args.command == "analyze-baseline":
         measurements = load_impedance_measurements(args.measurements)
         print("band frequency_mhz resistance_ohm reactance_ohm raw_swr_50ohm")

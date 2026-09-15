@@ -1,5 +1,30 @@
 # Model limitations
 
+## Physical 20/30/40m linked dipole
+
+The [linked study](results/linked-dipole-v1/README.md) explicitly retains all
+disconnected wire sections with finite gaps. Its sequentially tuned dimensions
+are provisional, not measured finished lengths or raw cutting instructions.
+The 33/10 ft nominal tuning is frozen before comparing outer-end heights; a
+separate retuned comparison requires different wire adjustments.
+
+The stranded CCS wire is approximated by a round metal-bundle conductor with
+an uncertain effective conductivity. Its insulation receives an empirical,
+lossless distributed-inductance correction. Neither the jacket diameter nor
+solid-copper loss is silently substituted for the actual conductor. Real
+folds, tails, connectors, mast, feedline/common mode, coax/choke/tuner losses,
+dielectric dissipation, sag and heterogeneous terrain remain unmodeled.
+
+Its accepted-power-to-upper-space-wave efficiency is derived by integrating
+absolute NEC power gain over the upper hemisphere with a **4π denominator**.
+It is different from NEC's printed efficiency, which subtracts explicit
+structure/network dissipation without reconciling ground absorption. The
+remaining power-budget residual is not an independent integral of soil
+heating. Mesh, source, open connectivity, angular, reactive/bare free-space
+average-gain and field-normalization checks limit numerical error; they do
+not validate an unmeasured physical antenna. See the
+[audited definitions](docs/linked-dipole-power-audit.md).
+
 ## Rigid V whip doublet
 
 The [rigid V study](docs/case-studies/rigid-v-hitch-doublet.md) is an uncalibrated

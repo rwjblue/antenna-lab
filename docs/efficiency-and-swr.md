@@ -40,3 +40,22 @@ tuner-side SWR or a single R+jX reading alone.
 
 In short: a good transmitter match protects/enables the radio; it does not certify
 that most transmitter power is radiated.
+
+## Explicit NEC ground accounting in the linked study
+
+The physical linked-dipole study separately reports accepted feedpoint power
+escaping in upper-hemisphere space waves:
+
+```text
+eta_up = integral_upper(10^(gain_dBi/10) dOmega) / (4 pi)
+accepted_fraction_50 = 1 - |(Z - 50)/(Z + 50)|^2
+realized_gain_dBi = gain_dBi + 10 log10(accepted_fraction_50)
+```
+
+NEC power gain already incorporates its material/ground model; multiplying
+gain by `eta_up` again would count losses twice. The power absent from that
+upper-space-wave integral and explicit structure/network dissipation is
+reported as a ground/numerical residual. NEC's printed efficiency alone does
+not establish this quantity. Read the [source-level audit](linked-dipole-power-audit.md)
+for the gain normalization, independent electric-field check and remaining
+limits on interpreting the residual as soil loss.

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -271,11 +272,13 @@ def _plot(
         )
         fig.tight_layout(rect=(0, 0.085, 1, 0.965), h_pad=2.5, w_pad=2)
         fig.savefig(output / "optimization_comparison.png", dpi=170)
+        with matplotlib.rc_context({"svg.hashsalt": "rigid-doublet"}):
+            fig.savefig(output / "optimization_comparison.svg", metadata={"Date": None})
         plt.close(fig)
 
 
 def write_report(output_dir: Path) -> None:
-    """Read completed optimizer outputs and write REPORT.md and its figure."""
+    """Render a GitHub-readable README and figures from saved numerical results."""
     output = Path(output_dir)
     config = json.loads((output / "config.json").read_text())
     summary = json.loads((output / "summary.json").read_text())
@@ -566,4 +569,79 @@ def write_report(output_dir: Path) -> None:
             ]
         )
     _plot(output, config, coarse, chosen, nominal)
-    (output / "REPORT.md").write_text("\n".join(lines) + "\n")
+    lines += [
+        "",
+        "## Saved artifacts",
+        "",
+        "- [Coarse rankings](coarse_rankings.csv) · "
+        "[Validated rankings](validated_rankings.csv) · [Winners](winners.json)",
+        "- [Validated band detail](validated_by_band.csv) · "
+        "[Nominal power and matching](nominal_by_band.csv) · "
+        "[Wet stress](wet_stress.csv)",
+        "- [Absolute pattern samples](pattern_samples.csv) · "
+        "[Pattern cases](pattern_cases.csv) · "
+        "[NEC loads and input hashes](nec_loads.csv)",
+        "- [Configuration](config.json) · [Numerical-run summary](summary.json) · "
+        "[Presentation provenance](presentation_metadata.json)",
+        "- [Package integrity manifest](SHA256SUMS)",
+        "",
+        "The original numerical-run hashes remain in `summary.json`. Presentation",
+        "metadata identifies the saved inputs and source used to render this README",
+        "and its charts. Full scenario arrays and reusable solver caches remain",
+        "under `build/`; this maintained package retains the useful compact results.",
+        "",
+        "## Reproduce",
+        "",
+        "```bash",
+        "NEC2C_PATH=/path/to/nec2c mise run rigid-doublet-optimize",
+        "uv run antenna-lab verify-results build/rigid-v-line-optimization-v2",
+        "```",
+        "",
+        "See the [design and measurement notes]"
+        "(../../docs/case-studies/rigid-v-line-optimization.md) for the compact",
+        "generation command, original video, assumptions and practical interpretation.",
+        "",
+    ]
+    text = "\n".join(lines) + "\n"
+    for name, caption in (
+        (
+            "optimization_comparison",
+            "Two panels compare coarse line-length scores for 17- and 25-foot arms; "
+            "two panels compare nominal antenna-port power by band.",
+        ),
+        (
+            "pattern_comparison",
+            "Modeled radiation patterns compare 17- and 25-foot arms.",
+        ),
+    ):
+        image = f"![{caption}]({name}.png)"
+        text = text.replace(
+            image,
+            f"[{image}]({name}.png)\n\n"
+            f"[Download PNG]({name}.png) · [Download SVG]({name}.svg)",
+        )
+    presentation = {
+        "operation": "render_saved_results_without_reoptimizing",
+        "inputs_sha256": {
+            path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+            for path in sorted(output.glob("*.csv"))
+        }
+        | {
+            name: hashlib.sha256((output / name).read_bytes()).hexdigest()
+            for name in ("config.json", "summary.json", "winners.json")
+        },
+        "rendering_source_sha256": {
+            name: hashlib.sha256(
+                Path(__file__).with_name(name).read_bytes()
+            ).hexdigest()
+            for name in (
+                "rigid_doublet_optimization_report.py",
+                "rigid_doublet_patterns.py",
+            )
+        },
+    }
+    (output / "presentation_metadata.json").write_text(
+        json.dumps(presentation, indent=2, sort_keys=True) + "\n"
+    )
+    (output / "REPORT.md").unlink(missing_ok=True)
+    (output / "README.md").write_text(text)

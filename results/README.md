@@ -37,13 +37,25 @@ and finalist decompositions; the much larger NEC/tuner scenario trees remain
 reproducible build artifacts whose exact input hashes are recorded in
 `run_metadata.json`.
 
-`rigid-v-doublet-v1/` is a compact exploratory result for the two-whip winter
+[`rigid-v-doublet-v1/`](rigid-v-doublet-v1/README.md) is a compact exploratory result for the two-whip winter
 antenna. Regenerate it with `run-rigid-doublet-study --compact --plot --validate`.
 The full 10,808-row feedline sweep belongs under `build/`; the committed subset
 keeps reference spot checks, radiator loads, numerical validation, source/solver
-hashes and a plot. Its ideal L/C screens do not establish Z-100A tuning success.
+hashes and GitHub-readable PNG/SVG illustrations. Its ideal L/C screens do not
+establish Z-100A tuning success.
 
-`rigid-v-line-optimization-v2/` extends that comparison to 25 ft arms and generic
-continuous tuner losses. It preserves compact summaries, plots, nominal power
+[`rigid-v-line-optimization-v2/`](rigid-v-line-optimization-v2/README.md) extends
+that comparison to 25 ft arms and generic continuous tuner losses. It preserves
+compact summaries, PNG/SVG illustrations, nominal power
 decompositions and solver checks; full compressed scenario arrays remain in
 `build/`. Regenerate it with `optimize-rigid-doublet --compact`.
+
+[`linked-dipole-v1/`](linked-dipole-v1/README.md) contains the GitHub-rendered
+README, PNG/SVG illustrations, compact offline viewer, summary/geometry and
+sensitivity tables, tuning history and numerical/source/solver provenance for
+the physical 20/30/40m linked antenna. Its default is a single 33/10 ft tuning
+with the same wire lengths used at every deployment height.
+Run `NEC2C_PATH=/path/to/nec2c mise run linked-dipole` to regenerate this
+maintained subset and the complete run. Full sampled patterns/sweeps and exact
+NEC inputs/outputs remain under `build/linked-dipole-v1/`. Both trees carry
+verified recursive manifests.

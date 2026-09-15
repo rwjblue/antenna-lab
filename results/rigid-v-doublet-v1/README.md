@@ -5,6 +5,11 @@ height of 30 ft and arms 30° above horizontal. The transcript at 12:36
 says **10 meters / 32.81 ft of line**, not 20 meters. Exact whip extension,
 angle, taper and line parameters remain unmeasured.
 
+The [17 ft versus 25 ft comparison](../rigid-v-line-optimization-v2/README.md)
+extends this initial study with generic tuner loss and wider uncertainty.
+Use that comparison for the current line-length recommendation; this
+package retains the original radiator and lossless matching screen.
+
 ## Reference radiator
 
 NEC reported efficiency is retained as solver bookkeeping, not a verified
@@ -94,9 +99,30 @@ transcript provenance, winter mounting ideas and the measurement plan.
 
 ## Sources
 
-- video: https://www.youtube.com/watch?v=0ZBsUXsak9Y
-- z100a_manual: https://irp.cdn-website.com/4d6cc687/files/uploaded/Z-100A_Manual_Rev_B_10.pdf
-- existing_line: configs/58ft-doublet-v1.0.json
-- carbon_proxy: configs/53ft-efrw-elevated-v1.json
+- [video](https://www.youtube.com/watch?v=0ZBsUXsak9Y)
+- [z100a_manual](https://irp.cdn-website.com/4d6cc687/files/uploaded/Z-100A_Manual_Rev_B_10.pdf)
+- [existing_line](../../configs/58ft-doublet-v1.0.json)
+- [carbon_proxy](../../configs/53ft-efrw-elevated-v1.json)
 
-![Line-length sensitivity](line-length-sensitivity.png)
+## Line-length illustration
+
+[![Line-length sensitivity](line-length-sensitivity.png)](line-length-sensitivity.png)
+
+[Download PNG](line-length-sensitivity.png) · [Download SVG](line-length-sensitivity.svg)
+
+## Saved artifacts
+
+- [Radiator loads and NEC provenance](nec_loads.csv)
+- [Reference spot checks](reference_spot_checks.csv) · [Length screening](length_screen.csv)
+- [Configuration](config.json) · [Run summary and source hashes](summary.json)
+- [Package integrity manifest](SHA256SUMS)
+- [Numerical validation JSON](numerical_validation.json) · [Validation CSV](numerical_validation.csv)
+
+## Reproduce
+
+```bash
+NEC2C_PATH=/path/to/nec2c mise run rigid-doublet
+uv run antenna-lab verify-results build/rigid-v-doublet-v1
+```
+
+The complete run and reusable NEC cache belong under `build/`. The maintained package omits the large line-sweep table; regenerate it with `run-rigid-doublet-study --compact --plot --validate` using the checked-in configuration. See the [design notes](../../docs/case-studies/rigid-v-hitch-doublet.md) for exact commands and field measurements.

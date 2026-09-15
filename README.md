@@ -25,6 +25,35 @@ See the [final decision report](results/kh1-portable-final-v1/REPORT.md) and
 
 ## Quick start
 
+### Portable 20/30/40m linked dipole
+
+The [linked-dipole README](results/linked-dipole-v1/README.md)
+models one physical three-section antenna, including coupling to every
+disconnected extension. It compares five deployments with a 33 ft feedpoint,
+with lengths tuned once at **33 ft center / 10 ft outer ends**, then frozen
+across all five deployments. A separate retuned comparison shows the effect
+of changing wire adjustments.
+Absolute/realized patterns, SWR sweeps, soil/wire/link sensitivities and an
+audited upper-hemisphere power budget are computed with NEC-2.
+
+```bash
+uv sync --no-editable --extra plots --group dev
+NEC2C_PATH=/path/to/nec2c mise run linked-dipole
+mise run linked-dipole-viewer
+```
+
+The README embeds the checked-in illustrations directly on GitHub and links
+their PNG/SVG downloads, compact tables, and a self-contained offline viewer.
+Full sampled results and exact NEC inputs/outputs are generated under
+`build/linked-dipole-v1/`.
+Adjust unknown dimensions and loss assumptions in
+[`configs/linked-dipole-v1.json`](configs/linked-dipole-v1.json).
+Read the [construction method](docs/case-studies/linked-dipole-method.md) and
+[power/gain audit](docs/linked-dipole-power-audit.md) before interpreting the
+provisional dimensions or efficiency percentages as measurements.
+
+### General commands
+
 Requires Python 3.11 or newer.
 
 ```bash
@@ -87,7 +116,7 @@ NEC2C_PATH=/path/to/nec2c mise run efrw-elevated
 Its generated addendum is in
 [`results/53ft-efrw-elevated-v1/REPORT.md`](results/53ft-efrw-elevated-v1/REPORT.md).
 
-The new [rigid V doublet study](results/rigid-v-doublet-v1/REPORT.md) explores two
+The new [rigid V doublet study](results/rigid-v-doublet-v1/README.md) explores two
 17 ft whips on a 20–30 ft support for winter operation from a parked truck.
 The source video specifies **10 meters (32.81 ft) of open-wire line**. The study
 compares that length with our 28 ft homebrew line, sweeps line length and ideal
@@ -102,7 +131,7 @@ NEC2C_PATH=/path/to/nec2c mise run rigid-doublet
 Full generated rows go under `build/rigid-v-doublet-v1`; the checked-in result
 contains a compact report, reference spot checks, NEC loads and a length plot.
 
-The [second-round comparison](results/rigid-v-line-optimization-v2/REPORT.md)
+The [second-round comparison](results/rigid-v-line-optimization-v2/README.md)
 optimizes line length for both 17 ft and 25 ft arms, including generic tuner
 loss, denser band sampling and independent line-property uncertainty. See the
 [interpretation](docs/case-studies/rigid-v-line-optimization.md) for why roughly

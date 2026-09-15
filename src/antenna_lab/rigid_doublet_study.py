@@ -308,6 +308,12 @@ def _report(
         "says **10 meters / 32.81 ft of line**, not 20 meters. Exact whip extension,",
         "angle, taper and line parameters remain unmeasured.",
         "",
+        "The [17 ft versus 25 ft comparison]"
+        "(../rigid-v-line-optimization-v2/README.md)",
+        "extends this initial study with generic tuner loss and wider uncertainty.",
+        "Use that comparison for the current line-length recommendation; this",
+        "package retains the original radiator and lossless matching screen.",
+        "",
         "## Reference radiator",
         "",
         "NEC reported efficiency is retained as solver bookkeeping, not a verified",
@@ -423,7 +429,10 @@ def _report(
         "## Sources",
         "",
     ]
-    lines += [f"- {name}: {url}" for name, url in config["sources"].items()]
+    lines += [
+        f"- [{name}]({url if url.startswith('https://') else '../../' + url})"
+        for name, url in config["sources"].items()
+    ]
     return "\n".join(lines) + "\n"
 
 
@@ -451,6 +460,7 @@ def run_rigid_doublet_study(
     for filename, keep in (
         ("line_sweep.csv", not compact),
         ("line-length-sensitivity.png", plot),
+        ("line-length-sensitivity.svg", plot),
         ("numerical_validation.csv", validate),
         ("numerical_validation.json", validate),
     ):
@@ -530,8 +540,44 @@ def run_rigid_doublet_study(
     _write_json(output_dir / "summary.json", summary)
     report = _report(config, nec_rows, rows, ranking, validation)
     if plot:
-        report += "\n![Line-length sensitivity](line-length-sensitivity.png)\n"
-    (output_dir / "REPORT.md").write_text(report)
+        report += (
+            "\n## Line-length illustration\n\n"
+            "[![Line-length sensitivity](line-length-sensitivity.png)]"
+            "(line-length-sensitivity.png)\n\n"
+            "[Download PNG](line-length-sensitivity.png) · "
+            "[Download SVG](line-length-sensitivity.svg)\n"
+        )
+    report += (
+        "\n## Saved artifacts\n\n"
+        "- [Radiator loads and NEC provenance](nec_loads.csv)\n"
+        "- [Reference spot checks](reference_spot_checks.csv) · "
+        "[Length screening](length_screen.csv)\n"
+        "- [Configuration](config.json) · "
+        "[Run summary and source hashes](summary.json)\n"
+        "- [Package integrity manifest](SHA256SUMS)\n"
+    )
+    if validate:
+        report += (
+            "- [Numerical validation JSON](numerical_validation.json) · "
+            "[Validation CSV](numerical_validation.csv)\n"
+        )
+    if not compact:
+        report += "- [Complete line sweep](line_sweep.csv)\n"
+    report += (
+        "\n## Reproduce\n\n"
+        "```bash\n"
+        "NEC2C_PATH=/path/to/nec2c mise run rigid-doublet\n"
+        "uv run antenna-lab verify-results build/rigid-v-doublet-v1\n"
+        "```\n\n"
+        "The complete run and reusable NEC cache belong under `build/`. "
+        "The maintained package omits the large line-sweep table; regenerate it "
+        "with `run-rigid-doublet-study --compact --plot --validate` using the "
+        "checked-in configuration. "
+        "See the [design notes](../../docs/case-studies/rigid-v-hitch-doublet.md) "
+        "for exact commands and field measurements.\n"
+    )
+    (output_dir / "REPORT.md").unlink(missing_ok=True)
+    (output_dir / "README.md").write_text(report)
     _write_manifest(output_dir)
     return summary
 
@@ -625,4 +671,6 @@ def _plot_line_sweep(path: Path, config: dict, rows: list[dict]) -> None:
     )
     fig.tight_layout(rect=(0, 0.06, 1, 0.94))
     fig.savefig(path, dpi=160)
+    with matplotlib.rc_context({"svg.hashsalt": "rigid-doublet"}):
+        fig.savefig(path.with_suffix(".svg"), metadata={"Date": None})
     plt.close(fig)

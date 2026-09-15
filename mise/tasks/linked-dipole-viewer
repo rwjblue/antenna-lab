@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Open the computed linked dipole viewer locally"
+set -euo pipefail
+viewer_dir="results/linked-dipole-v1"
+test -f "$viewer_dir/viewer.html"
+if command -v open >/dev/null; then
+  open "$viewer_dir/viewer.html"
+else
+  python -m http.server 8765 --bind 127.0.0.1 --directory "$viewer_dir"
+fi

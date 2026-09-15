@@ -31,7 +31,7 @@
   "source_sha256": {
     "nec.py": "385c7bf7640ea0c879a797f375f97235171418e1185e34a5a1701d00738fd8f7",
     "rigid_doublet.py": "9928b84be52fea10ff1fcc3d3076bee5296a52bd309087e72cbd58147bcf6d33",
-    "rigid_doublet_study.py": "11d0368d46234169eaf9947ad82f9837a3410687ac040aeb45d523c7c4121bfa",
+    "rigid_doublet_study.py": "adf05039e7274b7fae55075aa5d9de90e8f05a1175d3ffef9e4ba84934998d20",
     "rigid_doublet_validation.py": "bf243b174bf621aef89139d621fcac855920e49ca41419133dde54db64cabd2c",
     "transmission_line.py": "3a52d638fe86017fc8bb61ef8794a19e9fd1694408c3a33d5a1998043e9ffe9d"
   },

@@ -1,0 +1,57 @@
+{
+  "study_id": "linked-dipole-v1",
+  "center_height_ft": 33.0,
+  "outer_end_heights_ft": [5, 10, 15, 20, 33],
+  "nominal_end_height_ft": 10.0,
+  "bands_mhz": {"20m": 14.135, "30m": 10.12, "40m": 7.10},
+  "band_edges_mhz": {"20m": [14.0, 14.35], "30m": [10.1, 10.15], "40m": [7.0, 7.3]},
+  "initial_section_lengths_ft": [16.5, 6.8, 9.8],
+  "section_bounds_ft": [[13.0, 18.0], [3.0, 8.0], [5.0, 11.5]],
+  "raw_blank_lengths_ft": [17.0, 8.0, 11.5],
+  "metal_radius_m": 0.0002413,
+  "insulation_outer_radius_m": 0.0005207,
+  "insulation_relative_permittivity": 2.3,
+  "insulation_loading_scale": 1.0,
+  "effective_conductivity_s_m": 10000000.0,
+  "open_gap_m": 0.038,
+  "contact_resistance_ohm": 0.02,
+  "source_length_m": 0.10,
+  "max_segment_length_m": 0.12,
+  "pattern_step_deg": 2.0,
+  "sweep_samples_in_band": 31,
+  "sweep_search_fraction": 0.16,
+  "tuning_reactance_tolerance_ohm": 0.15,
+  "grounds": {
+    "poor": {"epsilon_r": 5.0, "conductivity_s_m": 0.001},
+    "average": {"epsilon_r": 13.0, "conductivity_s_m": 0.005},
+    "good": {"epsilon_r": 20.0, "conductivity_s_m": 0.03}
+  },
+  "sensitivity": {
+    "conductivities_s_m": [1400000.0, 10000000.0, 58000000.0],
+    "open_gaps_m": [0.01, 0.10],
+    "contact_resistances_ohm": [0.0, 0.2, 0.5],
+    "insulation_loading_scales": [0.0, 1.5]
+  },
+  "validation": {
+    "max_segment_lengths_m": [0.18, 0.12, 0.08],
+    "source_lengths_m": [0.06, 0.10, 0.14],
+    "fine_pattern_step_deg": 1.0,
+    "average_gain_tolerance_db": 0.10,
+    "mesh_impedance_tolerance_ohm": 2.0,
+    "mesh_gain_tolerance_db": 0.15,
+    "angular_efficiency_tolerance": 0.002,
+    "power_residual_tolerance": 0.005
+  },
+  "assumptions": [
+    "Tune once at 33 ft center / 10 ft outer ends, then freeze all section lengths for the five-deployment comparison; changing deployment does not require retuning.",
+    "All finished lengths are provisional model dimensions, not measured cuts; section lengths run from the feed bridge edge or link center to the next link center/end.",
+    "A 0.10 m horizontal ideal-source bridge joins symmetrical straight legs; its midpoint is 33 ft high. Bridge length and mesh are checked numerically.",
+    "The 38 mm nominal collinear electrical gap is a sensitivity assumption, not inferred from 2 mm contact diameter or insulator length. Physical tails, folds, sag, connectors and plastic insulators are omitted.",
+    "Metal bundle radius 0.2413 mm and jacket radius 0.5207 mm follow manufacturer nominal dimensions; stranded metal is represented by a round effective conductor.",
+    "Effective conductivity 10 MS/m is an uncalibrated loss proxy for copper-clad steel, bounded by 1.4 MS/m and an optimistic solid-copper 58 MS/m comparator. No copper plating thickness or permeability is known.",
+    "PE sheath is represented by lossless distributed series inductance; relative permittivity 2.3 and scaling 0 to 1.5 bound an approximate electrical-length correction, not measured dielectric properties.",
+    "Contact resistance is per closed link on each leg; baseline 0.02 ohm, sensitivity 0 to 0.5 ohm. Four contacts maximum, two on 30m, none on 20m.",
+    "Ideal balanced feedpoint and level homogeneous ground. Actual feedline/common mode, mast, coax/choke/tuner losses and connector tail routing are unspecified and omitted.",
+    "The 1.09 SWR observation at 14.135 MHz in an estimated 40 ft inverted V is context only, not a calibration target or efficiency measurement."
+  ]
+}

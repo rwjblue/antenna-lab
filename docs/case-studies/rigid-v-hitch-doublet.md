@@ -58,7 +58,7 @@ Its copper straight-wire results are not substituted for the stainless V.
 
 ## First model and its boundaries
 
-The [first generated results](../../results/rigid-v-doublet-v1/REPORT.md) support
+The [first generated results](../../results/rigid-v-doublet-v1/README.md) support
 testing **roughly 30–33 ft of line**, starting with the video's 10 m length.
 This is a candidate measurement window for the reference geometry and assumed
 line parameters, not an established optimum. At nominal settings, all seven

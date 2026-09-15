@@ -8,5 +8,7 @@ results/published-v1.0/** -text
 results/reference-small/** -text
 results/rigid-v-doublet-v1/** -text whitespace=cr-at-eol
 results/rigid-v-line-optimization-v2/** -text whitespace=cr-at-eol
+results/linked-dipole-v1/** -text whitespace=cr-at-eol
+results/linked-dipole-v1/figures/*.png binary
 reports/**/*.png binary
 reports/**/*.pdf binary
