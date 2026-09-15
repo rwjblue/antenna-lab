@@ -168,6 +168,39 @@ def write_report(output: Path, data: dict[str, Any]) -> None:
         "SVG charts. The [artifact index](#saved-artifacts) links the maintained "
         "results; complete solver runs remain under `build/linked-dipole-v1/`.",
         "",
+        "## Read the radiation shape at a glance",
+        "",
+        f"The bold curves show the **{nominal_height:g} ft default outer ends**; "
+        "gray dashed curves show the flat top. Each row is one band, with a "
+        "broadside vertical slice on the left and a horizontal-direction sweep "
+        "at 20° elevation on the right. These use the same frozen wire lengths.",
+        "",
+        "![Default deployment and flat-top polar radiation patterns]"
+        "(figures/polar_default_accepted.png)",
+        "",
+        "**Read outward as stronger radiation in that direction.** The rings "
+        "show absolute gain from −30 to +12 dBi on the same scale in every "
+        "panel; the curves are not rescaled to their own peaks. The drawing "
+        "shows gain, not contact distance or the antenna's physical shape. "
+        "Deep nulls below −30 dBi meet the plot floor. A labeled peak-angle "
+        "range identifies tied maxima in the 2° samples after solver rounding; "
+        "it does not describe the width of the lobe.",
+        "",
+        "In a vertical slice, the horizontal baseline is the horizon and the "
+        "top is straight overhead (90° elevation). The two halves use computed "
+        "samples in opposite azimuth directions; nothing below ground is drawn. "
+        "The broadside slice has azimuth 90° on the right and 270° on the left. "
+        "In a horizontal-direction sweep, 0°/180° are along the wire span "
+        "(end-on), and 90°/270° are perpendicular to it (broadside). These are "
+        "directions relative to the antenna, not compass bearings. A horizontal "
+        "sweep holds elevation above the horizon fixed: a literal 0° horizon "
+        "cut is an unhelpful null in this ground model.",
+        "",
+        "This first figure uses accepted-power gain: it includes the modeled "
+        "wire and ground effects. Realized-gain figures below also apply the "
+        "50 Ω source mismatch once. The viewer lets you switch between these "
+        "references and inspect another band or deployment.",
+        "",
         "## The same physical antenna, five shapes",
         "",
         "![Five physical deployments](figures/geometry_comparison.png)",
@@ -321,6 +354,31 @@ def write_report(output: Path, data: dict[str, Any]) -> None:
         "even while radiating less total power upward. Compare the direction "
         "you need, not only the peak gain.",
         "",
+        "### Polar comparisons: all five deployments",
+        "",
+        "The vertical cuts show broadside and end-on slices; the horizontal "
+        "sweeps hold elevation at 20° and 60°. Every polar panel shares the "
+        "−30 to +12 dBi rings used above. Compare both the outward reach and "
+        "the angle of a lobe: a taller lobe in one direction can accompany a "
+        "deeper null elsewhere.",
+        "",
+        "![Accepted-power vertical polar comparisons]"
+        "(figures/polar_elevation_accepted.png)",
+        "",
+        "![Realized-gain vertical polar comparisons]"
+        "(figures/polar_elevation_realized.png)",
+        "",
+        "![Accepted-power horizontal-direction polar comparisons]"
+        "(figures/polar_azimuth_accepted.png)",
+        "",
+        "![Realized-gain horizontal-direction polar comparisons]"
+        "(figures/polar_azimuth_realized.png)",
+        "",
+        "### Detailed angle-versus-gain charts",
+        "",
+        "These charts show the same computed samples with angle along the "
+        "horizontal axis, which makes exact gain differences easier to read.",
+        "",
         "![Absolute elevation gain](figures/elevation_accepted.png)",
         "",
         "![Realized elevation gain](figures/elevation_realized.png)",
@@ -329,8 +387,9 @@ def write_report(output: Path, data: dict[str, Any]) -> None:
         "",
         "![Realized azimuth gain](figures/azimuth_realized.png)",
         "",
-        "Every pattern panel uses the same absolute dBi scale. Curves are not "
-        "individually normalized. The saved azimuth cuts include 10°, 20°, 30° and "
+        "Each group of detailed panels uses a common absolute dBi scale. Curves "
+        "are not individually normalized. The saved azimuth cuts include "
+        "10°, 20°, 30° and "
         "60° elevations. The plot floor clips deep nulls for readability; full "
         "computed samples are retained.",
         "",
@@ -774,6 +833,8 @@ def write_report(output: Path, data: dict[str, Any]) -> None:
         "- [NEC-2 user guide](https://www.nec2.org/other/nec2prt3.pdf); [power/gain "
         "audit](../../docs/linked-dipole-power-audit.md); [construction method and "
         "measurement plan](../../docs/case-studies/linked-dipole-method.md)",
+        "- [ARRL antenna modeling background and "
+        "tutorials](https://www.arrl.org/antenna-modeling-for-beginners)",
         "",
     ]
     illustrated = []

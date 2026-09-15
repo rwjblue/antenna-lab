@@ -150,6 +150,37 @@ establishes high radiation efficiency. Use the study's integrated
 upper-hemisphere power accounting rather than NEC's printed efficiency
 percentage alone. Pattern differences do not imply guaranteed contact ranges.
 
+## Reading the polar radiation plots
+
+The [computed report](../../results/linked-dipole-v1/README.md#read-the-radiation-shape-at-a-glance)
+starts with the 10 ft default against the flat top, then compares all five
+deployments. Its polar plots and the viewer use the saved computed samples;
+changing the display does not rerun the solver or change the antenna model.
+
+Read outward as stronger radiation. Every polar panel uses the same absolute
+gain rings from **−30 to +12 dBi**; each curve keeps its actual gain rather than
+being normalized to its own peak. These outlines describe directional gain,
+not contact distance or physical wire shape. Deeper nulls reach the −30 dBi
+plot floor. Accepted-power gain already includes the modeled wire and ground
+effects; realized gain applies the 50 Ω mismatch once as well.
+
+A vertical slice covers the upper half of the sky: its baseline is the horizon
+and its top is straight overhead. The two sides use actual computed samples
+at opposite azimuths. No below-ground pattern is inferred or drawn. Broadside
+slices use the directions perpendicular to the wire span; end-on slices use
+the directions along it. In the broadside slice, the right horizon is azimuth
+90° and the left horizon is 270°; both have 0° elevation.
+
+The horizontal-direction plots look around the antenna while holding elevation
+at a useful angle, such as 20° or 60° above the horizon. A literal 0° horizon
+cut would show an unhelpful null in this ground model. Azimuth 0°/180° lies
+along the wire span, and 90°/270° is broadside; these are antenna-relative
+directions, not compass bearings. The report retains angle-versus-gain charts
+for reading small differences and offers both PNG and SVG downloads of every
+static figure.
+
+For further background, see the [ARRL antenna modeling tutorials](https://www.arrl.org/antenna-modeling-for-beginners).
+
 ## Short field-measurement plan
 
 1. **Measure the assembled antenna first.** Record each section from feed or

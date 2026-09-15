@@ -7,6 +7,11 @@ from html.parser import HTMLParser
 
 import pytest
 
+from antenna_lab.linked_dipole_polar import (
+    GAIN_CEILING,
+    GAIN_FLOOR,
+    elevation_polar_cut,
+)
 from antenna_lab.linked_dipole_report import (
     GAIN_LIMITS,
     _cases,
@@ -97,13 +102,21 @@ def test_viewer_embeds_exact_values_and_escapes_script_boundary(computed_data):
     payload = json.loads(parsed.embedded_data)
     assert payload["config"] == computed_data["config"]
     for actual, original in zip(payload["cases"], computed_data["cases"], strict=True):
-        assert {key: value for key, value in actual.items() if key != "pattern"} == {
+        assert {
+            key: value
+            for key, value in actual.items()
+            if key not in {"pattern", "elevation_polar"}
+        } == {
             key: value
             for key, value in original.items()
             if key not in {"pattern", "power_budget"}
         }
         assert [22, 44, 1.2345] not in actual["pattern"]
         assert actual["pattern"] == original["pattern"][:-1]
+        for azimuth in (0, 90):
+            assert actual["elevation_polar"][str(azimuth)] == [
+                list(point) for point in elevation_polar_cut(original, azimuth)
+            ]
     assert "</script><script>untrusted note</script>" not in html
     assert not parsed.external_scripts
     assert _viewer_html(computed_data) == html
@@ -117,6 +130,8 @@ def test_all_selections_and_svg_exports_remain_available(computed_data):
     assert parsed.selected_options["height"] == "10"
     assert parsed.controls["mode"] == ["frozen", "retuned"]
     assert parsed.controls["reference"] == ["accepted", "realized"]
+    assert parsed.controls["projection"] == ["polar", "cartesian"]
+    assert parsed.selected_options["projection"] == "polar"
     assert "elevation" in parsed.controls
     assert parsed.export_targets == ["geometry", "broadside", "endon", "azimuth", "swr"]
 
@@ -126,6 +141,7 @@ def test_viewer_and_static_patterns_share_absolute_gain_scale(computed_data):
     limits = re.search(r"const GAIN_LIMITS=(\[[^;]+\]);", html)
     assert limits is not None
     assert json.loads(limits[1]) == list(GAIN_LIMITS) == [-30, 12]
+    assert GAIN_LIMITS == (GAIN_FLOOR, GAIN_CEILING)
     assert "y:GAIN_LIMITS" in html
     assert "no curve is normalized to its own peak" in html
 
@@ -200,8 +216,8 @@ def test_compact_grid_preserves_every_displayed_cut_and_stays_below_one_mb(
     ]
     computed_data["cases"] = [case] * 30
     compact = _viewer_payload(computed_data)["cases"][0]
-    assert len(compact["pattern"]) < len(case["pattern"]) / 10
-    for azimuth in (0, 90):
+    assert len(compact["pattern"]) < len(case["pattern"]) * 0.12
+    for azimuth in (0, 90, 180, 270):
         assert _cut(compact, azimuth=azimuth) == _cut(case, azimuth=azimuth)
     for elevation in (10, 20, 30, 60):
         assert _cut(compact, elevation=elevation) == _cut(case, elevation=elevation)
@@ -209,3 +225,30 @@ def test_compact_grid_preserves_every_displayed_cut_and_stays_below_one_mb(
         for azimuth in (0, 90):
             assert _gain(compact, elevation, azimuth) == _gain(case, elevation, azimuth)
     assert len(_viewer_html(computed_data).encode()) < 1_000_000
+
+
+def test_viewer_polar_payload_uses_actual_opposite_side_and_one_zenith(computed_data):
+    case = computed_data["cases"][0]
+    case["pattern"].extend(
+        [
+            [60, 270, -7.25],
+            [90, 270, -0.5],
+            [-10, 90, 19.0],
+            [-10, 270, 18.0],
+        ]
+    )
+    points = _viewer_payload(computed_data)["cases"][0]["elevation_polar"]["90"]
+    assert (60, 2.75) in points
+    assert (120, -7.25) in points
+    assert (120, 2.75) not in points
+    assert [angle for angle, _ in points].count(90) == 1
+    assert all(0 <= angle <= 180 for angle, _ in points)
+    assert all(gain not in {18.0, 19.0} for _, gain in points)
+
+
+def test_viewer_polar_cut_keeps_deep_null_values_for_display_clipping(computed_data):
+    case = computed_data["cases"][0]
+    case["pattern"].append([0, 90, -99.0])
+    points = _viewer_payload(computed_data)["cases"][0]["elevation_polar"]["90"]
+    assert points[0] == (0, -99.0)
+    assert "deeper nulls clipped at the center" in _viewer_html(computed_data)

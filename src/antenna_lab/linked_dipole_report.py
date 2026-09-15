@@ -619,6 +619,8 @@ def render_artifacts(output_dir: Path, data: dict[str, Any]) -> None:
             "text.color": "#172d47",
         }
     ):
+        from antenna_lab.linked_dipole_polar import render_polar_artifacts
+
         _geometry_figure(data, figures, plt)
         for realized in (False, True):
             _pattern_figure(data, figures, plt, realized=realized)
@@ -628,17 +630,20 @@ def render_artifacts(output_dir: Path, data: dict[str, Any]) -> None:
         _retuned_figure(data, figures, plt)
         _decomposition_figure(data, figures, plt)
         _sensitivity_figure(data, figures, plt)
+        render_polar_artifacts(data, figures, plt)
     (output_dir / "viewer.html").write_text(_viewer_html(data), encoding="utf-8")
 
 
 def _viewer_payload(data: dict[str, Any]) -> dict[str, Any]:
     """Retain exact computed cuts and metadata while omitting unused full grids.
 
-    The offline viewer displays broadside/end-on elevation cuts, four fixed
-    elevation azimuth cuts, and the directional table. Filtering the grid
+    The offline viewer displays both sides of broadside/end-on elevation cuts,
+    four fixed elevation azimuth cuts, and the directional table. Filtering the grid
     preserves every original value needed by those views; no interpolation or
     rounding is applied. Full hemispheres remain in the reproducible study JSON.
     """
+    from antenna_lab.linked_dipole_polar import elevation_polar_cut
+
     cases = []
     for case in data["cases"]:
         compact = {
@@ -649,8 +654,12 @@ def _viewer_payload(data: dict[str, Any]) -> dict[str, Any]:
         compact["pattern"] = [
             point
             for point in case["pattern"]
-            if point[1] in {0, 90} or point[0] in {10, 20, 30, 60}
+            if point[1] in {0, 90, 180, 270} or point[0] in {10, 20, 30, 60}
         ]
+        compact["elevation_polar"] = {
+            str(azimuth): elevation_polar_cut(case, azimuth_deg=azimuth)
+            for azimuth in (0, 90)
+        }
         cases.append(compact)
     return {"cases": cases, "config": data.get("config", {})}
 
@@ -726,17 +735,18 @@ footer{font-size:12px;color:var(--muted);margin-top:20px}a{color:#116e9e}.gain-h
 <label>Outermost 40m wire ends<select id="height">__HEIGHT_OPTIONS__</select></label>
 <label>Wire lengths<select id="mode"><option value="frozen">Frozen · same physical antenna</option><option value="retuned">Retuned for each deployment</option></select></label>
 <label>Gain reference<select id="reference"><option value="accepted">Accepted feedpoint power</option><option value="realized">Available 50 Ω source power</option></select></label>
+<label>Pattern display<select id="projection"><option value="polar" selected>Polar · antenna patterns</option><option value="cartesian">Cartesian · gain vs angle</option></select></label>
 <label>Azimuth-cut elevation<select id="elevation"><option>10</option><option selected>20</option><option>30</option><option>60</option></select></label>
 </div><div id="mode-note" class="mode-note"></div><div id="metrics" class="metrics" aria-live="polite"></div>
 <p class="gain-help" id="gain-help"></p><div class="grid">
 <section class="panel full"><div class="panel-head"><div><h2>The physical deployment</h2><p class="sub">Wire lies along the x axis. The electrically disconnected extensions remain conductors in the model.</p></div><button data-export="geometry">Export SVG</button></div><div id="geometry"></div><div id="dimensions" class="dimensions"></div></section>
-<section class="panel"><div class="panel-head"><div><h2>Broadside elevation</h2><p class="sub">Azimuth 90° · regional high angles through lower angles</p></div><button data-export="broadside">Export SVG</button></div><div id="broadside"></div><div class="legend" data-legend></div></section>
-<section class="panel"><div class="panel-head"><div><h2>End-on elevation</h2><p class="sub">Azimuth 0° · looking along the wire direction</p></div><button data-export="endon">Export SVG</button></div><div id="endon"></div><div class="legend" data-legend></div></section>
-<section class="panel"><div class="panel-head"><div><h2>Azimuth at a fixed elevation</h2><p class="sub">0° / 180° end-on · 90° / 270° broadside</p></div><button data-export="azimuth">Export SVG</button></div><div id="azimuth"></div><div class="legend" data-legend></div></section>
+<section class="panel"><div class="panel-head"><div><h2>Broadside elevation</h2><p class="sub" id="broadside-caption">Upper hemisphere · right azimuth 90° / left 270°</p></div><button data-export="broadside">Export SVG</button></div><div id="broadside"></div><div class="legend" data-legend></div></section>
+<section class="panel"><div class="panel-head"><div><h2>End-on elevation</h2><p class="sub" id="endon-caption">Upper hemisphere · right azimuth 0° / left 180°</p></div><button data-export="endon">Export SVG</button></div><div id="endon"></div><div class="legend" data-legend></div></section>
+<section class="panel"><div class="panel-head"><div><h2>Azimuth at a fixed elevation</h2><p class="sub">0° / 180° end-on · 90° / 270° broadside · antenna-relative angles</p></div><button data-export="azimuth">Export SVG</button></div><div id="azimuth"></div><div class="legend" data-legend></div></section>
 <section class="panel"><div class="panel-head"><div><h2>50 Ω SWR sweep</h2><p class="sub">Full computed search · pale region is the requested band · dots are minima</p></div><button data-export="swr">Export SVG</button></div><div id="swr"></div><div class="legend" data-legend></div></section>
 <section class="panel full"><h2>Selected deployment versus the flat-top reference</h2><p class="sub" id="table-caption"></p><div class="table-wrap"><table><thead><tr><th>Elevation / direction</th><th>Selected gain</th><th>Flat-top gain</th><th>Selected − flat top</th></tr></thead><tbody id="gain-table"></tbody></table></div></section>
-</div><footer><strong>How to read this:</strong> Every pattern uses a common absolute dBi scale; no curve is normalized to its own peak. Values below −30 dBi are clipped in charts and retained in data. Radiation into the upper hemisphere is computed by integrating absolute gain over solid angle and dividing by 4π. This is distinct from NEC's printed efficiency. Feedline/common-mode currents, mast, coax/choke/tuner losses and unmeasured hardware are absent from the baseline. Patterns cannot guarantee contact distances. Retuning requires physical adjustments.<br><br>
-This page is self-contained and works offline. It embeds exact sampled cuts and full SWR sweeps; full hemispheres remain in the reproducible study results. Export buttons save standalone SVG charts. <a href="README.md">Read the report, assumptions and reproduction commands</a> · <a href="figures/geometry_comparison.svg">All geometries</a> · <a href="figures/elevation_accepted.svg">Elevation comparison</a> · <a href="figures/retuning_comparison.svg">Retuning comparison</a> · <a href="figures/soil_wire_sensitivity.svg">Soil and wire uncertainty</a></footer></main>
+</div><footer><strong>How to read this:</strong> Every pattern uses a common absolute −30 to +12 dBi scale; no curve is normalized to its own peak. Polar radius is gain minus −30 dBi, with deeper nulls clipped at the center. Vertical cuts show only the upper hemisphere; the left side uses the opposite azimuth's actual computed samples. Horizontal azimuth 0° follows the wire's +x axis to the right, increasing counterclockwise; these are antenna-relative angles, not compass bearings. Radiation into the upper hemisphere is computed by integrating absolute gain over solid angle and dividing by 4π. This is distinct from NEC's printed efficiency. Feedline/common-mode currents, mast, coax/choke/tuner losses and unmeasured hardware are absent from the baseline. Patterns cannot guarantee contact distances. Retuning requires physical adjustments.<br><br>
+This page is self-contained and works offline. It embeds exact sampled cuts and full SWR sweeps; full hemispheres remain in the reproducible study results. Export buttons save standalone SVG charts. <a href="README.md">Read the report, assumptions and reproduction commands</a> · <a href="figures/geometry_comparison.svg">All geometries</a> · <a href="figures/polar_default_accepted.svg">Default polar patterns</a> · <a href="figures/polar_elevation_accepted.svg">Vertical polar comparison</a> · <a href="figures/polar_azimuth_accepted.svg">Horizontal polar comparison</a> · <a href="figures/retuning_comparison.svg">Retuning comparison</a> · <a href="figures/soil_wire_sensitivity.svg">Soil and wire uncertainty</a></footer></main>
 <script id="computed-data" type="application/json">__COMPUTED_DATA__</script>
 <script>
 'use strict';
@@ -759,8 +769,49 @@ for(const y of opt.yticks)s+=`<line x1="${L}" x2="${W-R}" y1="${ys(y)}" y2="${ys
 for(const x of opt.xticks)s+=`<line y1="${T}" y2="${H-B}" x1="${xs(x)}" x2="${xs(x)}" stroke="#eef1f4"/><text x="${xs(x)}" y="${H-B+22}" text-anchor="middle">${opt.freq?fmt(x,3):x}</text>`;
 s+=`<g clip-path="url(#clip-${id})">`;
 if(opt.marker)s+=`<line x1="${xs(opt.marker)}" x2="${xs(opt.marker)}" y1="${T}" y2="${H-B}" stroke="#8195a5" stroke-dasharray="3 3"/>`;
-for(const line of series){const points=line.points.filter(p=>p.every(Number.isFinite));const d=points.map((p,i)=>`${i?'L':'M'}${fmt(xs(p[0]),2)},${fmt(ys(p[1]),2)}`).join(' ');s+=`<path d="${d}" fill="none" stroke="${line.color}" stroke-width="${line.selected?3.3:1.5}" opacity="${line.selected?1:.57}" ${line.flat?'stroke-dasharray="7 4"':''}/>`;if(line.dot)s+=`<circle cx="${xs(line.dot[0])}" cy="${ys(line.dot[1])}" r="${line.selected?4:3}" fill="${line.color}"/>`;}
+for(const line of series){const points=line.points.filter(p=>p.every(Number.isFinite));const d=points.map((p,i)=>`${i?'L':'M'}${fmt(xs(p[0]),2)},${fmt(ys(p[1]),2)}`).join(' ');s+=`<path data-curve="true" d="${d}" fill="none" stroke="${line.color}" stroke-width="${line.selected?3.3:1.5}" opacity="${line.selected?1:.57}" ${line.flat?'stroke-dasharray="7 4"':''}/>`;if(line.dot)s+=`<circle cx="${xs(line.dot[0])}" cy="${ys(line.dot[1])}" r="${line.selected?4:3}" fill="${line.color}"/>`;}
 s+=`</g><line x1="${L}" x2="${W-R}" y1="${H-B}" y2="${H-B}" stroke="#8da0af"/><text x="${L+w/2}" y="${H-5}" text-anchor="middle">${esc(opt.xlabel)}</text><text transform="translate(15 ${T+h/2}) rotate(-90)" text-anchor="middle">${esc(opt.ylabel)}</text></svg>`;$(id).innerHTML=s;}
+function polarChart(id,series,opt){
+  const W=660,H=opt.upper?390:500,cx=330,cy=opt.upper?310:268,R=opt.upper?230:185;
+  const radians=degrees=>degrees*Math.PI/180;
+  const radial=gain=>R*Math.max(0,Math.min(gain,GAIN_LIMITS[1])-GAIN_LIMITS[0])/(GAIN_LIMITS[1]-GAIN_LIMITS[0]);
+  const xy=(angle,r)=>[cx+r*Math.cos(radians(angle)),cy-r*Math.sin(radians(angle))];
+  const upperArc=r=>`M${cx-r},${cy} A${r},${r} 0 0 1 ${cx+r},${cy}`;
+  const description=opt.upper?`Upper hemisphere only. Right azimuth ${opt.rightAzimuth} degrees; left azimuth ${(opt.rightAzimuth+180)%360} degrees. Zenith is at the top; horizon is left and right.`:'Horizontal azimuth: zero degrees points right along the wire, 90 degrees is broadside at the top, 180 degrees points left, and 270 degrees is broadside at the bottom. These are antenna-relative directions.';
+  let s=svgStart(W,H,`${opt.title}. ${description} ${opt.gainName}; common absolute rings from -30 to +12 dBi.`);
+  s+=`<text x="16" y="20" style="font-weight:650">${esc(opt.title)}</text><text x="16" y="39">${esc(opt.gainName)} · common dBi rings · outer edge +12 dBi</text>`;
+  s+=`<defs><clipPath id="polar-${id}">${opt.upper?`<path d="${upperArc(R)} Z"/>`:`<circle cx="${cx}" cy="${cy}" r="${R}"/>`}</clipPath></defs>`;
+  for(const gain of [-20,-10,0,10,12]){
+    const r=radial(gain),stroke=gain===0?'#99adbd':'#dce5eb';
+    s+=opt.upper?`<path d="${upperArc(r)}" fill="none" stroke="${stroke}"/>`:`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${stroke}"/>`;
+  }
+  const angles=opt.upper?[0,30,60,90,120,150,180]:[0,30,60,90,120,150,180,210,240,270,300,330];
+  for(const angle of angles){
+    const [gx,gy]=xy(angle,R),[tx,ty]=xy(angle,R+22);
+    s+=`<line x1="${cx}" y1="${cy}" x2="${gx}" y2="${gy}" stroke="#e6edf2"/>`;
+    let text;
+    if(opt.upper)text=angle===90?'90° zenith':`${angle>90?180-angle:angle}°`;
+    else text=angle===0?'0° end-on':angle===180?'180° end-on':angle===90?'90° broadside':angle===270?'270° broadside':`${angle}°`;
+    const anchor=angle===0?'start':angle===180?'end':'middle';
+    s+=`<text x="${tx}" y="${ty+4}" text-anchor="${anchor}">${text}</text>`;
+  }
+  if(opt.upper){
+    s+=`<line x1="${cx-R}" x2="${cx+R}" y1="${cy}" y2="${cy}" stroke="#8197a8"/><text x="${cx-R}" y="${cy+25}" text-anchor="middle">azimuth ${(opt.rightAzimuth+180)%360}°</text><text x="${cx+R}" y="${cy+25}" text-anchor="middle">azimuth ${opt.rightAzimuth}°</text><text x="${cx}" y="${cy+25}" text-anchor="middle">horizon</text>`;
+  }
+  s+=`<g clip-path="url(#polar-${id})">`;
+  for(const line of [...series].sort((a,b)=>Number(a.selected)-Number(b.selected))){
+    const points=line.points.filter(p=>p.every(Number.isFinite)&&(!opt.upper||(p[0]>=0&&p[0]<=180)));
+    const d=points.map((p,i)=>{const [x,y]=xy(p[0],radial(p[1]));return `${i?'L':'M'}${fmt(x,2)},${fmt(y,2)}`;}).join(' ');
+    s+=`<path data-curve="true" d="${d}" fill="none" stroke="${line.color}" stroke-width="${line.selected?3.3:1.6}" opacity="${line.selected?1:.62}" stroke-linejoin="round" ${line.flat?'stroke-dasharray="7 4"':''}/>`;
+  }
+  s+='</g>';
+  for(const gain of [-20,-10,0,10]){
+    const [x,y]=xy(135,radial(gain));
+    s+=`<text x="${x-4}" y="${y-3}" text-anchor="end" style="font-size:11px;paint-order:stroke;stroke:white;stroke-width:3px;stroke-linejoin:round">${gain>0?'+':''}${gain}</text>`;
+  }
+  s+=`<text x="${cx+6}" y="${cy-7}" style="font-size:11px;paint-order:stroke;stroke:white;stroke-width:3px">−30</text><text x="${cx}" y="${H-10}" text-anchor="middle" style="font-size:11px">Radius = gain − (−30 dBi); deeper nulls end at the center.</text></svg>`;
+  $(id).innerHTML=s;
+}
 function geometry(c){const g=c.geometry,W=1260,H=290,cumulative=[0,c.section_lengths_ft[0],c.section_lengths_ft[0]+c.section_lengths_ft[1],c.section_lengths_ft.reduce((a,b)=>a+b,0)],heights=[g.center_height_ft,g.link_a_height_ft,g.link_b_height_ft,g.end_height_ft];const extent=Math.max(g.span_ft/2,g.stake_distance_ft||0)+7,scale=Math.min((W-50)/(2*extent),(H-75)/g.center_height_ft),x=v=>W/2+v*scale,y=v=>H-44-v*scale;let s=svgStart(W,H,'Selected physical linked dipole geometry');s+=`<line x1="25" x2="${W-25}" y1="${y(0)}" y2="${y(0)}" stroke="#a0ae96"/><text x="28" y="${y(0)-8}">level ground</text><line x1="${x(0)}" x2="${x(0)}" y1="${y(0)}" y2="${y(g.center_height_ft)}" stroke="#b3c2cc" stroke-dasharray="4 4"/>`;
 const legRun=Math.sqrt(cumulative[3]**2-(g.center_height_ft-g.end_height_ft)**2),bridgeHalf=g.span_ft/2-legRun,along=d=>bridgeHalf+d/cumulative[3]*legRun;
 s+=`<line x1="${x(-bridgeHalf)}" x2="${x(bridgeHalf)}" y1="${y(g.center_height_ft)}" y2="${y(g.center_height_ft)}" stroke="#172d47" stroke-width="3"/>`;
@@ -777,13 +828,24 @@ $('metrics').innerHTML=cards.map(([a,b,d])=>`<div class="metric"><span>${a}</spa
 $('gain-help').textContent=realized?'Realized gain = NEC accepted-power gain minus this case’s mismatch loss once. The accepted-power radiation fraction is already included in NEC gain.':'Accepted-power gain includes modeled conductor and ground effects. Mismatch is excluded here; switch the gain reference to see available-power realized gain.';
 geometry(c);const makeSeries=fn=>cases.map((a,i)=>({points:fn(a),color:COLORS[i],selected:a.case_id===c.case_id,flat:a.end_height_ft===33}));
 const opts={x:[0,90],y:GAIN_LIMITS,xticks:[0,15,30,45,60,75,90],yticks:[-30,-20,-10,0,10],xlabel:'Elevation (°)',ylabel:`${gainName} (dBi)`};
-chart('broadside',makeSeries(a=>cut(a,1,90)),{...opts,title:`${c.band} · broadside at azimuth 90°`});chart('endon',makeSeries(a=>cut(a,1,0)),{...opts,title:`${c.band} · end-on at azimuth 0°`});
-chart('azimuth',makeSeries(a=>cut(a,0,Number($('elevation').value))),{...opts,x:[0,360],xticks:[0,90,180,270,360],xlabel:'Azimuth (°)',title:`${c.band} · ${$('elevation').value}° elevation`});
+if($('projection').value==='polar'){
+  $('broadside-caption').textContent='Upper hemisphere · right azimuth 90° / left 270°';
+  $('endon-caption').textContent='Upper hemisphere · right azimuth 0° / left 180°';
+  polarChart('broadside',makeSeries(a=>a.elevation_polar['90'].map(p=>[p[0],p[1]-penalty(a)])),{upper:true,rightAzimuth:90,title:`${c.band} · vertical broadside cut`,gainName});
+  polarChart('endon',makeSeries(a=>a.elevation_polar['0'].map(p=>[p[0],p[1]-penalty(a)])),{upper:true,rightAzimuth:0,title:`${c.band} · vertical end-on cut`,gainName});
+  polarChart('azimuth',makeSeries(a=>cut(a,0,Number($('elevation').value))),{upper:false,title:`${c.band} · horizontal cut at ${$('elevation').value}° elevation`,gainName});
+}else{
+  $('broadside-caption').textContent='Azimuth 90° · regional high angles through lower angles';
+  $('endon-caption').textContent='Azimuth 0° · looking along the wire direction';
+  chart('broadside',makeSeries(a=>cut(a,1,90)),{...opts,title:`${c.band} · broadside at azimuth 90°`});
+  chart('endon',makeSeries(a=>cut(a,1,0)),{...opts,title:`${c.band} · end-on at azimuth 0°`});
+  chart('azimuth',makeSeries(a=>cut(a,0,Number($('elevation').value))),{...opts,x:[0,360],xticks:[0,90,180,270,360],xlabel:'Azimuth (°)',title:`${c.band} · ${$('elevation').value}° elevation`});
+}
 const lo=Math.min(...cases.map(a=>a.sweep[0][0])),hi=Math.max(...cases.map(a=>a.sweep.at(-1)[0]));const swrSeries=makeSeries(a=>a.sweep.map(p=>[p[0],p[3]]));swrSeries.forEach((s,i)=>s.dot=[cases[i].min_swr_frequency_mhz,cases[i].min_swr]);chart('swr',swrSeries,{x:[lo,hi],y:[1,6],xticks:Array.from({length:5},(_,i)=>lo+(hi-lo)*i/4),yticks:[1,2,3,4,5,6],freq:true,xlabel:'Frequency (MHz)',ylabel:'50 Ω SWR',title:`${c.band} · ${$('mode').value} lengths · SWR above 6 clipped`,shade:EDGES[c.band],marker:c.frequency_mhz});
 const legend=cases.map((a,i)=>`<span style="${a.case_id===c.case_id?'font-weight:750':''}"><i class="key" style="border-color:${COLORS[i]};${a.end_height_ft===33?'border-top-style:dashed':''}"></i>${label(a)}</span>`).join('');document.querySelectorAll('[data-legend]').forEach(el=>el.innerHTML=legend);
 const flat=cases.find(a=>a.end_height_ft===33);let rows='';for(const e of [10,20,30,60,90])for(const a of (e===90?[90]:[90,0])){const v=sample(c,e,a),f=sample(flat,e,a),d=v-f;rows+=`<tr><td>${e}° · ${e===90?'zenith (azimuth arbitrary)':a===90?'broadside (90° az.)':'end-on (0° az.)'}</td><td>${fmt(v)} dBi</td><td>${fmt(f)} dBi</td><td>${d>0?'+':''}${fmt(d)} dB</td></tr>`;}$('gain-table').innerHTML=rows;$('table-caption').textContent=`${gainName} · ${fmt(c.frequency_mhz,3)} MHz · ${$('mode').value} lengths. Positive difference favors the selected deployment in that direction.`;
 }
 document.querySelectorAll('select').forEach(el=>el.addEventListener('change',update));
-document.querySelectorAll('[data-export]').forEach(button=>button.addEventListener('click',()=>{const id=button.dataset.export,svg=$(id).querySelector('svg'),text=new XMLSerializer().serializeToString(svg),blob=new Blob([text],{type:'image/svg+xml;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`linked-dipole-${$('band').value}-${$('height').value}ft-${$('mode').value}-${$('reference').value}-${id}.svg`;a.click();setTimeout(()=>URL.revokeObjectURL(url),5000);}));
+document.querySelectorAll('[data-export]').forEach(button=>button.addEventListener('click',()=>{const id=button.dataset.export,svg=$(id).querySelector('svg'),text=new XMLSerializer().serializeToString(svg),blob=new Blob([text],{type:'image/svg+xml;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`linked-dipole-${$('band').value}-${$('height').value}ft-${$('mode').value}-${$('reference').value}-${$('projection').value}-${id}.svg`;a.click();setTimeout(()=>URL.revokeObjectURL(url),5000);}));
 update();
 </script></body></html>"""  # noqa: E501
