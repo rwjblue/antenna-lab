@@ -1,0 +1,200 @@
+{
+  "assumptions": [
+    "Controlled comparison of nominal 17 ft and 25 ft straight uniform stainless whips; real taper, alloy and contact resistance unmeasured.",
+    "Generic continuous lossy L network with published LDG aggregate maxima; no LDG bank granularity, firmware, balun loss, voltage/current limit or coax transition.",
+    "Ranking uses worst-band tenth-percentile source-available-power delivered to antenna feedpoint, with unmatched cases scored zero. It is not total radiation efficiency.",
+    "Dry grid crosses Z0, VF, line loss and component Q independently. Equally weighted sensitivity cases are not probabilities.",
+    "Geometry perturbations are one-at-a-time tests, not a complete joint uncertainty distribution.",
+    "A fixed line and fixed ideal balun ratio must cover all sampled bands. No per-band hardware switching.",
+    "All candidates must reach the 30 ft feedpoint with the stated offset/slack; the compact option limits line to 45 ft, while longer runs need deliberate suspended routing.",
+    "Band-edge/interior frequencies are simulation samples, not instructions to transmit on those exact frequencies."
+  ],
+  "coarse_candidates_per_arm": 568,
+  "coarse_frequency_samples": 37,
+  "config_sha256": "128a7002302a75451edc7d1f97905215215f1480c741a8a71a1acb1eab6fe125",
+  "dry_network_cases": 5354505,
+  "nec_cases": 1170,
+  "numerical": {
+    "17ft": {
+      "average_gain_passed": true,
+      "fine_mesh_max_relative_z_change": 0.0012633914512331476
+    },
+    "25ft": {
+      "average_gain_passed": true,
+      "fine_mesh_max_relative_z_change": 0.002092739458378028
+    }
+  },
+  "patterns": {
+    "arm_elevation_deg": 30,
+    "arm_lengths_ft": [
+      17,
+      25
+    ],
+    "bands_mhz": {
+      "10m": 28.5,
+      "20m": 14.175,
+      "40m": 7.15
+    },
+    "case_count": 6,
+    "case_metadata_file": "pattern_cases.csv",
+    "feed_height_ft": 30,
+    "figure_file": "pattern_comparison.png",
+    "gain_axis_limits_dbi": [
+      -30,
+      12
+    ],
+    "gain_reference": "antenna_feedpoint_excludes_line_balun_tuner",
+    "individually_normalized": false,
+    "sample_count": 8208,
+    "samples_file": "pattern_samples.csv",
+    "solver_sha256": "fd48ccb4523172ace54ca1ace6c9e0201e3dc52e53fa9a0d7310483ac48b86d8",
+    "source_sha256": "96938bb77e67c750c3dc856a05ccd61b3b067eb6fbf84a71150e8ccb2a4b5bb4"
+  },
+  "solver_sha256": "fd48ccb4523172ace54ca1ace6c9e0201e3dc52e53fa9a0d7310483ac48b86d8",
+  "solver_version": "nec2c 1.3",
+  "source_sha256": {
+    "nec.py": "385c7bf7640ea0c879a797f375f97235171418e1185e34a5a1701d00738fd8f7",
+    "rigid_doublet.py": "9928b84be52fea10ff1fcc3d3076bee5296a52bd309087e72cbd58147bcf6d33",
+    "rigid_doublet_optimization.py": "68b9d3d868a37690df14e1169b0cc056ecf576665dcc1832ccb1870a666621de",
+    "rigid_doublet_optimization_report.py": "28eaa039195d5909ea7068623c91326a60c4ab8a25c6eeed100e9b0e67281c7f",
+    "rigid_doublet_patterns.py": "96938bb77e67c750c3dc856a05ccd61b3b067eb6fbf84a71150e8ccb2a4b5bb4",
+    "rigid_doublet_study.py": "11d0368d46234169eaf9947ad82f9837a3410687ac040aeb45d523c7c4121bfa",
+    "rigid_doublet_validation.py": "bf243b174bf621aef89139d621fcac855920e49ca41419133dde54db64cabd2c",
+    "rigid_matching.py": "e9919a4106f455c5228cf37f051b29831030ef0d89836b937441ee58109ca96d",
+    "transmission_line.py": "3a52d638fe86017fc8bb61ef8794a19e9fd1694408c3a33d5a1998043e9ffe9d"
+  },
+  "status": "generic_continuous_tuner_exploration_not_LDG_prediction",
+  "study_id": "rigid-v-line-optimization-v2",
+  "validated_candidates": 113,
+  "validation_frequency_samples": 65,
+  "winners": [
+    {
+      "all_band_match_fraction": 1.0,
+      "arm_length_ft": 17,
+      "balun_ratio": 1,
+      "band_median_geometric_mean": 0.8280125260353088,
+      "length_ft": 29.75,
+      "length_m": 9.0678,
+      "limiting_band": "40m",
+      "mean_band_match_fraction": 1.0,
+      "phase": "dry_validation",
+      "region": "compact",
+      "route_feasible": true,
+      "samples": 47385,
+      "worst_band_p10_delivery": 0.469063937664032,
+      "worst_raw_swr": 373.1121826171875
+    },
+    {
+      "all_band_match_fraction": 1.0,
+      "arm_length_ft": 17,
+      "balun_ratio": 4,
+      "band_median_geometric_mean": 0.8697383999824524,
+      "length_ft": 29.75,
+      "length_m": 9.0678,
+      "limiting_band": "40m",
+      "mean_band_match_fraction": 1.0,
+      "phase": "dry_validation",
+      "region": "compact",
+      "route_feasible": true,
+      "samples": 47385,
+      "worst_band_p10_delivery": 0.5457073450088501,
+      "worst_raw_swr": 134.4315185546875
+    },
+    {
+      "all_band_match_fraction": 1.0,
+      "arm_length_ft": 17,
+      "balun_ratio": 1,
+      "band_median_geometric_mean": 0.751417875289917,
+      "length_ft": 90,
+      "length_m": 27.432000000000002,
+      "limiting_band": "40m",
+      "mean_band_match_fraction": 1.0,
+      "phase": "dry_validation",
+      "region": "long",
+      "route_feasible": true,
+      "samples": 47385,
+      "worst_band_p10_delivery": 0.3327353000640869,
+      "worst_raw_swr": 307.16204833984375
+    },
+    {
+      "all_band_match_fraction": 1.0,
+      "arm_length_ft": 17,
+      "balun_ratio": 4,
+      "band_median_geometric_mean": 0.812149703502655,
+      "length_ft": 45.25,
+      "length_m": 13.792200000000001,
+      "limiting_band": "40m",
+      "mean_band_match_fraction": 1.0,
+      "phase": "dry_validation",
+      "region": "long",
+      "route_feasible": true,
+      "samples": 47385,
+      "worst_band_p10_delivery": 0.378683865070343,
+      "worst_raw_swr": 365.1982421875
+    },
+    {
+      "all_band_match_fraction": 1.0,
+      "arm_length_ft": 25,
+      "balun_ratio": 1,
+      "band_median_geometric_mean": 0.8843437433242798,
+      "length_ft": 29.75,
+      "length_m": 9.0678,
+      "limiting_band": "40m",
+      "mean_band_match_fraction": 1.0,
+      "phase": "dry_validation",
+      "region": "compact",
+      "route_feasible": true,
+      "samples": 47385,
+      "worst_band_p10_delivery": 0.6722636222839355,
+      "worst_raw_swr": 169.9705352783203
+    },
+    {
+      "all_band_match_fraction": 1.0,
+      "arm_length_ft": 25,
+      "balun_ratio": 4,
+      "band_median_geometric_mean": 0.9189033508300781,
+      "length_ft": 29.75,
+      "length_m": 9.0678,
+      "limiting_band": "40m",
+      "mean_band_match_fraction": 1.0,
+      "phase": "dry_validation",
+      "region": "compact",
+      "route_feasible": true,
+      "samples": 47385,
+      "worst_band_p10_delivery": 0.783793032169342,
+      "worst_raw_swr": 50.14662170410156
+    },
+    {
+      "all_band_match_fraction": 1.0,
+      "arm_length_ft": 25,
+      "balun_ratio": 1,
+      "band_median_geometric_mean": 0.8624950647354126,
+      "length_ft": 82.75,
+      "length_m": 25.2222,
+      "limiting_band": "17m",
+      "mean_band_match_fraction": 1.0,
+      "phase": "dry_validation",
+      "region": "long",
+      "route_feasible": true,
+      "samples": 47385,
+      "worst_band_p10_delivery": 0.7188705205917358,
+      "worst_raw_swr": 96.07846069335938
+    },
+    {
+      "all_band_match_fraction": 1.0,
+      "arm_length_ft": 25,
+      "balun_ratio": 4,
+      "band_median_geometric_mean": 0.8769295811653137,
+      "length_ft": 84.75,
+      "length_m": 25.8318,
+      "limiting_band": "40m",
+      "mean_band_match_fraction": 1.0,
+      "phase": "dry_validation",
+      "region": "long",
+      "route_feasible": true,
+      "samples": 47385,
+      "worst_band_p10_delivery": 0.7509196996688843,
+      "worst_raw_swr": 24.3317928314209
+    }
+  ]
+}

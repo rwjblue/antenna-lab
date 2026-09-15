@@ -1,0 +1,40 @@
+{
+  "assumptions": [
+    "Nominal 17 ft fully extended arms; video exact extension, taper, included angle and metal grade not measured.",
+    "30 degrees above horizontal (120 degree included upward V) is a study choice, not a transcript measurement.",
+    "Uniform effective radius and stainless conductivity, with no joint contact resistance or whip bending.",
+    "Homebrew scenarios reuse our 58 ft doublet line uncertainty, not measurements of the video 18 AWG line.",
+    "Wet stress is a deliberately adverse hypothetical case, not measured wet/icy line behavior.",
+    "10 meters is the video line length at 12:36; 20 meters is retained only as a comparison.",
+    "Mast is a floating uniform lossy wire proxy. Balanced line and truck are absent from NEC; line-mast common-mode coupling is not modeled.",
+    "A 6 cm excitation bridge split into three collinear segments isolates the source from arm bends; numerical validation tests the reference geometry in lossless free space."
+  ],
+  "average_gain_checks_passed": true,
+  "best_screen_candidate": {
+    "all_cases": 28,
+    "all_lc_passes": 28,
+    "balun_impedance_ratio": 1,
+    "dry_cases": 21,
+    "dry_lc_passes": 21,
+    "dry_worst_line_loss_db": 1.7446720061629164,
+    "dry_worst_raw_swr": 242.34937159199,
+    "length_ft": 30.0,
+    "length_m": 9.144
+  },
+  "config_sha256": "dc2084e46d933e2292cdb420dedb5db6f189f829224e64c89798489a9767b883",
+  "full_line_sweep_included": false,
+  "line_cases": 10808,
+  "nec_cases": 119,
+  "numerical_validation_performed": true,
+  "solver_sha256": "fd48ccb4523172ace54ca1ace6c9e0201e3dc52e53fa9a0d7310483ac48b86d8",
+  "solver_version": "nec2c 1.3",
+  "source_sha256": {
+    "nec.py": "385c7bf7640ea0c879a797f375f97235171418e1185e34a5a1701d00738fd8f7",
+    "rigid_doublet.py": "9928b84be52fea10ff1fcc3d3076bee5296a52bd309087e72cbd58147bcf6d33",
+    "rigid_doublet_study.py": "11d0368d46234169eaf9947ad82f9837a3410687ac040aeb45d523c7c4121bfa",
+    "rigid_doublet_validation.py": "bf243b174bf621aef89139d621fcac855920e49ca41419133dde54db64cabd2c",
+    "transmission_line.py": "3a52d638fe86017fc8bb61ef8794a19e9fd1694408c3a33d5a1998043e9ffe9d"
+  },
+  "status": "exploratory_uncalibrated_not_a_build_recommendation",
+  "study_id": "rigid-v-doublet-v1"
+}

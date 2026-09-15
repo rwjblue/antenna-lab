@@ -36,3 +36,14 @@ complete 40/30/20/17/15 m KH1 system comparison. It contains derived shortlists
 and finalist decompositions; the much larger NEC/tuner scenario trees remain
 reproducible build artifacts whose exact input hashes are recorded in
 `run_metadata.json`.
+
+`rigid-v-doublet-v1/` is a compact exploratory result for the two-whip winter
+antenna. Regenerate it with `run-rigid-doublet-study --compact --plot --validate`.
+The full 10,808-row feedline sweep belongs under `build/`; the committed subset
+keeps reference spot checks, radiator loads, numerical validation, source/solver
+hashes and a plot. Its ideal L/C screens do not establish Z-100A tuning success.
+
+`rigid-v-line-optimization-v2/` extends that comparison to 25 ft arms and generic
+continuous tuner losses. It preserves compact summaries, plots, nominal power
+decompositions and solver checks; full compressed scenario arrays remain in
+`build/`. Regenerate it with `optimize-rigid-doublet --compact`.

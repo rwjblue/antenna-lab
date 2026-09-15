@@ -87,6 +87,32 @@ NEC2C_PATH=/path/to/nec2c mise run efrw-elevated
 Its generated addendum is in
 [`results/53ft-efrw-elevated-v1/REPORT.md`](results/53ft-efrw-elevated-v1/REPORT.md).
 
+The new [rigid V doublet study](results/rigid-v-doublet-v1/REPORT.md) explores two
+17 ft whips on a 20–30 ft support for winter operation from a parked truck.
+The source video specifies **10 meters (32.81 ft) of open-wire line**. The study
+compares that length with our 28 ft homebrew line, sweeps line length and ideal
+balun ratios, and keeps LDG Z-100A matching screens separate from actual tuner
+behavior. See the [hitch setup notes](docs/case-studies/rigid-v-hitch-doublet.md)
+for transcript timestamps, assumptions and prototype measurements.
+
+```bash
+NEC2C_PATH=/path/to/nec2c mise run rigid-doublet
+```
+
+Full generated rows go under `build/rigid-v-doublet-v1`; the checked-in result
+contains a compact report, reference spot checks, NEC loads and a length plot.
+
+The [second-round comparison](results/rigid-v-line-optimization-v2/REPORT.md)
+optimizes line length for both 17 ft and 25 ft arms, including generic tuner
+loss, denser band sampling and independent line-property uncertainty. See the
+[interpretation](docs/case-studies/rigid-v-line-optimization.md) for why roughly
+30 ft remains the compact starting point and how the 25 ft whips change 40 m
+matching and upper-band radiation patterns.
+
+```bash
+NEC2C_PATH=/path/to/nec2c mise run rigid-doublet-optimize
+```
+
 ## Sharded NEC-2 study
 
 The full KH1 study can still be run locally as one command:
@@ -143,11 +169,13 @@ ChatGPT v0.1 archive is provenance only; v1.0 supersedes it for current results.
 
 ## Scientific status
 
-The optimizer is a measurement-anchored, passive transmission-line and
-radiator-surrogate ensemble. It is not a full-wave solver. The pattern command
-uses an analytical thin-wire sinusoidal-current approximation with a Fresnel
-ground-reflection model. These two models answer different questions and are
-not relabeled as NEC or MININEC.
+The historical `optimize-doublet` command uses a measurement-anchored, passive
+transmission-line and radiator-surrogate ensemble. It is not a full-wave solver.
+The `plot-pattern` command uses an analytical thin-wire sinusoidal-current
+approximation with a Fresnel ground-reflection model. These two models answer
+different questions and are not relabeled as NEC or MININEC. The portable-wire
+and rigid-doublet studies use NEC for radiator impedance and patterns, with
+separate feed-line and tuner models for system comparisons.
 
 ## License
 

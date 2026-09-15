@@ -38,6 +38,10 @@ from antenna_lab.optimization import (
 )
 from antenna_lab.plotting import plot_analytical_pattern
 from antenna_lab.portable_systems import run_coarse_system_study
+from antenna_lab.rigid_doublet_optimization import (
+    run_optimization as run_rigid_optimization,
+)
+from antenna_lab.rigid_doublet_study import run_rigid_doublet_study
 from antenna_lab.transmission_line import swr
 
 DEFAULT_MEASUREMENTS = Path("data/measured/58ft_doublet_2026-08-08.csv")
@@ -198,9 +202,7 @@ def build_parser() -> argparse.ArgumentParser:
     comparative.add_argument("--nec-artifact", type=Path, required=True)
     comparative.add_argument("--portable-study", type=Path, required=True)
     comparative.add_argument("--output", type=Path, required=True)
-    comparative.add_argument(
-        "--measurements", type=Path, default=DEFAULT_MEASUREMENTS
-    )
+    comparative.add_argument("--measurements", type=Path, default=DEFAULT_MEASUREMENTS)
 
     final_decision = subparsers.add_parser(
         "run-kh1-final-decision",
@@ -238,6 +240,50 @@ def build_parser() -> argparse.ArgumentParser:
         "--cache", type=Path, default=Path("build/53ft-efrw-elevated-nec-cache")
     )
     efrw_elevated.add_argument("--jobs", type=int)
+
+    rigid = subparsers.add_parser(
+        "run-rigid-doublet-study",
+        help="Screen a rigid V doublet, balanced line lengths and ideal L/C limits",
+    )
+    rigid.add_argument(
+        "--config", type=Path, default=Path("configs/rigid-v-doublet-v1.json")
+    )
+    rigid.add_argument("--output", type=Path, required=True)
+    rigid.add_argument("--nec2c", type=Path)
+    rigid.add_argument("--cache", type=Path, default=Path("build/rigid-v-nec-cache"))
+    rigid.add_argument("--jobs", type=int, default=6)
+    rigid.add_argument(
+        "--compact",
+        action="store_true",
+        help="Keep reference spot checks instead of the full line CSV",
+    )
+    rigid.add_argument(
+        "--plot",
+        action="store_true",
+        help="Create the line-length figure (requires plots extra)",
+    )
+    rigid.add_argument(
+        "--validate",
+        action="store_true",
+        help="Run lossless average-gain and reference mesh convergence checks",
+    )
+
+    rigid_opt = subparsers.add_parser(
+        "optimize-rigid-doublet",
+        help="Optimize line length for 17/25 ft whips with generic tuner loss",
+    )
+    rigid_opt.add_argument(
+        "--config",
+        type=Path,
+        default=Path("configs/rigid-v-line-optimization-v2.json"),
+    )
+    rigid_opt.add_argument("--output", type=Path, required=True)
+    rigid_opt.add_argument("--nec2c", type=Path)
+    rigid_opt.add_argument("--jobs", type=int, default=6)
+    rigid_opt.add_argument(
+        "--cache", type=Path, default=Path("build/rigid-v-optimization-cache")
+    )
+    rigid_opt.add_argument("--compact", action="store_true")
 
     verify = subparsers.add_parser(
         "verify-results", help="Verify a generated SHA256SUMS manifest"
@@ -327,9 +373,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(json.dumps(summary, indent=2, sort_keys=True))
         return 0
     if args.command == "solve-atu-loss":
-        loss = next(
-            item for item in LOSS_ENVELOPES if item.id == args.loss_envelope
-        )
+        loss = next(item for item in LOSS_ENVELOPES if item.id == args.loss_envelope)
         load = complex(args.resistance_ohm, args.reactance_ohm)
         if args.profile == "zm2":
             result = solve_zm2(load, args.frequency_mhz * 1e6, loss)
@@ -411,6 +455,30 @@ def main(argv: Sequence[str] | None = None) -> int:
             nec2c=args.nec2c,
             cache_dir=args.cache,
             jobs=args.jobs,
+        )
+        print(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False))
+        return 0
+    if args.command == "run-rigid-doublet-study":
+        summary = run_rigid_doublet_study(
+            args.config,
+            args.output,
+            nec2c=args.nec2c,
+            cache_dir=args.cache,
+            jobs=args.jobs,
+            compact=args.compact,
+            plot=args.plot,
+            validate=args.validate,
+        )
+        print(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False))
+        return 0
+    if args.command == "optimize-rigid-doublet":
+        summary = run_rigid_optimization(
+            args.config,
+            args.output,
+            nec2c=args.nec2c,
+            cache_dir=args.cache,
+            jobs=args.jobs,
+            compact=args.compact,
         )
         print(json.dumps(summary, indent=2, sort_keys=True, allow_nan=False))
         return 0

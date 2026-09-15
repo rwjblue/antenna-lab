@@ -6,5 +6,7 @@ reports/figures/optimization-v1.0/** -text
 reports/radiation-pattern-v0.1/** -text
 results/published-v1.0/** -text
 results/reference-small/** -text
+results/rigid-v-doublet-v1/** -text whitespace=cr-at-eol
+results/rigid-v-line-optimization-v2/** -text whitespace=cr-at-eol
 reports/**/*.png binary
 reports/**/*.pdf binary

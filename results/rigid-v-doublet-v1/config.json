@@ -1,0 +1,212 @@
+{
+  "assumptions": [
+    "Nominal 17 ft fully extended arms; video exact extension, taper, included angle and metal grade not measured.",
+    "30 degrees above horizontal (120 degree included upward V) is a study choice, not a transcript measurement.",
+    "Uniform effective radius and stainless conductivity, with no joint contact resistance or whip bending.",
+    "Homebrew scenarios reuse our 58 ft doublet line uncertainty, not measurements of the video 18 AWG line.",
+    "Wet stress is a deliberately adverse hypothetical case, not measured wet/icy line behavior.",
+    "10 meters is the video line length at 12:36; 20 meters is retained only as a comparison.",
+    "Mast is a floating uniform lossy wire proxy. Balanced line and truck are absent from NEC; line-mast common-mode coupling is not modeled.",
+    "A 6 cm excitation bridge split into three collinear segments isolates the source from arm bends; numerical validation tests the reference geometry in lossless free space."
+  ],
+  "balun_impedance_ratios": [
+    1,
+    4
+  ],
+  "bands_mhz": {
+    "10m": 28.5,
+    "12m": 24.94,
+    "15m": 21.225,
+    "17m": 18.1,
+    "20m": 14.175,
+    "30m": 10.125,
+    "40m": 7.15
+  },
+  "cases": [
+    {
+      "arm_elevation_deg": 30,
+      "feed_height_ft": 20,
+      "id": "height_20"
+    },
+    {
+      "arm_elevation_deg": 30,
+      "feed_height_ft": 25,
+      "id": "height_25"
+    },
+    {
+      "arm_elevation_deg": 30,
+      "feed_height_ft": 30,
+      "id": "height_30"
+    },
+    {
+      "arm_elevation_deg": 0,
+      "feed_height_ft": 30,
+      "id": "angle_0"
+    },
+    {
+      "arm_elevation_deg": 15,
+      "id": "angle_15"
+    },
+    {
+      "arm_elevation_deg": 45,
+      "feed_height_ft": 30,
+      "id": "angle_45"
+    },
+    {
+      "ground": "poor",
+      "id": "poor_ground"
+    },
+    {
+      "ground": "good",
+      "id": "good_ground"
+    },
+    {
+      "id": "thin_whip",
+      "radius_m": 0.00075
+    },
+    {
+      "id": "thick_whip",
+      "radius_m": 0.003
+    },
+    {
+      "conductivity_s_m": 58000000.0,
+      "id": "copper_reference"
+    },
+    {
+      "id": "mast_5000_0.1",
+      "mast": {
+        "bottom_height_ft": 0.5,
+        "conductivity_s_m": 5000,
+        "height_ft": 28.5,
+        "offset_m": 0.1,
+        "radius_m": 0.015,
+        "segments": 91,
+        "x_offset_m": 0.2
+      }
+    },
+    {
+      "id": "mast_5000_0.6",
+      "mast": {
+        "bottom_height_ft": 0.5,
+        "conductivity_s_m": 5000,
+        "height_ft": 28.5,
+        "offset_m": 0.6,
+        "radius_m": 0.015,
+        "segments": 91,
+        "x_offset_m": 0.2
+      }
+    },
+    {
+      "id": "mast_50000_0.1",
+      "mast": {
+        "bottom_height_ft": 0.5,
+        "conductivity_s_m": 50000,
+        "height_ft": 28.5,
+        "offset_m": 0.1,
+        "radius_m": 0.015,
+        "segments": 91,
+        "x_offset_m": 0.2
+      }
+    },
+    {
+      "id": "mast_50000_0.6",
+      "mast": {
+        "bottom_height_ft": 0.5,
+        "conductivity_s_m": 50000,
+        "height_ft": 28.5,
+        "offset_m": 0.6,
+        "radius_m": 0.015,
+        "segments": 91,
+        "x_offset_m": 0.2
+      }
+    },
+    {
+      "arm_segments": 91,
+      "id": "segments_91"
+    },
+    {
+      "arm_segments": 259,
+      "id": "segments_259"
+    }
+  ],
+  "conductivity_s_m": 1400000.0,
+  "geometry": {
+    "arm_elevation_deg": 30,
+    "arm_length_ft": 17,
+    "arm_segments": 181,
+    "feed_gap_m": 0.06,
+    "feed_height_ft": 30,
+    "radius_m": 0.0015
+  },
+  "grounds": {
+    "average": {
+      "conductivity_s_m": 0.005,
+      "epsilon_r": 13
+    },
+    "good": {
+      "conductivity_s_m": 0.03,
+      "epsilon_r": 20
+    },
+    "poor": {
+      "conductivity_s_m": 0.001,
+      "epsilon_r": 5
+    }
+  },
+  "line_scenarios": [
+    {
+      "id": "homebrew_low",
+      "loss_db_per_100ft_at_10mhz": 0.03,
+      "velocity_factor": 0.93,
+      "z0_ohm": 446.40000000000003
+    },
+    {
+      "id": "homebrew_nominal",
+      "loss_db_per_100ft_at_10mhz": 0.07,
+      "velocity_factor": 0.97,
+      "z0_ohm": 480.15
+    },
+    {
+      "id": "homebrew_high",
+      "loss_db_per_100ft_at_10mhz": 0.11,
+      "velocity_factor": 0.99,
+      "z0_ohm": 504.9
+    },
+    {
+      "id": "wet_stress",
+      "loss_db_per_100ft_at_10mhz": 0.25,
+      "velocity_factor": 0.88,
+      "z0_ohm": 450
+    }
+  ],
+  "line_sweep_ft": {
+    "start": 20,
+    "step": 0.5,
+    "stop": 75
+  },
+  "reference_case": "height_30",
+  "routing": {
+    "horizontal_offset_ft": 6,
+    "slack_ft": 2,
+    "tuner_height_ft": 3
+  },
+  "schema_version": 1,
+  "sources": {
+    "carbon_proxy": "configs/53ft-efrw-elevated-v1.json",
+    "existing_line": "configs/58ft-doublet-v1.0.json",
+    "video": "https://www.youtube.com/watch?v=0ZBsUXsak9Y",
+    "z100a_manual": "https://irp.cdn-website.com/4d6cc687/files/uploaded/Z-100A_Manual_Rev_B_10.pdf"
+  },
+  "spot_lengths_ft": [
+    20,
+    28,
+    32.808398950131235,
+    40,
+    65.61679790026247
+  ],
+  "study_id": "rigid-v-doublet-v1",
+  "tuner_limits": {
+    "advertised_swr": 10,
+    "max_c_pf": 1300,
+    "max_l_uh": 20
+  }
+}

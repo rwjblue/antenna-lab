@@ -1,5 +1,26 @@
 # Model limitations
 
+## Rigid V whip doublet
+
+The [rigid V study](docs/case-studies/rigid-v-hitch-doublet.md) is an uncalibrated
+NEC-2 and transmission-line exploration. Its continuous low-pass L matching
+screen uses the Z-100A's published aggregate limits; it does not simulate LDG's
+component banks, loss or firmware. Whip taper, telescoping contacts, line-to-mast
+coupling, truck body and coax transitions are absent. An ideal 4:1 impedance
+transformation does not establish balun loss or balance. Free-space average-gain
+and mesh checks address numerical quality of the reference geometry, not its
+agreement with a physical prototype. Seven sample frequencies do not prove
+full-band coverage or total transmitter-to-radiated efficiency.
+
+The second-round rigid study adds a generic finite-Q continuous L network,
+exact matching seeds and bounded local refinement. Its LDG aggregate limits
+do not establish actual device tuning, component resolution or power handling.
+Power-delivery rankings exclude real balun/coax/common-mode losses; ideal 4:1
+advantages can disappear with additional transformer loss. Expanded validation
+covers a shortlist selected by a nominal coarse search, and one-at-a-time
+geometry variations, rather than every joint configuration. Directional NEC
+gain must be compared separately because the 25 ft arms move upper-band lobes.
+
 The repository contains both the historical measurement-anchored doublet
 surrogate and the current NEC-2/discrete-KH1 complete-system ensemble. They are
 useful for designing the next measurement, not for asserting a uniquely correct

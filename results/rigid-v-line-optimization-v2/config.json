@@ -1,0 +1,196 @@
+{
+  "arm_lengths_ft": [
+    17,
+    25
+  ],
+  "assumptions": [
+    "Controlled comparison of nominal 17 ft and 25 ft straight uniform stainless whips; real taper, alloy and contact resistance unmeasured.",
+    "Generic continuous lossy L network with published LDG aggregate maxima; no LDG bank granularity, firmware, balun loss, voltage/current limit or coax transition.",
+    "Ranking uses worst-band tenth-percentile source-available-power delivered to antenna feedpoint, with unmatched cases scored zero. It is not total radiation efficiency.",
+    "Dry grid crosses Z0, VF, line loss and component Q independently. Equally weighted sensitivity cases are not probabilities.",
+    "Geometry perturbations are one-at-a-time tests, not a complete joint uncertainty distribution.",
+    "A fixed line and fixed ideal balun ratio must cover all sampled bands. No per-band hardware switching.",
+    "All candidates must reach the 30 ft feedpoint with the stated offset/slack; the compact option limits line to 45 ft, while longer runs need deliberate suspended routing.",
+    "Band-edge/interior frequencies are simulation samples, not instructions to transmit on those exact frequencies."
+  ],
+  "balun_impedance_ratios": [
+    1,
+    4
+  ],
+  "bands_mhz": {
+    "10m": [
+      28,
+      29.7
+    ],
+    "12m": [
+      24.89,
+      24.99
+    ],
+    "15m": [
+      21,
+      21.45
+    ],
+    "17m": [
+      18.068,
+      18.168
+    ],
+    "20m": [
+      14,
+      14.35
+    ],
+    "30m": [
+      10.1,
+      10.15
+    ],
+    "40m": [
+      7.0,
+      7.3
+    ]
+  },
+  "cases": [
+    {
+      "id": "nominal"
+    },
+    {
+      "feed_height_ft": 20,
+      "id": "height_20"
+    },
+    {
+      "feed_height_ft": 25,
+      "id": "height_25"
+    },
+    {
+      "arm_elevation_deg": 15,
+      "id": "angle_15"
+    },
+    {
+      "arm_elevation_deg": 45,
+      "id": "angle_45"
+    },
+    {
+      "id": "thin",
+      "radius_m": 0.00075
+    },
+    {
+      "id": "thick",
+      "radius_m": 0.003
+    },
+    {
+      "ground": "poor",
+      "id": "poor_ground"
+    },
+    {
+      "ground": "good",
+      "id": "good_ground"
+    }
+  ],
+  "coarse_samples_per_band": 5,
+  "compact_max_line_ft": 45,
+  "comparison_lengths_ft": [
+    28,
+    30,
+    32.808398950131235,
+    40,
+    65.61679790026247,
+    90
+  ],
+  "conductivity_s_m": 1400000.0,
+  "geometry": {
+    "arm_elevation_deg": 30,
+    "arm_length_ft": 17,
+    "arm_segments": 181,
+    "feed_gap_m": 0.06,
+    "feed_height_ft": 30,
+    "radius_m": 0.0015
+  },
+  "grounds": {
+    "average": {
+      "conductivity_s_m": 0.005,
+      "epsilon_r": 13
+    },
+    "good": {
+      "conductivity_s_m": 0.03,
+      "epsilon_r": 20
+    },
+    "poor": {
+      "conductivity_s_m": 0.001,
+      "epsilon_r": 5
+    }
+  },
+  "line_sweep_ft": {
+    "start": 20,
+    "step": 0.25,
+    "stop": 100
+  },
+  "line_uncertainty": {
+    "air_z0_ohm": [
+      480,
+      495,
+      510
+    ],
+    "loss_db_per_100ft_at_10mhz": [
+      0.03,
+      0.07,
+      0.11
+    ],
+    "velocity_factors": [
+      0.93,
+      0.97,
+      0.99
+    ]
+  },
+  "loss_profiles": [
+    {
+      "capacitor_q": 800,
+      "id": "conservative",
+      "inductor_q": 35,
+      "series_contact_r_ohm": 0.25
+    },
+    {
+      "capacitor_q": 2000,
+      "id": "nominal",
+      "inductor_q": 70,
+      "series_contact_r_ohm": 0.1
+    },
+    {
+      "capacitor_q": 5000,
+      "id": "optimistic",
+      "inductor_q": 120,
+      "series_contact_r_ohm": 0.05
+    }
+  ],
+  "reference_frequencies_mhz": {
+    "10m": 28.5,
+    "12m": 24.94,
+    "15m": 21.225,
+    "17m": 18.1,
+    "20m": 14.175,
+    "30m": 10.125,
+    "40m": 7.15
+  },
+  "routing": {
+    "horizontal_offset_ft": 6,
+    "slack_ft": 2,
+    "tuner_height_ft": 3
+  },
+  "schema_version": 1,
+  "shortlist_per_region_ratio": 8,
+  "sources": {
+    "carbon_proxy": "configs/53ft-efrw-elevated-v1.json",
+    "existing_line": "configs/58ft-doublet-v1.0.json",
+    "video": "https://www.youtube.com/watch?v=0ZBsUXsak9Y",
+    "z100a_manual": "https://irp.cdn-website.com/4d6cc687/files/uploaded/Z-100A_Manual_Rev_B_10.pdf"
+  },
+  "study_id": "rigid-v-line-optimization-v2",
+  "tuner_limits": {
+    "max_c_pf": 1300,
+    "max_l_uh": 20,
+    "target_swr": 2.5
+  },
+  "validation_samples_per_band": 9,
+  "wet_line": {
+    "loss_db_per_100ft_at_10mhz": 0.25,
+    "velocity_factor": 0.88,
+    "z0_ohm": 450
+  }
+}

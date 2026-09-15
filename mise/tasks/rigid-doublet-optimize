@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#MISE description="Optimize feedline lengths for 17 and 25 ft rigid V whips"
+set -euo pipefail
+
+PYTHONPATH=src uv run antenna-lab optimize-rigid-doublet \
+  --config configs/rigid-v-line-optimization-v2.json \
+  --output build/rigid-v-line-optimization-v2 \
+  --nec2c "${NEC2C_PATH:-nec2c}"
+PYTHONPATH=src uv run antenna-lab verify-results build/rigid-v-line-optimization-v2

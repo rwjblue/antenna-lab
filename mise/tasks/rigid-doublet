@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Model the 34 ft rigid V doublet and balanced feedline lengths"
+set -euo pipefail
+
+PYTHONPATH=src uv run antenna-lab run-rigid-doublet-study \
+  --config configs/rigid-v-doublet-v1.json \
+  --output build/rigid-v-doublet-v1 \
+  --plot --validate \
+  --nec2c "${NEC2C_PATH:-nec2c}"
+PYTHONPATH=src uv run antenna-lab verify-results build/rigid-v-doublet-v1

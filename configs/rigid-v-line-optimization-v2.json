@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "study_id": "rigid-v-line-optimization-v2",
+  "arm_lengths_ft": [
+    17,
+    25
+  ],
+  "geometry": {
+    "arm_length_ft": 17,
+    "feed_height_ft": 30,
+    "arm_elevation_deg": 30,
+    "radius_m": 0.0015,
+    "arm_segments": 181,
+    "feed_gap_m": 0.06
+  },
+  "conductivity_s_m": 1400000.0,
+  "grounds": {
+    "average": {
+      "epsilon_r": 13,
+      "conductivity_s_m": 0.005
+    },
+    "poor": {
+      "epsilon_r": 5,
+      "conductivity_s_m": 0.001
+    },
+    "good": {
+      "epsilon_r": 20,
+      "conductivity_s_m": 0.03
+    }
+  },
+  "bands_mhz": {
+    "40m": [
+      7.0,
+      7.3
+    ],
+    "30m": [
+      10.1,
+      10.15
+    ],
+    "20m": [
+      14,
+      14.35
+    ],
+    "17m": [
+      18.068,
+      18.168
+    ],
+    "15m": [
+      21,
+      21.45
+    ],
+    "12m": [
+      24.89,
+      24.99
+    ],
+    "10m": [
+      28,
+      29.7
+    ]
+  },
+  "reference_frequencies_mhz": {
+    "40m": 7.15,
+    "30m": 10.125,
+    "20m": 14.175,
+    "17m": 18.1,
+    "15m": 21.225,
+    "12m": 24.94,
+    "10m": 28.5
+  },
+  "coarse_samples_per_band": 5,
+  "validation_samples_per_band": 9,
+  "line_sweep_ft": {
+    "start": 20,
+    "stop": 100,
+    "step": 0.25
+  },
+  "comparison_lengths_ft": [
+    28,
+    30,
+    32.808398950131235,
+    40,
+    65.61679790026247,
+    90
+  ],
+  "compact_max_line_ft": 45,
+  "balun_impedance_ratios": [
+    1,
+    4
+  ],
+  "line_uncertainty": {
+    "air_z0_ohm": [
+      480,
+      495,
+      510
+    ],
+    "velocity_factors": [
+      0.93,
+      0.97,
+      0.99
+    ],
+    "loss_db_per_100ft_at_10mhz": [
+      0.03,
+      0.07,
+      0.11
+    ]
+  },
+  "wet_line": {
+    "z0_ohm": 450,
+    "velocity_factor": 0.88,
+    "loss_db_per_100ft_at_10mhz": 0.25
+  },
+  "loss_profiles": [
+    {
+      "id": "conservative",
+      "inductor_q": 35,
+      "capacitor_q": 800,
+      "series_contact_r_ohm": 0.25
+    },
+    {
+      "id": "nominal",
+      "inductor_q": 70,
+      "capacitor_q": 2000,
+      "series_contact_r_ohm": 0.1
+    },
+    {
+      "id": "optimistic",
+      "inductor_q": 120,
+      "capacitor_q": 5000,
+      "series_contact_r_ohm": 0.05
+    }
+  ],
+  "cases": [
+    {
+      "id": "nominal"
+    },
+    {
+      "id": "height_20",
+      "feed_height_ft": 20
+    },
+    {
+      "id": "height_25",
+      "feed_height_ft": 25
+    },
+    {
+      "id": "angle_15",
+      "arm_elevation_deg": 15
+    },
+    {
+      "id": "angle_45",
+      "arm_elevation_deg": 45
+    },
+    {
+      "id": "thin",
+      "radius_m": 0.00075
+    },
+    {
+      "id": "thick",
+      "radius_m": 0.003
+    },
+    {
+      "id": "poor_ground",
+      "ground": "poor"
+    },
+    {
+      "id": "good_ground",
+      "ground": "good"
+    }
+  ],
+  "routing": {
+    "tuner_height_ft": 3,
+    "horizontal_offset_ft": 6,
+    "slack_ft": 2
+  },
+  "tuner_limits": {
+    "max_l_uh": 20,
+    "max_c_pf": 1300,
+    "target_swr": 2.5
+  },
+  "shortlist_per_region_ratio": 8,
+  "sources": {
+    "video": "https://www.youtube.com/watch?v=0ZBsUXsak9Y",
+    "z100a_manual": "https://irp.cdn-website.com/4d6cc687/files/uploaded/Z-100A_Manual_Rev_B_10.pdf",
+    "existing_line": "configs/58ft-doublet-v1.0.json",
+    "carbon_proxy": "configs/53ft-efrw-elevated-v1.json"
+  },
+  "assumptions": [
+    "Controlled comparison of nominal 17 ft and 25 ft straight uniform stainless whips; real taper, alloy and contact resistance unmeasured.",
+    "Generic continuous lossy L network with published LDG aggregate maxima; no LDG bank granularity, firmware, balun loss, voltage/current limit or coax transition.",
+    "Ranking uses worst-band tenth-percentile source-available-power delivered to antenna feedpoint, with unmatched cases scored zero. It is not total radiation efficiency.",
+    "Dry grid crosses Z0, VF, line loss and component Q independently. Equally weighted sensitivity cases are not probabilities.",
+    "Geometry perturbations are one-at-a-time tests, not a complete joint uncertainty distribution.",
+    "A fixed line and fixed ideal balun ratio must cover all sampled bands. No per-band hardware switching.",
+    "All candidates must reach the 30 ft feedpoint with the stated offset/slack; the compact option limits line to 45 ft, while longer runs need deliberate suspended routing.",
+    "Band-edge/interior frequencies are simulation samples, not instructions to transmit on those exact frequencies."
+  ]
+}
