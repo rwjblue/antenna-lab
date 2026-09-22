@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#MISE description="Model compact 40/30/20m fan spacing, tuning and 15m matching"
+set -euo pipefail
+
+PYTHONPATH=src uv run python -m antenna_lab.fan_dipole_study \
+  --config configs/fan-dipole-v1.json \
+  --output build/fan-dipole-v1 \
+  --nec2c "${NEC2C_PATH:-nec2c}"
+PYTHONPATH=src uv run python -m antenna_lab.fan_dipole_report \
+  --output build/fan-dipole-v1 --compact results/fan-dipole-v1
+PYTHONPATH=src uv run antenna-lab verify-results build/fan-dipole-v1
+PYTHONPATH=src uv run antenna-lab verify-results results/fan-dipole-v1

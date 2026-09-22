@@ -59,3 +59,11 @@ Run `NEC2C_PATH=/path/to/nec2c mise run linked-dipole` to regenerate this
 maintained subset and the complete run. Full sampled patterns/sweeps and exact
 NEC inputs/outputs remain under `build/linked-dipole-v1/`. Both trees carry
 verified recursive manifests.
+
+[`fan-dipole-v1/`](fan-dipole-v1/README.md) models a backpackable, permanently
+connected 40/30/20m fan at the same 33 ft apex and 10 ft outer tips. It compares
+⅛–6 inch adjacent parallel-wire spacing, the full sequential tuning process,
+15m harmonic matching, and frozen-wire deployment sensitivity. Its README
+contains mobile-readable PNG/SVG figures and explicit numerical limitations.
+Run `NEC2C_PATH=/path/to/nec2c mise run fan-dipole` to reproduce the compact
+package and full run; cached NEC decks/outputs remain under `build/`.

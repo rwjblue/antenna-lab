@@ -1,0 +1,24 @@
+{
+  "solver_path": "/Users/rwjblue/src/github/rwjblue/antenna-lab/build/tools/nec2c",
+  "python": "3.13.14",
+  "numpy": "2.5.2",
+  "scipy": "1.18.0",
+  "solver_sha256": "fd48ccb4523172ace54ca1ace6c9e0201e3dc52e53fa9a0d7310483ac48b86d8",
+  "config_sha256": "7047b783cceb062cf7b3b3cfa8fcab2527ca00d81360b0c116ca4dbd33e5527c",
+  "source_sha256": {
+    "fan_dipole.py": "b6796c055dee2430a2b13bb0a625b4b3e3d24ffb8ea0b9d44d46208adfe4d89e",
+    "fan_dipole_study.py": "cc32b753c2b52f8d7e68cdaef57e8e5f31232f3c539786062f21a6d571db7bb1",
+    "fan_dipole_report.py": "4740f37fc003616b42bec96dab29b63f0282101fed4bc7e2311fb9a85fad02a9",
+    "linked_dipole.py": "a3c1c45ff8f1d080bc685bf25a9a5aa6adf66840e3b847f987e0e652e3c14fea",
+    "linked_dipole_study.py": "2cdf087afc7ce7e0793e11963b84193b7c3f390b00dd2d8e7660a5fa6f26fe88",
+    "nec.py": "385c7bf7640ea0c879a797f375f97235171418e1185e34a5a1701d00738fd8f7",
+    "linked_dipole_validation.py": "eead93c5971b612732ed44869a45b78ee8e025da0fc211d531b97125e897ab5a",
+    "rigid_doublet_validation.py": "bf243b174bf621aef89139d621fcac855920e49ca41419133dde54db64cabd2c",
+    "transmission_line.py": "3a52d638fe86017fc8bb61ef8794a19e9fd1694408c3a33d5a1998043e9ffe9d",
+    "efrw_study.py": "0659e9f16ca19433d9586d462ce3bbfb8c8c0b4e68ee914df1790be31bf127fb"
+  },
+  "cache": "build/fan-dipole-cache",
+  "validation_passed": false,
+  "matplotlib": "3.11.1",
+  "used_nec_input_count": 5127
+}

@@ -1,0 +1,100 @@
+{
+  "metal_radius_m": 0.0002413,
+  "insulation_outer_radius_m": 0.0005207,
+  "insulation_relative_permittivity": 2.3,
+  "insulation_loading_scale": 1.0,
+  "effective_conductivity_s_m": 10000000.0,
+  "grounds": {
+    "poor": {
+      "epsilon_r": 5.0,
+      "conductivity_s_m": 0.001
+    },
+    "average": {
+      "epsilon_r": 13.0,
+      "conductivity_s_m": 0.005
+    },
+    "good": {
+      "epsilon_r": 20.0,
+      "conductivity_s_m": 0.03
+    }
+  },
+  "study_id": "fan-dipole-v1",
+  "center_height_ft": 33,
+  "end_height_ft": 10,
+  "source_length_m": 0.1,
+  "max_segment_length_m": 0.12,
+  "ribbon_rotation_deg": 0,
+  "spacings_in": [
+    0.125,
+    0.25,
+    0.5,
+    1,
+    1.25,
+    1.5,
+    2,
+    4,
+    6
+  ],
+  "bands_mhz": {
+    "40m": 7.1,
+    "30m": 10.12,
+    "20m": 14.135,
+    "15m": 21.2
+  },
+  "band_edges_mhz": {
+    "40m": [
+      7,
+      7.3
+    ],
+    "30m": [
+      10.1,
+      10.15
+    ],
+    "20m": [
+      14,
+      14.35
+    ],
+    "15m": [
+      21,
+      21.45
+    ]
+  },
+  "initial_half_lengths_ft": [
+    35,
+    25,
+    18
+  ],
+  "length_bounds_ft": [
+    [
+      26,
+      38
+    ],
+    [
+      18,
+      30
+    ],
+    [
+      12,
+      22
+    ]
+  ],
+  "tuning_order": [
+    0,
+    1,
+    0,
+    2,
+    1,
+    0
+  ],
+  "tuning_tolerance_ohm": 0.5,
+  "max_tuning_cycles": 12,
+  "validation_meshes_m": [
+    0.18,
+    0.12,
+    0.08
+  ],
+  "validation_impedance_tolerance_ohm": 2,
+  "validation_average_gain_tolerance_db": 0.1,
+  "source_segments": 9,
+  "feed_model": "equal_voltage"
+}
