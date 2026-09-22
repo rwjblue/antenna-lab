@@ -67,3 +67,9 @@ connected 40/30/20m fan at the same 33 ft apex and 10 ft outer tips. It compares
 contains mobile-readable PNG/SVG figures and explicit numerical limitations.
 Run `NEC2C_PATH=/path/to/nec2c mise run fan-dipole` to reproduce the compact
 package and full run; cached NEC decks/outputs remain under `build/`.
+
+[`fan-bandwidth-v1/`](fan-bandwidth-v1/README.md) extends the compact fan study
+with full 2:1 bandwidth comparisons and tuning that favors lower-band CW while
+reaching part of the General phone ranges. It compares ½–12 inch spacing,
+separates smooth copper from the prior wire-loss proxy, and illustrates the
+packing tradeoff at 4 and 6 inches. Reproduce with `mise run fan-bandwidth`.

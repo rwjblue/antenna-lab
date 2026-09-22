@@ -1,0 +1,21 @@
+{
+  "solver_sha256": "fd48ccb4523172ace54ca1ace6c9e0201e3dc52e53fa9a0d7310483ac48b86d8",
+  "config_sha256": "39e405867a3c9a6174ebb7afb13a5c8b11b366030dfd34471d28d89407b722f3",
+  "source_sha256": {
+    "fan_bandwidth.py": "524d167e4e09acd3537979013bad80070f5b9a7118a8263e330b20783fc927bf",
+    "fan_bandwidth_report.py": "f25c8bd5030aa48f884c17f65b9b89680f5fe57e5ff9192ebec99e16789d4195",
+    "fan_dipole.py": "b6796c055dee2430a2b13bb0a625b4b3e3d24ffb8ea0b9d44d46208adfe4d89e",
+    "fan_dipole_study.py": "cc32b753c2b52f8d7e68cdaef57e8e5f31232f3c539786062f21a6d571db7bb1",
+    "linked_dipole.py": "a3c1c45ff8f1d080bc685bf25a9a5aa6adf66840e3b847f987e0e652e3c14fea",
+    "linked_dipole_study.py": "2cdf087afc7ce7e0793e11963b84193b7c3f390b00dd2d8e7660a5fa6f26fe88",
+    "linked_dipole_validation.py": "eead93c5971b612732ed44869a45b78ee8e025da0fc211d531b97125e897ab5a",
+    "rigid_doublet_validation.py": "bf243b174bf621aef89139d621fcac855920e49ca41419133dde54db64cabd2c",
+    "nec.py": "385c7bf7640ea0c879a797f375f97235171418e1185e34a5a1701d00738fd8f7",
+    "transmission_line.py": "3a52d638fe86017fc8bb61ef8794a19e9fd1694408c3a33d5a1998043e9ffe9d",
+    "efrw_study.py": "0659e9f16ca19433d9586d462ce3bbfb8c8c0b4e68ee914df1790be31bf127fb"
+  },
+  "base_config_sha256": "7047b783cceb062cf7b3b3cfa8fcab2527ca00d81360b0c116ca4dbd33e5527c",
+  "validation_passed": true,
+  "matplotlib": "3.11.1",
+  "used_nec_input_count": 7854
+}

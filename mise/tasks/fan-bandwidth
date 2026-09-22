@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#MISE description="Compare fan bandwidth and tune for CW plus some General SSB"
+set -euo pipefail
+
+PYTHONPATH=src uv run python -m antenna_lab.fan_bandwidth \
+  --config configs/fan-bandwidth-v1.json --nec2c "${NEC2C_PATH:-nec2c}"
+for mode in --recenter-only --cw-first; do
+  PYTHONPATH=src uv run python -m antenna_lab.fan_bandwidth \
+    --config configs/fan-bandwidth-v1.json \
+    --nec2c "${NEC2C_PATH:-nec2c}" "$mode"
+done
+PYTHONPATH=src uv run python -m antenna_lab.fan_bandwidth_report
+PYTHONPATH=src uv run antenna-lab verify-results build/fan-bandwidth-v1
+PYTHONPATH=src uv run antenna-lab verify-results results/fan-bandwidth-v1

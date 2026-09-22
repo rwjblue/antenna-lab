@@ -1,0 +1,81 @@
+{
+  "base_config": "configs/fan-dipole-v1.json",
+  "spacings_in": [
+    0.5,
+    1,
+    2,
+    3,
+    4,
+    6,
+    12
+  ],
+  "materials": {
+    "smooth-copper": 58000000.0,
+    "CCS-proxy": 10000000.0
+  },
+  "desired_intervals_mhz": {
+    "40m": [
+      7,
+      7.3
+    ],
+    "30m": [
+      10.1,
+      10.15
+    ],
+    "20m": [
+      14,
+      14.35
+    ]
+  },
+  "recenter_spacings_in": {
+    "smooth-copper": [
+      2,
+      4,
+      6
+    ],
+    "CCS-proxy": [
+      4
+    ]
+  },
+  "cw_anchor_low_mhz": {
+    "40m": 7.02,
+    "20m": 14.02
+  },
+  "cw_spacings_in": {
+    "smooth-copper": [
+      2,
+      3,
+      4,
+      6
+    ],
+    "CCS-proxy": [
+      4,
+      6
+    ]
+  },
+  "cw_priority_intervals_mhz": {
+    "40m": [
+      7.025,
+      7.075
+    ],
+    "30m": [
+      10.1,
+      10.15
+    ],
+    "20m": [
+      14.025,
+      14.075
+    ]
+  },
+  "general_phone_intervals_mhz": {
+    "40m": [
+      7.175,
+      7.3
+    ],
+    "20m": [
+      14.225,
+      14.35
+    ]
+  },
+  "range_note": "CW priority slices are planning assumptions, not legal mode boundaries. General phone ranges follow ARRL US band chart. 5 kHz match margin below selected CW slices."
+}

@@ -1,0 +1,2222 @@
+[
+  {
+    "material": "smooth-copper",
+    "spacing_in": 2,
+    "config": {
+      "metal_radius_m": 0.0002413,
+      "insulation_outer_radius_m": 0.0005207,
+      "insulation_relative_permittivity": 2.3,
+      "insulation_loading_scale": 1.0,
+      "effective_conductivity_s_m": 58000000.0,
+      "grounds": {
+        "poor": {
+          "epsilon_r": 5.0,
+          "conductivity_s_m": 0.001
+        },
+        "average": {
+          "epsilon_r": 13.0,
+          "conductivity_s_m": 0.005
+        },
+        "good": {
+          "epsilon_r": 20.0,
+          "conductivity_s_m": 0.03
+        }
+      },
+      "study_id": "fan-dipole-v1",
+      "center_height_ft": 33,
+      "end_height_ft": 10,
+      "source_length_m": 0.1,
+      "max_segment_length_m": 0.12,
+      "ribbon_rotation_deg": 0,
+      "spacings_in": [
+        0.125,
+        0.25,
+        0.5,
+        1,
+        1.25,
+        1.5,
+        2,
+        4,
+        6
+      ],
+      "bands_mhz": {
+        "40m": 7.1494115907471105,
+        "30m": 10.125657915951496,
+        "20m": 14.176620168128071,
+        "15m": 21.2
+      },
+      "band_edges_mhz": {
+        "40m": [
+          7,
+          7.3
+        ],
+        "30m": [
+          10.1,
+          10.15
+        ],
+        "20m": [
+          14,
+          14.35
+        ],
+        "15m": [
+          21,
+          21.45
+        ]
+      },
+      "initial_half_lengths_ft": [
+        32.70169251047668,
+        23.068259587603244,
+        16.46803056478444
+      ],
+      "length_bounds_ft": [
+        [
+          26,
+          38
+        ],
+        [
+          18,
+          30
+        ],
+        [
+          12,
+          22
+        ]
+      ],
+      "tuning_order": [
+        0,
+        1,
+        0,
+        2,
+        1,
+        0
+      ],
+      "tuning_tolerance_ohm": 0.5,
+      "max_tuning_cycles": 12,
+      "validation_meshes_m": [
+        0.18,
+        0.12,
+        0.08
+      ],
+      "validation_impedance_tolerance_ohm": 2,
+      "validation_average_gain_tolerance_db": 0.1,
+      "source_segments": 9,
+      "feed_model": "equal_voltage"
+    },
+    "tuning_history": [
+      {
+        "targets_mhz": {
+          "40m": 7.15,
+          "30m": 10.125,
+          "20m": 14.175,
+          "15m": 21.2
+        },
+        "tuning": {
+          "spacing_in": 2,
+          "lengths_ft": [
+            32.70169251047668,
+            23.068259587603244,
+            16.46803056478444
+          ],
+          "converged": true,
+          "cycles": 1,
+          "error": null,
+          "history": [
+            {
+              "step": 0,
+              "cycle": 0,
+              "adjusted_band": "initial",
+              "lengths_ft": [
+                35,
+                25,
+                18
+              ],
+              "reactances_ohm": [
+                185.79170725067323,
+                398.2223450108273,
+                510.9674433514437
+              ],
+              "delta_in": 0
+            },
+            {
+              "step": 1,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.699177437304,
+                25,
+                18
+              ],
+              "delta_in": -27.60987075235198,
+              "reactances_ohm": [
+                -0.00014406148480679127,
+                342.71897516731025,
+                479.95963013553313
+              ]
+            },
+            {
+              "step": 2,
+              "cycle": 1,
+              "adjusted_band": "30m",
+              "lengths_ft": [
+                32.699177437304,
+                23.06650995045179,
+                18
+              ],
+              "delta_in": -23.20188059457854,
+              "reactances_ohm": [
+                -0.16362995667913177,
+                -9.515926414816484e-05,
+                441.9224086407421
+              ]
+            },
+            {
+              "step": 3,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.70169251047668,
+                23.06650995045179,
+                18
+              ],
+              "delta_in": 0.030180878072172845,
+              "reactances_ohm": [
+                -0.00010274299348991895,
+                0.006771421613899978,
+                441.960953484434
+              ]
+            },
+            {
+              "step": 4,
+              "cycle": 1,
+              "adjusted_band": "20m",
+              "lengths_ft": [
+                32.70169251047668,
+                23.06650995045179,
+                16.46803056478444
+              ],
+              "delta_in": -18.383633222586738,
+              "reactances_ohm": [
+                -0.012293966928117739,
+                -0.33026768675163487,
+                0.00022506391457108595
+              ]
+            },
+            {
+              "step": 5,
+              "cycle": 1,
+              "adjusted_band": "30m",
+              "lengths_ft": [
+                32.70169251047668,
+                23.068259587603244,
+                16.46803056478444
+              ],
+              "delta_in": 0.020995645817464492,
+              "reactances_ohm": [
+                -0.012086345879383375,
+                -0.0002394148540722424,
+                0.0023433353286047612
+              ]
+            },
+            {
+              "step": 6,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.70169251047668,
+                23.068259587603244,
+                16.46803056478444
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.012086345879383375,
+                -0.0002394148540722424,
+                0.0023433353286047612
+              ]
+            }
+          ]
+        },
+        "center_errors_mhz": {
+          "40m": -0.0005884092528898321,
+          "30m": 0.0006579159514963351,
+          "20m": 0.0016201681280705316
+        }
+      },
+      {
+        "targets_mhz": {
+          "40m": 7.1494115907471105,
+          "30m": 10.125657915951496,
+          "20m": 14.176620168128071,
+          "15m": 21.2
+        },
+        "tuning": {
+          "spacing_in": 2,
+          "lengths_ft": [
+            32.70442436790141,
+            23.06672036944852,
+            16.46611331780907
+          ],
+          "converged": true,
+          "cycles": 1,
+          "error": null,
+          "history": [
+            {
+              "step": 0,
+              "cycle": 0,
+              "adjusted_band": "initial",
+              "lengths_ft": [
+                32.70169251047668,
+                23.068259587603244,
+                16.46803056478444
+              ],
+              "reactances_ohm": [
+                -0.17745757976983526,
+                0.2837604226653295,
+                0.6755161238186068
+              ],
+              "delta_in": 0
+            },
+            {
+              "step": 1,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.70442436790141,
+                23.068259587603244,
+                16.46803056478444
+              ],
+              "delta_in": 0.032782289096729755,
+              "reactances_ohm": [
+                3.03350166075777e-06,
+                0.29101642880972994,
+                0.6822499784209939
+              ]
+            },
+            {
+              "step": 2,
+              "cycle": 1,
+              "adjusted_band": "30m",
+              "lengths_ft": [
+                32.70442436790141,
+                23.06672036944852,
+                16.46803056478444
+              ],
+              "delta_in": -0.018470617856664262,
+              "reactances_ohm": [
+                -0.0001346370250295797,
+                7.57566603931488e-05,
+                0.6801279467297598
+              ]
+            },
+            {
+              "step": 3,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.70442436790141,
+                23.06672036944852,
+                16.46803056478444
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.0001346370250295797,
+                7.57566603931488e-05,
+                0.6801279467297598
+              ]
+            },
+            {
+              "step": 4,
+              "cycle": 1,
+              "adjusted_band": "20m",
+              "lengths_ft": [
+                32.70442436790141,
+                23.06672036944852,
+                16.46611331780907
+              ],
+              "delta_in": -0.023006963704403915,
+              "reactances_ohm": [
+                -0.00014856543187175147,
+                -5.9637116681351055e-05,
+                0.00030800740417699185
+              ]
+            },
+            {
+              "step": 5,
+              "cycle": 1,
+              "adjusted_band": "30m",
+              "lengths_ft": [
+                32.70442436790141,
+                23.06672036944852,
+                16.46611331780907
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.00014856543187175147,
+                -5.9637116681351055e-05,
+                0.00030800740417699185
+              ]
+            },
+            {
+              "step": 6,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.70442436790141,
+                23.06672036944852,
+                16.46611331780907
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.00014856543187175147,
+                -5.9637116681351055e-05,
+                0.00030800740417699185
+              ]
+            }
+          ]
+        },
+        "center_errors_mhz": {
+          "40m": 4.3452620011485976e-05,
+          "30m": 5.969970194641405e-06,
+          "20m": 1.9145838763279244e-06
+        }
+      }
+    ],
+    "cases": [
+      {
+        "band": "40m",
+        "frequency_mhz": 7.1494115907471105,
+        "r_ohm": 52.119822696339746,
+        "x_ohm": -0.00014856543187175147,
+        "swr": 1.0423964540330766,
+        "full_swr2_window_mhz": [
+          7.023281931137973,
+          7.276631163622005
+        ],
+        "width_khz": 253.3492324840321,
+        "desired_fraction": 0.8444974416134408
+      },
+      {
+        "band": "30m",
+        "frequency_mhz": 10.125657915951496,
+        "r_ohm": 66.28229514999728,
+        "x_ohm": -0.0003570572421333426,
+        "swr": 1.325645903089209,
+        "full_swr2_window_mhz": [
+          10.04002927304443,
+          10.20995878701518
+        ],
+        "width_khz": 169.92951397075018,
+        "desired_fraction": 1.0
+      },
+      {
+        "band": "20m",
+        "frequency_mhz": 14.176620168128071,
+        "r_ohm": 66.70840539106308,
+        "x_ohm": 0.00030800740417699185,
+        "swr": 1.3341681078861694,
+        "full_swr2_window_mhz": [
+          14.088364531431123,
+          14.261631639401124
+        ],
+        "width_khz": 173.2671079700001,
+        "desired_fraction": 0.49504887991428653
+      }
+    ],
+    "validation": [
+      {
+        "material": "smooth-copper",
+        "spacing_in": 2,
+        "kind": "window_alignment",
+        "max_error_khz": 0.043452620011485976,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 2,
+        "band": "40m",
+        "frequency_mhz": 7.1494115907471105,
+        "kind": "mesh",
+        "delta_z_ohm": 0.019733266475294293,
+        "coarse_swr": 1.0423964540330766,
+        "fine_swr": 1.0427548797745185,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 2,
+        "band": "40m",
+        "frequency_mhz": 7.023281931137973,
+        "kind": "mesh",
+        "delta_z_ohm": 0.022497231522102024,
+        "coarse_swr": 2.000027098667061,
+        "fine_swr": 2.000289152149814,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 2,
+        "band": "40m",
+        "frequency_mhz": 7.276631163622005,
+        "kind": "mesh",
+        "delta_z_ohm": 0.01888446641655285,
+        "coarse_swr": 1.99998015450795,
+        "fine_swr": 1.9998086911614,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 2,
+        "band": "40m",
+        "kind": "lossless_average_gain",
+        "error_db": 0.009115606814702033,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 2,
+        "band": "30m",
+        "frequency_mhz": 10.125657915951496,
+        "kind": "mesh",
+        "delta_z_ohm": 0.02892250016282978,
+        "coarse_swr": 1.3256467790305522,
+        "fine_swr": 1.3262172770660825,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 2,
+        "band": "30m",
+        "frequency_mhz": 10.04002927304443,
+        "kind": "mesh",
+        "delta_z_ohm": 0.030877137304387483,
+        "coarse_swr": 2.000039450171035,
+        "fine_swr": 2.000573682301833,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 2,
+        "band": "30m",
+        "frequency_mhz": 10.20995878701518,
+        "kind": "mesh",
+        "delta_z_ohm": 0.04210296455768481,
+        "coarse_swr": 2.0000307188834068,
+        "fine_swr": 2.000907302174507,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 2,
+        "band": "30m",
+        "kind": "lossless_average_gain",
+        "error_db": 0.010795636504513805,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 2,
+        "band": "20m",
+        "frequency_mhz": 14.176620168128071,
+        "kind": "mesh",
+        "delta_z_ohm": 0.0504998057826407,
+        "coarse_swr": 1.3341681078861694,
+        "fine_swr": 1.335083334639289,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 2,
+        "band": "20m",
+        "frequency_mhz": 14.088364531431123,
+        "kind": "mesh",
+        "delta_z_ohm": 0.04323858315516211,
+        "coarse_swr": 1.9999544050893858,
+        "fine_swr": 2.0003998360771367,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 2,
+        "band": "20m",
+        "frequency_mhz": 14.261631639401124,
+        "kind": "mesh",
+        "delta_z_ohm": 0.08201321920753846,
+        "coarse_swr": 1.9999877958436718,
+        "fine_swr": 2.0019612152739614,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 2,
+        "band": "20m",
+        "kind": "lossless_average_gain",
+        "error_db": 0.009028242345255583,
+        "passed": true
+      }
+    ]
+  },
+  {
+    "material": "smooth-copper",
+    "spacing_in": 4,
+    "config": {
+      "metal_radius_m": 0.0002413,
+      "insulation_outer_radius_m": 0.0005207,
+      "insulation_relative_permittivity": 2.3,
+      "insulation_loading_scale": 1.0,
+      "effective_conductivity_s_m": 58000000.0,
+      "grounds": {
+        "poor": {
+          "epsilon_r": 5.0,
+          "conductivity_s_m": 0.001
+        },
+        "average": {
+          "epsilon_r": 13.0,
+          "conductivity_s_m": 0.005
+        },
+        "good": {
+          "epsilon_r": 20.0,
+          "conductivity_s_m": 0.03
+        }
+      },
+      "study_id": "fan-dipole-v1",
+      "center_height_ft": 33,
+      "end_height_ft": 10,
+      "source_length_m": 0.1,
+      "max_segment_length_m": 0.12,
+      "ribbon_rotation_deg": 0,
+      "spacings_in": [
+        0.125,
+        0.25,
+        0.5,
+        1,
+        1.25,
+        1.5,
+        2,
+        4,
+        6
+      ],
+      "bands_mhz": {
+        "40m": 7.1499005742715305,
+        "30m": 10.124861790993846,
+        "20m": 14.173156366436352,
+        "15m": 21.2
+      },
+      "band_edges_mhz": {
+        "40m": [
+          7,
+          7.3
+        ],
+        "30m": [
+          10.1,
+          10.15
+        ],
+        "20m": [
+          14,
+          14.35
+        ],
+        "15m": [
+          21,
+          21.45
+        ]
+      },
+      "initial_half_lengths_ft": [
+        32.70933196086046,
+        23.142964094061174,
+        16.52605253569419
+      ],
+      "length_bounds_ft": [
+        [
+          26,
+          38
+        ],
+        [
+          18,
+          30
+        ],
+        [
+          12,
+          22
+        ]
+      ],
+      "tuning_order": [
+        0,
+        1,
+        0,
+        2,
+        1,
+        0
+      ],
+      "tuning_tolerance_ohm": 0.5,
+      "max_tuning_cycles": 12,
+      "validation_meshes_m": [
+        0.18,
+        0.12,
+        0.08
+      ],
+      "validation_impedance_tolerance_ohm": 2,
+      "validation_average_gain_tolerance_db": 0.1,
+      "source_segments": 9,
+      "feed_model": "equal_voltage"
+    },
+    "tuning_history": [
+      {
+        "targets_mhz": {
+          "40m": 7.15,
+          "30m": 10.125,
+          "20m": 14.175,
+          "15m": 21.2
+        },
+        "tuning": {
+          "spacing_in": 4,
+          "lengths_ft": [
+            32.70933196086046,
+            23.142964094061174,
+            16.52605253569419
+          ],
+          "converged": true,
+          "cycles": 1,
+          "error": null,
+          "history": [
+            {
+              "step": 0,
+              "cycle": 0,
+              "adjusted_band": "initial",
+              "lengths_ft": [
+                35,
+                25,
+                18
+              ],
+              "reactances_ohm": [
+                190.95500605035875,
+                348.0965277874264,
+                390.7982124675285
+              ],
+              "delta_in": 0
+            },
+            {
+              "step": 1,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.70824526990458,
+                25,
+                18
+              ],
+              "delta_in": -27.501056761145037,
+              "reactances_ohm": [
+                0.00012379335971983064,
+                304.36889209887136,
+                370.5971700197538
+              ]
+            },
+            {
+              "step": 2,
+              "cycle": 1,
+              "adjusted_band": "30m",
+              "lengths_ft": [
+                32.70824526990458,
+                23.141672768175596,
+                18
+              ],
+              "delta_in": -22.29992678189285,
+              "reactances_ohm": [
+                -0.07048432892455041,
+                -0.00019544640251964703,
+                343.71065330891787
+              ]
+            },
+            {
+              "step": 3,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.70933196086046,
+                23.141672768175596,
+                18
+              ],
+              "delta_in": 0.01304029147055985,
+              "reactances_ohm": [
+                2.421415156481079e-06,
+                0.0024028143600887232,
+                343.7131921298688
+              ]
+            },
+            {
+              "step": 4,
+              "cycle": 1,
+              "adjusted_band": "20m",
+              "lengths_ft": [
+                32.70933196086046,
+                23.141672768175596,
+                16.52605253569419
+              ],
+              "delta_in": -17.687369571669706,
+              "reactances_ohm": [
+                -0.003092374283240024,
+                -0.2103196566214072,
+                -8.708248880168499e-05
+              ]
+            },
+            {
+              "step": 5,
+              "cycle": 1,
+              "adjusted_band": "30m",
+              "lengths_ft": [
+                32.70933196086046,
+                23.142964094061174,
+                16.52605253569419
+              ],
+              "delta_in": 0.01549591062693878,
+              "reactances_ohm": [
+                -0.0030364701193837905,
+                -0.00014356092504181657,
+                -0.0002854146400966151
+              ]
+            },
+            {
+              "step": 6,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.70933196086046,
+                23.142964094061174,
+                16.52605253569419
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.0030364701193837905,
+                -0.00014356092504181657,
+                -0.0002854146400966151
+              ]
+            }
+          ]
+        },
+        "center_errors_mhz": {
+          "40m": -9.942572846988185e-05,
+          "30m": -0.00013820900615435505,
+          "20m": -0.0018436335636486945
+        }
+      },
+      {
+        "targets_mhz": {
+          "40m": 7.1499005742715305,
+          "30m": 10.124861790993846,
+          "20m": 14.173156366436352,
+          "15m": 21.2
+        },
+        "tuning": {
+          "spacing_in": 4,
+          "lengths_ft": [
+            32.70933196086046,
+            23.14328168885829,
+            16.52821722596288
+          ],
+          "converged": true,
+          "cycles": 1,
+          "error": null,
+          "history": [
+            {
+              "step": 0,
+              "cycle": 0,
+              "adjusted_band": "initial",
+              "lengths_ft": [
+                32.70933196086046,
+                23.142964094061174,
+                16.52605253569419
+              ],
+              "reactances_ohm": [
+                -0.031018324705222616,
+                -0.05138088034745047,
+                -0.6069920367590063
+              ],
+              "delta_in": 0
+            },
+            {
+              "step": 1,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.70933196086046,
+                23.142964094061174,
+                16.52605253569419
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.031018324705222616,
+                -0.05138088034745047,
+                -0.6069920367590063
+              ]
+            },
+            {
+              "step": 2,
+              "cycle": 1,
+              "adjusted_band": "30m",
+              "lengths_ft": [
+                32.70933196086046,
+                23.14328168885829,
+                16.52605253569419
+              ],
+              "delta_in": 0.0038111375654068524,
+              "reactances_ohm": [
+                -0.030950256231753803,
+                0.00038228416549127903,
+                -0.6069920367590063
+              ]
+            },
+            {
+              "step": 3,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.70933196086046,
+                23.14328168885829,
+                16.52605253569419
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.030950256231753803,
+                0.00038228416549127903,
+                -0.6069920367590063
+              ]
+            },
+            {
+              "step": 4,
+              "cycle": 1,
+              "adjusted_band": "20m",
+              "lengths_ft": [
+                32.70933196086046,
+                23.14328168885829,
+                16.52821722596288
+              ],
+              "delta_in": 0.02597628322426715,
+              "reactances_ohm": [
+                -0.03102793416692043,
+                0.0004367538942016984,
+                -0.0006432012826619948
+              ]
+            },
+            {
+              "step": 5,
+              "cycle": 1,
+              "adjusted_band": "30m",
+              "lengths_ft": [
+                32.70933196086046,
+                23.14328168885829,
+                16.52821722596288
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.03102793416692043,
+                0.0004367538942016984,
+                -0.0006432012826619948
+              ]
+            },
+            {
+              "step": 6,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.70933196086046,
+                23.14328168885829,
+                16.52821722596288
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.03102793416692043,
+                0.0004367538942016984,
+                -0.0006432012826619948
+              ]
+            }
+          ]
+        },
+        "center_errors_mhz": {
+          "40m": -0.00010077242672323905,
+          "30m": 1.6648414487008267e-06,
+          "20m": -3.1356705605389834e-06
+        }
+      }
+    ],
+    "cases": [
+      {
+        "band": "40m",
+        "frequency_mhz": 7.1499005742715305,
+        "r_ohm": 52.076820577806664,
+        "x_ohm": -0.030920066267448504,
+        "swr": 1.0415411083995472,
+        "full_swr2_window_mhz": [
+          7.023124423058797,
+          7.277077121794651
+        ],
+        "width_khz": 253.95269873585403,
+        "desired_fraction": 0.8465089957861806
+      },
+      {
+        "band": "30m",
+        "frequency_mhz": 10.124861790993846,
+        "r_ohm": 63.048536388266385,
+        "x_ohm": 0.0004367538942016984,
+        "swr": 1.2609707279283893,
+        "full_swr2_window_mhz": [
+          10.026354279569473,
+          10.22364239074763
+        ],
+        "width_khz": 197.2881111781568,
+        "desired_fraction": 1.0
+      },
+      {
+        "band": "20m",
+        "frequency_mhz": 14.173156366436352,
+        "r_ohm": 61.50730736050111,
+        "x_ohm": -0.0006432012826619948,
+        "swr": 1.230146147606641,
+        "full_swr2_window_mhz": [
+          14.0649781040861,
+          14.285028167255021
+        ],
+        "width_khz": 220.05006316892127,
+        "desired_fraction": 0.6287144661969186
+      }
+    ],
+    "validation": [
+      {
+        "material": "smooth-copper",
+        "spacing_in": 4,
+        "kind": "window_alignment",
+        "max_error_khz": 0.10077242672323905,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 4,
+        "band": "40m",
+        "frequency_mhz": 7.1499005742715305,
+        "kind": "mesh",
+        "delta_z_ohm": 0.021869558561606637,
+        "coarse_swr": 1.0415409200744192,
+        "fine_swr": 1.0419642732187835,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 4,
+        "band": "40m",
+        "frequency_mhz": 7.023124423058797,
+        "kind": "mesh",
+        "delta_z_ohm": 0.025517840011385448,
+        "coarse_swr": 1.9999630861574897,
+        "fine_swr": 2.000195369806417,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 4,
+        "band": "40m",
+        "frequency_mhz": 7.277077121794651,
+        "kind": "mesh",
+        "delta_z_ohm": 0.021634140127454123,
+        "coarse_swr": 2.000012052882575,
+        "fine_swr": 1.9999915557416716,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 4,
+        "band": "40m",
+        "kind": "lossless_average_gain",
+        "error_db": 0.008369284424612902,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 4,
+        "band": "30m",
+        "frequency_mhz": 10.124861790993846,
+        "kind": "mesh",
+        "delta_z_ohm": 0.03743498047720982,
+        "coarse_swr": 1.2609707279283893,
+        "fine_swr": 1.2617194273243257,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 4,
+        "band": "30m",
+        "frequency_mhz": 10.026354279569473,
+        "kind": "mesh",
+        "delta_z_ohm": 0.04178238028208349,
+        "coarse_swr": 2.0000151500184757,
+        "fine_swr": 2.000746591679552,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 4,
+        "band": "30m",
+        "frequency_mhz": 10.22364239074763,
+        "kind": "mesh",
+        "delta_z_ohm": 0.05080200522211848,
+        "coarse_swr": 2.00003072475851,
+        "fine_swr": 2.001006950593225,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 4,
+        "band": "30m",
+        "kind": "lossless_average_gain",
+        "error_db": 0.010240545309500719,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 4,
+        "band": "20m",
+        "frequency_mhz": 14.173156366436352,
+        "kind": "mesh",
+        "delta_z_ohm": 0.04627166347361416,
+        "coarse_swr": 1.230146147606641,
+        "fine_swr": 1.2310174337142241,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 4,
+        "band": "20m",
+        "frequency_mhz": 14.0649781040861,
+        "kind": "mesh",
+        "delta_z_ohm": 0.03660833027618845,
+        "coarse_swr": 2.0000585760487097,
+        "fine_swr": 2.0002823803398018,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 4,
+        "band": "20m",
+        "frequency_mhz": 14.285028167255021,
+        "kind": "mesh",
+        "delta_z_ohm": 0.0733026696951774,
+        "coarse_swr": 1.999982015582818,
+        "fine_swr": 2.001716613144044,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 4,
+        "band": "20m",
+        "kind": "lossless_average_gain",
+        "error_db": 0.00796944412824633,
+        "passed": true
+      }
+    ]
+  },
+  {
+    "material": "smooth-copper",
+    "spacing_in": 6,
+    "config": {
+      "metal_radius_m": 0.0002413,
+      "insulation_outer_radius_m": 0.0005207,
+      "insulation_relative_permittivity": 2.3,
+      "insulation_loading_scale": 1.0,
+      "effective_conductivity_s_m": 58000000.0,
+      "grounds": {
+        "poor": {
+          "epsilon_r": 5.0,
+          "conductivity_s_m": 0.001
+        },
+        "average": {
+          "epsilon_r": 13.0,
+          "conductivity_s_m": 0.005
+        },
+        "good": {
+          "epsilon_r": 20.0,
+          "conductivity_s_m": 0.03
+        }
+      },
+      "study_id": "fan-dipole-v1",
+      "center_height_ft": 33,
+      "end_height_ft": 10,
+      "source_length_m": 0.1,
+      "max_segment_length_m": 0.12,
+      "ribbon_rotation_deg": 0,
+      "spacings_in": [
+        0.125,
+        0.25,
+        0.5,
+        1,
+        1.25,
+        1.5,
+        2,
+        4,
+        6
+      ],
+      "bands_mhz": {
+        "40m": 7.150090439755342,
+        "30m": 10.124446496065083,
+        "20m": 14.170606666930947,
+        "15m": 21.2
+      },
+      "band_edges_mhz": {
+        "40m": [
+          7,
+          7.3
+        ],
+        "30m": [
+          10.1,
+          10.15
+        ],
+        "20m": [
+          14,
+          14.35
+        ],
+        "15m": [
+          21,
+          21.45
+        ]
+      },
+      "initial_half_lengths_ft": [
+        32.71318260018003,
+        23.174495478300276,
+        16.552666427368457
+      ],
+      "length_bounds_ft": [
+        [
+          26,
+          38
+        ],
+        [
+          18,
+          30
+        ],
+        [
+          12,
+          22
+        ]
+      ],
+      "tuning_order": [
+        0,
+        1,
+        0,
+        2,
+        1,
+        0
+      ],
+      "tuning_tolerance_ohm": 0.5,
+      "max_tuning_cycles": 12,
+      "validation_meshes_m": [
+        0.18,
+        0.12,
+        0.08
+      ],
+      "validation_impedance_tolerance_ohm": 2,
+      "validation_average_gain_tolerance_db": 0.1,
+      "source_segments": 9,
+      "feed_model": "equal_voltage"
+    },
+    "tuning_history": [
+      {
+        "targets_mhz": {
+          "40m": 7.15,
+          "30m": 10.125,
+          "20m": 14.175,
+          "15m": 21.2
+        },
+        "tuning": {
+          "spacing_in": 6,
+          "lengths_ft": [
+            32.71318260018003,
+            23.174495478300276,
+            16.552666427368457
+          ],
+          "converged": true,
+          "cycles": 1,
+          "error": null,
+          "history": [
+            {
+              "step": 0,
+              "cycle": 0,
+              "adjusted_band": "initial",
+              "lengths_ft": [
+                35,
+                25,
+                18
+              ],
+              "reactances_ohm": [
+                194.51078953226903,
+                324.23181287819546,
+                334.51707559589335
+              ],
+              "delta_in": 0
+            },
+            {
+              "step": 1,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.71318260018003,
+                25,
+                18
+              ],
+              "delta_in": -27.4418087978396,
+              "reactances_ohm": [
+                -6.294998279393732e-05,
+                285.71267861382324,
+                318.8393647933431
+              ]
+            },
+            {
+              "step": 2,
+              "cycle": 1,
+              "adjusted_band": "30m",
+              "lengths_ft": [
+                32.71318260018003,
+                23.17343672924767,
+                18
+              ],
+              "delta_in": -21.91875924902797,
+              "reactances_ohm": [
+                -0.032920406703538026,
+                -0.00011196106103759514,
+                296.90071360508904
+              ]
+            },
+            {
+              "step": 3,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.71318260018003,
+                23.17343672924767,
+                18
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.032920406703538026,
+                -0.00011196106103759514,
+                296.90071360508904
+              ]
+            },
+            {
+              "step": 4,
+              "cycle": 1,
+              "adjusted_band": "20m",
+              "lengths_ft": [
+                32.71318260018003,
+                23.17343672924767,
+                16.552666427368457
+              ],
+              "delta_in": -17.36800287157851,
+              "reactances_ohm": [
+                -0.03031602888290436,
+                -0.1580066118906001,
+                6.680224838085275e-05
+              ]
+            },
+            {
+              "step": 5,
+              "cycle": 1,
+              "adjusted_band": "30m",
+              "lengths_ft": [
+                32.71318260018003,
+                23.174495478300276,
+                16.552666427368457
+              ],
+              "delta_in": 0.012704988631284664,
+              "reactances_ohm": [
+                -0.030109104302101473,
+                0.00019394090436022937,
+                -0.00022517617888737884
+              ]
+            },
+            {
+              "step": 6,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.71318260018003,
+                23.174495478300276,
+                16.552666427368457
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.030109104302101473,
+                0.00019394090436022937,
+                -0.00022517617888737884
+              ]
+            }
+          ]
+        },
+        "center_errors_mhz": {
+          "40m": 9.04397553416203e-05,
+          "30m": -0.0005535039349169324,
+          "20m": -0.00439333306905354
+        }
+      },
+      {
+        "targets_mhz": {
+          "40m": 7.150090439755342,
+          "30m": 10.124446496065083,
+          "20m": 14.170606666930947,
+          "15m": 21.2
+        },
+        "tuning": {
+          "spacing_in": 6,
+          "lengths_ft": [
+            32.71318260018003,
+            23.17575813411027,
+            16.557840834192067
+          ],
+          "converged": true,
+          "cycles": 1,
+          "error": null,
+          "history": [
+            {
+              "step": 0,
+              "cycle": 0,
+              "adjusted_band": "initial",
+              "lengths_ft": [
+                32.71318260018003,
+                23.174495478300276,
+                16.552666427368457
+              ],
+              "reactances_ohm": [
+                -0.005078812617491224,
+                -0.18928884400209955,
+                -1.2579823202243616
+              ],
+              "delta_in": 0
+            },
+            {
+              "step": 1,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.71318260018003,
+                23.174495478300276,
+                16.552666427368457
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.005078812617491224,
+                -0.18928884400209955,
+                -1.2579823202243616
+              ]
+            },
+            {
+              "step": 2,
+              "cycle": 1,
+              "adjusted_band": "30m",
+              "lengths_ft": [
+                32.71318260018003,
+                23.17575813411027,
+                16.552666427368457
+              ],
+              "delta_in": 0.015151869719943534,
+              "reactances_ohm": [
+                -0.005116855894620327,
+                0.00015637514190018845,
+                -1.2575832309933956
+              ]
+            },
+            {
+              "step": 3,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.71318260018003,
+                23.17575813411027,
+                16.552666427368457
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.005116855894620327,
+                0.00015637514190018845,
+                -1.2575832309933956
+              ]
+            },
+            {
+              "step": 4,
+              "cycle": 1,
+              "adjusted_band": "20m",
+              "lengths_ft": [
+                32.71318260018003,
+                23.17575813411027,
+                16.557840834192067
+              ],
+              "delta_in": 0.06209288188331641,
+              "reactances_ohm": [
+                -0.005144875862521339,
+                0.0006317881739019973,
+                -0.0005378944481341523
+              ]
+            },
+            {
+              "step": 5,
+              "cycle": 1,
+              "adjusted_band": "30m",
+              "lengths_ft": [
+                32.71318260018003,
+                23.17575813411027,
+                16.557840834192067
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.005144875862521339,
+                0.0006317881739019973,
+                -0.0005378944481341523
+              ]
+            },
+            {
+              "step": 6,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.71318260018003,
+                23.17575813411027,
+                16.557840834192067
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.005144875862521339,
+                0.0006317881739019973,
+                -0.0005378944481341523
+              ]
+            }
+          ]
+        },
+        "center_errors_mhz": {
+          "40m": 9.118754916848104e-05,
+          "30m": 2.2986162662164134e-06,
+          "20m": 1.944214842453107e-06
+        }
+      }
+    ],
+    "cases": [
+      {
+        "band": "40m",
+        "frequency_mhz": 7.150090439755342,
+        "r_ohm": 52.05363523261517,
+        "x_ohm": -0.005144875862521339,
+        "swr": 1.0410728361379724,
+        "full_swr2_window_mhz": [
+          7.022687140384984,
+          7.277130484516679
+        ],
+        "width_khz": 254.4433441316949,
+        "desired_fraction": 0.8481444804389835
+      },
+      {
+        "band": "30m",
+        "frequency_mhz": 10.124446496065083,
+        "r_ohm": 61.62319877388505,
+        "x_ohm": 0.00041765022603354023,
+        "swr": 1.2324639756434,
+        "full_swr2_window_mhz": [
+          10.018076429358862,
+          10.231918973408604
+        ],
+        "width_khz": 213.84254404974178,
+        "desired_fraction": 1.0
+      },
+      {
+        "band": "20m",
+        "frequency_mhz": 14.170606666930947,
+        "r_ohm": 59.17396349209016,
+        "x_ohm": -0.0005378944481341523,
+        "swr": 1.1834792701836871,
+        "full_swr2_window_mhz": [
+          14.049194703919817,
+          14.3008014076505
+        ],
+        "width_khz": 251.60670373068328,
+        "desired_fraction": 0.7188762963733816
+      }
+    ],
+    "validation": [
+      {
+        "material": "smooth-copper",
+        "spacing_in": 6,
+        "kind": "window_alignment",
+        "max_error_khz": 0.09118754916848104,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 6,
+        "band": "40m",
+        "frequency_mhz": 7.150090439755342,
+        "kind": "mesh",
+        "delta_z_ohm": 0.021580305093438248,
+        "coarse_swr": 1.0410728361379724,
+        "fine_swr": 1.0414975641705424,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 6,
+        "band": "40m",
+        "frequency_mhz": 7.022687140384984,
+        "kind": "mesh",
+        "delta_z_ohm": 0.023630420607741162,
+        "coarse_swr": 2.0000140138303855,
+        "fine_swr": 2.000172594165555,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 6,
+        "band": "40m",
+        "frequency_mhz": 7.277130484516679,
+        "kind": "mesh",
+        "delta_z_ohm": 0.021891642411819193,
+        "coarse_swr": 2.000017995738612,
+        "fine_swr": 2.0000819692349254,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 6,
+        "band": "40m",
+        "kind": "lossless_average_gain",
+        "error_db": 0.007680487625507187,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 6,
+        "band": "30m",
+        "frequency_mhz": 10.124446496065083,
+        "kind": "mesh",
+        "delta_z_ohm": 0.03763975601733579,
+        "coarse_swr": 1.2324646990692674,
+        "fine_swr": 1.2332163879834421,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 6,
+        "band": "30m",
+        "frequency_mhz": 10.018076429358862,
+        "kind": "mesh",
+        "delta_z_ohm": 0.04563594394319261,
+        "coarse_swr": 1.9999799936411897,
+        "fine_swr": 2.0008146595039706,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 6,
+        "band": "30m",
+        "frequency_mhz": 10.231918973408604,
+        "kind": "mesh",
+        "delta_z_ohm": 0.047376697444708155,
+        "coarse_swr": 2.000020054651887,
+        "fine_swr": 2.0008566839894475,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 6,
+        "band": "30m",
+        "kind": "lossless_average_gain",
+        "error_db": 0.009061096883428585,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 6,
+        "band": "20m",
+        "frequency_mhz": 14.170606666930947,
+        "kind": "mesh",
+        "delta_z_ohm": 0.03728041167524987,
+        "coarse_swr": 1.1834792701836871,
+        "fine_swr": 1.184188384302571,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 6,
+        "band": "20m",
+        "frequency_mhz": 14.049194703919817,
+        "kind": "mesh",
+        "delta_z_ohm": 0.03061494297725468,
+        "coarse_swr": 2.0000449076004565,
+        "fine_swr": 2.000239190141259,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 6,
+        "band": "20m",
+        "frequency_mhz": 14.3008014076505,
+        "kind": "mesh",
+        "delta_z_ohm": 0.05928002535012559,
+        "coarse_swr": 2.000007777822328,
+        "fine_swr": 2.0014040857102424,
+        "passed": true
+      },
+      {
+        "material": "smooth-copper",
+        "spacing_in": 6,
+        "band": "20m",
+        "kind": "lossless_average_gain",
+        "error_db": 0.007448358327333287,
+        "passed": true
+      }
+    ]
+  },
+  {
+    "material": "CCS-proxy",
+    "spacing_in": 4,
+    "config": {
+      "metal_radius_m": 0.0002413,
+      "insulation_outer_radius_m": 0.0005207,
+      "insulation_relative_permittivity": 2.3,
+      "insulation_loading_scale": 1.0,
+      "effective_conductivity_s_m": 10000000.0,
+      "grounds": {
+        "poor": {
+          "epsilon_r": 5.0,
+          "conductivity_s_m": 0.001
+        },
+        "average": {
+          "epsilon_r": 13.0,
+          "conductivity_s_m": 0.005
+        },
+        "good": {
+          "epsilon_r": 20.0,
+          "conductivity_s_m": 0.03
+        }
+      },
+      "study_id": "fan-dipole-v1",
+      "center_height_ft": 33,
+      "end_height_ft": 10,
+      "source_length_m": 0.1,
+      "max_segment_length_m": 0.12,
+      "ribbon_rotation_deg": 0,
+      "spacings_in": [
+        0.125,
+        0.25,
+        0.5,
+        1,
+        1.25,
+        1.5,
+        2,
+        4,
+        6
+      ],
+      "bands_mhz": {
+        "40m": 7.1540235993396095,
+        "30m": 10.132394613298997,
+        "20m": 14.185162823714096,
+        "15m": 21.2
+      },
+      "band_edges_mhz": {
+        "40m": [
+          7,
+          7.3
+        ],
+        "30m": [
+          10.1,
+          10.15
+        ],
+        "20m": [
+          14,
+          14.35
+        ],
+        "15m": [
+          21,
+          21.45
+        ]
+      },
+      "initial_half_lengths_ft": [
+        32.6155819782659,
+        23.07075490852311,
+        16.485122691640555
+      ],
+      "length_bounds_ft": [
+        [
+          26,
+          38
+        ],
+        [
+          18,
+          30
+        ],
+        [
+          12,
+          22
+        ]
+      ],
+      "tuning_order": [
+        0,
+        1,
+        0,
+        2,
+        1,
+        0
+      ],
+      "tuning_tolerance_ohm": 0.5,
+      "max_tuning_cycles": 12,
+      "validation_meshes_m": [
+        0.18,
+        0.12,
+        0.08
+      ],
+      "validation_impedance_tolerance_ohm": 2,
+      "validation_average_gain_tolerance_db": 0.1,
+      "source_segments": 9,
+      "feed_model": "equal_voltage"
+    },
+    "tuning_history": [
+      {
+        "targets_mhz": {
+          "40m": 7.15,
+          "30m": 10.125,
+          "20m": 14.175,
+          "15m": 21.2
+        },
+        "tuning": {
+          "spacing_in": 4,
+          "lengths_ft": [
+            32.6155819782659,
+            23.07075490852311,
+            16.485122691640555
+          ],
+          "converged": true,
+          "cycles": 1,
+          "error": null,
+          "history": [
+            {
+              "step": 0,
+              "cycle": 0,
+              "adjusted_band": "initial",
+              "lengths_ft": [
+                35,
+                25,
+                18
+              ],
+              "reactances_ohm": [
+                202.8046103810624,
+                359.95101036967213,
+                390.649512434457
+              ],
+              "delta_in": 0
+            },
+            {
+              "step": 1,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.6155819782659,
+                25,
+                18
+              ],
+              "delta_in": -28.61301626080919,
+              "reactances_ohm": [
+                2.567979965770832e-05,
+                313.81567783354774,
+                373.6490875804608
+              ]
+            },
+            {
+              "step": 2,
+              "cycle": 1,
+              "adjusted_band": "30m",
+              "lengths_ft": [
+                32.6155819782659,
+                23.07075490852311,
+                18
+              ],
+              "delta_in": -23.15094109772268,
+              "reactances_ohm": [
+                -0.009054380085976605,
+                -0.0005147558084009015,
+                345.9965463254886
+              ]
+            },
+            {
+              "step": 3,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.6155819782659,
+                23.07075490852311,
+                18
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.009054380085976605,
+                -0.0005147558084009015,
+                345.9965463254886
+              ]
+            },
+            {
+              "step": 4,
+              "cycle": 1,
+              "adjusted_band": "20m",
+              "lengths_ft": [
+                32.6155819782659,
+                23.07075490852311,
+                16.485122691640555
+              ],
+              "delta_in": -18.17852770031334,
+              "reactances_ohm": [
+                0.003906774052461948,
+                -0.03750418288903608,
+                0.00041444658592990037
+              ]
+            },
+            {
+              "step": 5,
+              "cycle": 1,
+              "adjusted_band": "30m",
+              "lengths_ft": [
+                32.6155819782659,
+                23.07075490852311,
+                16.485122691640555
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                0.003906774052461948,
+                -0.03750418288903608,
+                0.00041444658592990037
+              ]
+            },
+            {
+              "step": 6,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.6155819782659,
+                23.07075490852311,
+                16.485122691640555
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                0.003906774052461948,
+                -0.03750418288903608,
+                0.00041444658592990037
+              ]
+            }
+          ]
+        },
+        "center_errors_mhz": {
+          "40m": 0.004023599339609163,
+          "30m": 0.007394613298997044,
+          "20m": 0.010162823714095381
+        }
+      },
+      {
+        "targets_mhz": {
+          "40m": 7.1540235993396095,
+          "30m": 10.132394613298997,
+          "20m": 14.185162823714096,
+          "15m": 21.2
+        },
+        "tuning": {
+          "spacing_in": 4,
+          "lengths_ft": [
+            32.598215058363365,
+            23.054484271884682,
+            16.473359095520355
+          ],
+          "converged": true,
+          "cycles": 1,
+          "error": null,
+          "history": [
+            {
+              "step": 0,
+              "cycle": 0,
+              "adjusted_band": "initial",
+              "lengths_ft": [
+                32.6155819782659,
+                23.07075490852311,
+                16.485122691640555
+              ],
+              "reactances_ohm": [
+                1.1329613225552764,
+                2.66876998915552,
+                3.269936343491953
+              ],
+              "delta_in": 0
+            },
+            {
+              "step": 1,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.598215058363365,
+                23.07075490852311,
+                16.485122691640555
+              ],
+              "delta_in": -0.20840303883042566,
+              "reactances_ohm": [
+                -8.118291866797269e-05,
+                2.6249683562936705,
+                3.2382619501966974
+              ]
+            },
+            {
+              "step": 2,
+              "cycle": 1,
+              "adjusted_band": "30m",
+              "lengths_ft": [
+                32.598215058363365,
+                23.054484271884682,
+                16.485122691640555
+              ],
+              "delta_in": -0.19524763966113312,
+              "reactances_ohm": [
+                -0.0003248753677786675,
+                -0.0003864781057132072,
+                3.2350933586589354
+              ]
+            },
+            {
+              "step": 3,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.598215058363365,
+                23.054484271884682,
+                16.485122691640555
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.0003248753677786675,
+                -0.0003864781057132072,
+                3.2350933586589354
+              ]
+            },
+            {
+              "step": 4,
+              "cycle": 1,
+              "adjusted_band": "20m",
+              "lengths_ft": [
+                32.598215058363365,
+                23.054484271884682,
+                16.473359095520355
+              ],
+              "delta_in": -0.14116315344240604,
+              "reactances_ohm": [
+                -0.00011026298080785523,
+                -0.0008299824859234558,
+                -7.896932832925949e-05
+              ]
+            },
+            {
+              "step": 5,
+              "cycle": 1,
+              "adjusted_band": "30m",
+              "lengths_ft": [
+                32.598215058363365,
+                23.054484271884682,
+                16.473359095520355
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.00011026298080785523,
+                -0.0008299824859234558,
+                -7.896932832925949e-05
+              ]
+            },
+            {
+              "step": 6,
+              "cycle": 1,
+              "adjusted_band": "40m",
+              "lengths_ft": [
+                32.598215058363365,
+                23.054484271884682,
+                16.473359095520355
+              ],
+              "delta_in": 0.0,
+              "reactances_ohm": [
+                -0.00011026298080785523,
+                -0.0008299824859234558,
+                -7.896932832925949e-05
+              ]
+            }
+          ]
+        },
+        "center_errors_mhz": {
+          "40m": -3.0762086478119954e-05,
+          "30m": 8.328393925083333e-05,
+          "20m": -5.225861943358723e-05
+        }
+      }
+    ],
+    "cases": [
+      {
+        "band": "40m",
+        "frequency_mhz": 7.1540235993396095,
+        "r_ohm": 58.94777927821985,
+        "x_ohm": -0.00011026298080785523,
+        "swr": 1.1789555855791007,
+        "full_swr2_window_mhz": [
+          7.019318902923192,
+          7.280742621249764
+        ],
+        "width_khz": 261.4237183265713,
+        "desired_fraction": 0.8714123944219049
+      },
+      {
+        "band": "30m",
+        "frequency_mhz": 10.132394613298997,
+        "r_ohm": 77.42129331132736,
+        "x_ohm": -0.0008299824859234558,
+        "swr": 1.5484258665318273,
+        "full_swr2_window_mhz": [
+          10.033160503202225,
+          10.216672928919271
+        ],
+        "width_khz": 183.51242571704597,
+        "desired_fraction": 1.0
+      },
+      {
+        "band": "20m",
+        "frequency_mhz": 14.185162823714096,
+        "r_ohm": 77.43164881115914,
+        "x_ohm": -7.896932832925949e-05,
+        "swr": 1.5486329762259454,
+        "full_swr2_window_mhz": [
+          14.072091987106582,
+          14.278012530132287
+        ],
+        "width_khz": 205.92054302570517,
+        "desired_fraction": 0.5883444086448725
+      }
+    ],
+    "validation": [
+      {
+        "material": "CCS-proxy",
+        "spacing_in": 4,
+        "kind": "window_alignment",
+        "max_error_khz": 0.08328393925083333,
+        "passed": true
+      },
+      {
+        "material": "CCS-proxy",
+        "spacing_in": 4,
+        "band": "40m",
+        "frequency_mhz": 7.1540235993396095,
+        "kind": "mesh",
+        "delta_z_ohm": 0.022880287182336336,
+        "coarse_swr": 1.1789555855791007,
+        "fine_swr": 1.1793943169567627,
+        "passed": true
+      },
+      {
+        "material": "CCS-proxy",
+        "spacing_in": 4,
+        "band": "40m",
+        "frequency_mhz": 7.019318902923192,
+        "kind": "mesh",
+        "delta_z_ohm": 0.026364609671023862,
+        "coarse_swr": 2.0000023584876825,
+        "fine_swr": 2.0003540440994314,
+        "passed": true
+      },
+      {
+        "material": "CCS-proxy",
+        "spacing_in": 4,
+        "band": "40m",
+        "frequency_mhz": 7.280742621249764,
+        "kind": "mesh",
+        "delta_z_ohm": 0.02246343062431139,
+        "coarse_swr": 2.000010190703246,
+        "fine_swr": 2.0001304204958448,
+        "passed": true
+      },
+      {
+        "material": "CCS-proxy",
+        "spacing_in": 4,
+        "band": "40m",
+        "kind": "lossless_average_gain",
+        "error_db": 0.008330975672555427,
+        "passed": true
+      },
+      {
+        "material": "CCS-proxy",
+        "spacing_in": 4,
+        "band": "30m",
+        "frequency_mhz": 10.132394613298997,
+        "kind": "mesh",
+        "delta_z_ohm": 0.05004185043827071,
+        "coarse_swr": 1.5484258665318273,
+        "fine_swr": 1.5494266984388076,
+        "passed": true
+      },
+      {
+        "material": "CCS-proxy",
+        "spacing_in": 4,
+        "band": "30m",
+        "frequency_mhz": 10.033160503202225,
+        "kind": "mesh",
+        "delta_z_ohm": 0.051490154081308824,
+        "coarse_swr": 2.0000208251872515,
+        "fine_swr": 2.0010161937090554,
+        "passed": true
+      },
+      {
+        "material": "CCS-proxy",
+        "spacing_in": 4,
+        "band": "30m",
+        "frequency_mhz": 10.216672928919271,
+        "kind": "mesh",
+        "delta_z_ohm": 0.05888035247782027,
+        "coarse_swr": 2.000030558740155,
+        "fine_swr": 2.0012040613787256,
+        "passed": true
+      },
+      {
+        "material": "CCS-proxy",
+        "spacing_in": 4,
+        "band": "30m",
+        "kind": "lossless_average_gain",
+        "error_db": 0.010583307932419997,
+        "passed": true
+      },
+      {
+        "material": "CCS-proxy",
+        "spacing_in": 4,
+        "band": "20m",
+        "frequency_mhz": 14.185162823714096,
+        "kind": "mesh",
+        "delta_z_ohm": 0.060582058758102096,
+        "coarse_swr": 1.5486329762259454,
+        "fine_swr": 1.549796032061936,
+        "passed": true
+      },
+      {
+        "material": "CCS-proxy",
+        "spacing_in": 4,
+        "band": "20m",
+        "frequency_mhz": 14.072091987106582,
+        "kind": "mesh",
+        "delta_z_ohm": 0.05114160558048336,
+        "coarse_swr": 2.000027485446447,
+        "fine_swr": 2.0007372835315365,
+        "passed": true
+      },
+      {
+        "material": "CCS-proxy",
+        "spacing_in": 4,
+        "band": "20m",
+        "frequency_mhz": 14.278012530132287,
+        "kind": "mesh",
+        "delta_z_ohm": 0.07763722607670517,
+        "coarse_swr": 2.000007441653599,
+        "fine_swr": 2.0017311690930257,
+        "passed": true
+      },
+      {
+        "material": "CCS-proxy",
+        "spacing_in": 4,
+        "band": "20m",
+        "kind": "lossless_average_gain",
+        "error_db": 0.008190667865621124,
+        "passed": true
+      }
+    ]
+  }
+]
