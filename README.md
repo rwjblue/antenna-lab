@@ -52,6 +52,24 @@ Read the [construction method](docs/case-studies/linked-dipole-method.md) and
 [power/gain audit](docs/linked-dipole-power-audit.md) before interpreting the
 provisional dimensions or efficiency percentages as measurements.
 
+### Compact bifilar current balun
+
+The [bifilar choke screen](results/bifilar-choke-v1/README.md) compares parts-bin
+cores and 10–14 turns for an open dipole center, emphasizing 40/20 m.
+It uses manufacturer complex data with explicit capacitance scenarios;
+[construction and bench qualification](docs/case-studies/bifilar-choke.md)
+remain necessary before claiming 100 W operation.
+
+The [pragmatic build decision](docs/case-studies/balun-decision.md) revisits
+the owned-wire choices, verifies M3/Panduit terminations, and adds pair-spacing,
+proximity-loss, differential S-parameter and package-fit scenarios. It gives
+an owned-parts first build and a minimum comparison/thermal test plan.
+
+```bash
+mise run bifilar-choke
+mise run balun-decision
+```
+
 ### General commands
 
 Requires Python 3.11 or newer.

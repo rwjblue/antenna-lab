@@ -2,6 +2,7 @@
 archive/source-bundles/*.zip binary
 data/measured/raw/** -text
 data/measured/58ft_doublet_kxat2_2026-08-08.csv -text
+data/reference/ferrite/*.csv -text whitespace=cr-at-eol
 reports/figures/optimization-v1.0/** -text
 reports/radiation-pattern-v0.1/** -text
 results/published-v1.0/** -text
@@ -10,5 +11,7 @@ results/rigid-v-doublet-v1/** -text whitespace=cr-at-eol
 results/rigid-v-line-optimization-v2/** -text whitespace=cr-at-eol
 results/linked-dipole-v1/** -text whitespace=cr-at-eol
 results/linked-dipole-v1/figures/*.png binary
+results/bifilar-choke-v1/*.csv -text whitespace=cr-at-eol
+results/balun-decision-v1/*.csv -text whitespace=cr-at-eol
 reports/**/*.png binary
 reports/**/*.pdf binary

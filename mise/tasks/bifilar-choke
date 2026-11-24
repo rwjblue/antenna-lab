@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#MISE description="Screen parts-bin bifilar current chokes and winding sensitivities"
+set -euo pipefail
+PYTHONPATH=src uv run --extra plots python -m antenna_lab.bifilar_choke

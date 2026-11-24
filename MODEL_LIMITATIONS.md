@@ -136,3 +136,23 @@ and a perfect open at 14 ft. It reuses independently solved 41/28 and 41/14 NEC
 cases, so it does not model contact loss or capacitive/inductive coupling to the
 disconnected outer 14 ft. The open tail should be physically separated in the
 prototype, and folded/adjacent-tail layouts must be measured as distinct cases.
+
+## Compact bifilar choke screen
+
+The separate `bifilar-choke-v1` study adds a lumped small-signal common-mode
+impedance screen using manufacturer data and arbitrary capacitance scenarios.
+It does not change the antenna-system results above. It does not predict the
+actual winding's capacitance, installed common-mode current, temperature rise,
+power rating or differential line impedance. Its scenario ranges are not
+confidence bounds; prototype RF and thermal measurements remain required.
+
+The follow-up `balun-decision-v1` screen adds uniform RLGC differential
+S parameters, a homogeneous two-cylinder line/proximity approximation and
+idealized flat-pair fit estimates. Effective dielectric constants, spacing
+for unspecified enamel and crossover detours are explicit scenarios, not
+measurements. It does not solve coated-wire fields near ferrite, stranded
+or plated conductor loss, bend-radius compliance, mode conversion, winding
+capacitance or heat transfer. Its separation of reflected and dissipated
+power validates model accounting, not a physical assembly's insertion loss.
+See [the build decision](docs/case-studies/balun-decision.md) for measurement
+fixtures, acceptance gates and the limited scope of a 100 W CW qualification.

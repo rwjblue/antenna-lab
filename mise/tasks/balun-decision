@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#MISE description="Compare open-balun construction, line loss, fit and common-mode scenarios"
+set -euo pipefail
+PYTHONPATH=src uv run python -m antenna_lab.balun_decision

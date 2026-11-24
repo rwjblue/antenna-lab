@@ -1,0 +1,24 @@
+{
+  "status": "uncalibrated_sensitivity_not_power_rating",
+  "input_sha256": {
+    "data/reference/ferrite/2631801202.csv": "d6afaf85ba7a188b25433b52e0932ca753912be156942485d959cadfc48ee319",
+    "data/reference/ferrite/mix31.csv": "6b869bcc712e1c55df49d735ff197248c9ef1f0f8e1d24b6f697ff40173ba66c",
+    "data/reference/ferrite/mix43.csv": "7b1323c15c9de2fe23b92fc066c49c417ee8b6cc18fb2f6c91250a6169507d30",
+    "src/antenna_lab/bifilar_choke.py": "6e551815e00a59f8a8281b38ae858bdde868731959798eab095f9db20b21c8e0"
+  },
+  "band_samples": 41,
+  "turns": [
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "capacitance_pf": [
+    1,
+    2,
+    4,
+    8
+  ],
+  "rows": 800
+}
